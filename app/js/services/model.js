@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('App')
+		.module('ONOG')
 		.factory('Model', Model);
 
 	Model.$inject = ['Users'];

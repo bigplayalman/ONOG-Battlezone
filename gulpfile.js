@@ -15,6 +15,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
 var clean = require('gulp-clean');
 var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
 
 var paths = {
   sass: ['scss/**/*.scss'],
@@ -27,6 +28,9 @@ var paths = {
   //Destination folders
   destImages: './www/img/',
   destTemplates: './www/templates/'
+};
+var onError = function (err) {
+  console.log(err.toString());
 };
 
 gulp.task('default', ['sass', 'index', 'scripts', 'styles', 'templates', 'images', 'lib']);
@@ -46,13 +50,16 @@ gulp.task('sass', function (done) {
 
 gulp.task('index', function () {
   return gulp.src(paths.index)
-    .pipe(htmlmin({ collapseWhitespace: true }))
+    .pipe(htmlmin({ collapseWhitespace: false }))
     .pipe(gulp.dest("./www/"))
     .pipe(notify({ message: 'Index builded' }));
 });
 
 gulp.task('scripts', function () {
 	return gulp.src(paths.scripts)
+    .pipe(plumber({
+      errorHandler: onError
+    }))
 		.pipe(sourcemaps.init())
 		.pipe(concat("app.js"))
 		.pipe(sourcemaps.write())
@@ -68,7 +75,7 @@ gulp.task('styles', function () {
 		.pipe(sourcemaps.init())
 		.pipe(sass())
 		.pipe(autoprefixer('last 2 version'))
-		.pipe(concat('style.css'))		
+		.pipe(concat('style.css'))
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('./www/css/'))
 		.pipe(rename({suffix: '.min'}))

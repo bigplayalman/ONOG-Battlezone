@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('App')
+		.module('ONOG')
 		.directive('holdList', holdList);
 
 	holdList.$inject = ['$ionicGesture'];

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('App')
+		.module('ONOG')
 		.directive('ionMultipleSelect', ionMultipleSelect);
 
 	ionMultipleSelect.$inject = ['$ionicModal', '$ionicGesture'];

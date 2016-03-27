@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('App')
+		.module('ONOG')
 		.factory('Users', Users);
 
 	Users.$inject = ['$q', '$sqliteService'];

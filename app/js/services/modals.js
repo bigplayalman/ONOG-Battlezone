@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('App')
+		.module('ONOG')
 		.factory('Modals', Modals);
 
 	Modals.$inject = ['$ionicModal'];
