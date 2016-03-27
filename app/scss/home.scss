@@ -1,0 +1,13 @@
+.homeView{
+	
+	.center-content {
+		background: linear-gradient(145deg, #D63E3D, #5D4141, #906565, #DDDDDD);
+		background-size: 1000% 1000%;
+		animation: background 26s ease infinite;
+	}
+}
+@keyframes background { 
+	0%{background-position:1% 0%}
+    50%{background-position:99% 100%}
+    100%{background-position:1% 0%}
+}

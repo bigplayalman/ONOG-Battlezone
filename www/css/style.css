@@ -1,1 +1,53 @@
-/* Empty. Add your own CSS if you like */
+@media (min-width: 680px) {
+  .bigModal {
+    top: 0px !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important; }
+  .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) > * {
+    margin-top: 20px; }
+  .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) {
+    height: 64px; }
+  .platform-ios.platform-cordova .modal-wrapper .modal .has-header, .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {
+    top: 64px; } }
+
+.center-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important; }
+  .center-content .scroll {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center; }
+
+.animate-item {
+  -webkit-animation: fadeInLeft 1s;
+          animation: fadeInLeft 1s; }
+
+.homeView .center-content {
+  background: linear-gradient(145deg, #D63E3D, #5D4141, #906565, #DDDDDD);
+  background-size: 1000% 1000%;
+  -webkit-animation: background 26s ease infinite;
+          animation: background 26s ease infinite; }
+
+@-webkit-keyframes background {
+  0% {
+    background-position: 1% 0%; }
+  50% {
+    background-position: 99% 100%; }
+  100% {
+    background-position: 1% 0%; } }
+
+@keyframes background {
+  0% {
+    background-position: 1% 0%; }
+  50% {
+    background-position: 99% 100%; }
+  100% {
+    background-position: 1% 0%; } }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
+  display: none !important; }
+
+/*# sourceMappingURL=style.css.map */
