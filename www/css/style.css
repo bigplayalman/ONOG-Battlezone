@@ -12,42 +12,57 @@
   .platform-ios.platform-cordova .modal-wrapper .modal .has-header, .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {
     top: 64px; } }
 
+.bar {
+  background-size: 100% 0; }
+
 .center-content {
-  display: table !important;
-  width: 100% !important;
-  height: 100% !important; }
-  .center-content .scroll {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center; }
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: calc(100% - 43px); }
 
 .animate-item {
   -webkit-animation: fadeInLeft 1s;
           animation: fadeInLeft 1s; }
 
-.homeView .center-content {
-  background: linear-gradient(145deg, #D63E3D, #5D4141, #906565, #DDDDDD);
-  background-size: 1000% 1000%;
-  -webkit-animation: background 26s ease infinite;
-          animation: background 26s ease infinite; }
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
+  display: none !important; }
+
+.loginView {
+  background: #72D2D0; }
+  .loginView .center-content {
+    background: linear-gradient(180deg, #72D2D0, #132157);
+    background-size: 1000% 100%;
+    -webkit-animation: background 26s ease infinite;
+            animation: background 26s ease infinite; }
+    .loginView .center-content .responsive-img {
+      width: 100%;
+      height: auto;
+      margin: 0 auto; }
+    .loginView .center-content .login-container {
+      max-width: 400px;
+      margin: 0 auto; }
 
 @-webkit-keyframes background {
   0% {
-    background-position: 1% 0%; }
+    background-position: 0% 10%; }
   50% {
-    background-position: 99% 100%; }
+    background-position: 60% 100%; }
   100% {
-    background-position: 1% 0%; } }
+    background-position: 0% 10%; } }
 
 @keyframes background {
   0% {
-    background-position: 1% 0%; }
+    background-position: 0% 10%; }
   50% {
-    background-position: 99% 100%; }
+    background-position: 60% 100%; }
   100% {
-    background-position: 1% 0%; } }
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
-  display: none !important; }
+    background-position: 0% 10%; } }
 
 /*# sourceMappingURL=style.css.map */

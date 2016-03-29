@@ -24,7 +24,7 @@ var paths = {
   styles: 'app/scss/*.scss',
   templates: 'app/templates/**/*.html',
   images: 'app/img/**/*',
-  lib: 'www/lib/**/*',
+  parse: 'parse/**/*',
   //Destination folders
   destImages: './www/img/',
   destTemplates: './www/templates/'
@@ -33,7 +33,12 @@ var onError = function (err) {
   console.log(err.toString());
 };
 
-gulp.task('default', ['sass', 'index', 'scripts', 'styles', 'templates', 'images', 'lib']);
+gulp.task('default', ['sass', 'index', 'scripts', 'styles', 'templates', 'images', 'lib', 'parse']);
+
+gulp.task('parse', function() {
+  return gulp.src(paths.parse, {cwd: './node_modules/'})
+    .pipe(gulp.dest("./www/lib/parse/"));
+});
 
 gulp.task('sass', function (done) {
   gulp.src('./scss/ionic.app.scss')

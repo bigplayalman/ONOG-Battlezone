@@ -6,32 +6,30 @@
         right: 0 !important;
         width: 100% !important;
     }
-    
+
     .platform-ios.platform-cordova .modal-wrapper .modal {
-        
+
         .bar-header:not(.bar-subheader) > * {
             margin-top: 20px;
         }
-        
+
         .bar-header:not(.bar-subheader) {
             height: 64px;
         }
-        
+
         .has-header, .bar-subheader {
             top: 64px;
         }
     }
 }
-.center-content{	
-	display: table !important;
-	width: 100% !important;
-	height: 100% !important;
-		
-	.scroll {
-		display: table-cell;
-		vertical-align: middle;
-		text-align: center;
-	}
+.bar {
+  background-size: 100% 0;
+}
+.center-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 43px);
 }
 
 .animate-item{

@@ -3,15 +3,36 @@ angular.module('ONOG')
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $stateProvider
-    .state('home', {
-      url: "/home",
-      templateUrl: "templates/home.html",
-      controller: 'HomeController'
-    });
-
   $urlRouterProvider.otherwise(function ($injector, $location) {
     var $state = $injector.get("$state");
-    $state.go("home");
+    $state.go("app.login");
   });
+
+  $stateProvider
+    .state('app', {
+      url: '/app',
+      abstract: true,
+      templateUrl: 'templates/menu.html',
+      controller: 'MenuCtrl'
+    })
+    .state('app.dashboard', {
+      url: '/dashboard',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/dashboard.html',
+          controller: 'DashboardCtrl'
+        }
+      }
+    })
+    .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+        }
+      }
+    })
+
+
 }

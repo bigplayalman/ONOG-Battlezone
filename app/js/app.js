@@ -1,7 +1,8 @@
-angular.module('ONOG', 
+angular.module('ONOG',
   [
-    'ionic', 
-    'ngCordova', 
+    'ionic',
+    'ngParse',
+    'ngCordova',
     'ngAnimate',
     'ONOG.Controllers'
   ]);

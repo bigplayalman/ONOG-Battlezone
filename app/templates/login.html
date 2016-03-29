@@ -1,0 +1,37 @@
+<ion-view class="loginView" view-title="Login">
+	<ion-content class="center-content" scroll="false">
+    <form ng-submit="loginUser()" class="login-container">
+
+      <div class="padding">
+        <img src="img/logo2.png" class="logo responsive-img" />
+      </div>
+
+      <div class="card" ng-show="warning">
+        <div class="item item-borderless">
+          <div class="row">
+            <div class="col text-center energized-bg assertive">
+              {{warning}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card list padding">
+
+        <ion-item class="item-input">
+          <input type="text" ng-model="user.username" placeholder="username" autocapitalize="none">
+        </ion-item>
+        <ion-item class="item-input">
+          <input type="password" ng-model="user.password" placeholder="password" autocapitalize="none">
+        </ion-item>
+      </div>
+
+      <div class="row">
+        <div class="col text-center">
+          <button type="submit" class="button button-block button-calm" ng-disabled="!user.username || !user.password">Login</button>
+        </div>
+      </div>
+
+    </form>
+	</ion-content>
+</ion-view>

@@ -7,9 +7,13 @@
   "preen": {
     "ngCordova": [
       "dist/ng-cordova.min.js"
+    ],
+    "angular-parse-bower": [
+      "angular-parse.js"
     ]
   },
   "dependencies": {
-    "ngCordova": "^0.1.24-alpha"
+    "ngCordova": "^0.1.24-alpha",
+    "angular-parse-bower": "^0.2.3"
   }
 }

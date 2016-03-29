@@ -1,0 +1,29 @@
+.loginView{
+  background: #72D2D0;
+	.center-content {
+		background: linear-gradient(180deg, #72D2D0, #132157);
+		background-size: 1000% 100%;
+		animation: background 26s ease infinite;
+
+    .responsive-img {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+	}
+}
+@keyframes background {
+	0%{background-position:0% 10%}
+    50%{background-position:60% 100%}
+    100%{background-position:0% 10%}
+}
+
+//primary background color:  Gradient, #132157 to 233168
+//secondary color: #375092
+//
+//TEXT: H1 - FFFFFF ; H2 - 72D2D0 ; H3 (dk
+//                                      blue) 16245A
