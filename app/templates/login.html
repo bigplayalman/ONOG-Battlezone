@@ -1,34 +1,37 @@
-<ion-view class="loginView" view-title="Login">
-	<ion-content class="center-content" scroll="false">
+<ion-view class="loginView picture-bg">
+	<ion-content scroll="false">
     <form ng-submit="loginUser()" class="login-container">
 
-      <div class="padding">
-        <img src="img/logo2.png" class="logo responsive-img" />
+      <div class="padding logo">
+        <img src="img/onog.png"/>
       </div>
 
-      <div class="card" ng-show="warning">
-        <div class="item item-borderless">
-          <div class="row">
-            <div class="col text-center energized-bg assertive">
-              {{warning}}
-            </div>
-          </div>
-        </div>
+      <div class="item item-input-inset item-borderless no-background">
+        <label class="item-input-wrapper">
+          <i class="icon ion-person placeholder-icon"></i>
+          <input type="text" ng-model="user.username" placeholder="Username" autocapitalize="off" autocorrect="off" autocomplete="off">
+        </label>
       </div>
 
-      <div class="card list padding">
 
-        <ion-item class="item-input">
-          <input type="text" ng-model="user.username" placeholder="username" autocapitalize="none">
-        </ion-item>
-        <ion-item class="item-input">
-          <input type="password" ng-model="user.password" placeholder="password" autocapitalize="none">
-        </ion-item>
+      <div class="item item-input-inset item-borderless no-background">
+        <label class="item-input-wrapper">
+          <i class="icon ion-locked placeholder-icon"></i>
+          <input type="password" ng-model="user.password" placeholder="Password">
+        </label>
       </div>
 
-      <div class="row">
-        <div class="col text-center">
-          <button type="submit" class="button button-block button-calm" ng-disabled="!user.username || !user.password">Login</button>
+      <div class="item item-borderless no-background">
+        <button class="button button-calm full-width" ng-disabled="!user.username || !user.password" type="submit">Sign in</button>
+      </div>
+
+      <div class="item item-borderless no-background">
+        <a class="button button-outline button-light full-width" ui-sref="app.register">Register</a>
+      </div>
+
+      <div class="item item-borderless no-background" ng-if="warning">
+        <div class="item energized-bg assertive text-center">
+          {{warning}}
         </div>
       </div>
 

@@ -12,11 +12,13 @@ function routes ($stateProvider, $urlRouterProvider) {
     .state('app', {
       url: '/app',
       abstract: true,
+      cache: false,
       templateUrl: 'templates/menu.html',
       controller: 'MenuCtrl'
     })
     .state('app.dashboard', {
       url: '/dashboard',
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/dashboard.html',
@@ -26,10 +28,21 @@ function routes ($stateProvider, $urlRouterProvider) {
     })
     .state('app.login', {
       url: '/login',
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/login.html',
           controller: 'LoginCtrl'
+        }
+      }
+    })
+    .state('app.register', {
+      url: '/register',
+      cache: false,
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/register.html',
+          controller: 'RegisterCtrl'
         }
       }
     })

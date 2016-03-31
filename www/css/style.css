@@ -1,6 +1,6 @@
 @media (min-width: 680px) {
   .bigModal {
-    top: 0px !important;
+    top: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
@@ -12,57 +12,85 @@
   .platform-ios.platform-cordova .modal-wrapper .modal .has-header, .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {
     top: 64px; } }
 
+.logo {
+  width: 115px;
+  margin: 0 auto; }
+
+.item-clear {
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border-bottom: 1px solid white; }
+  .item-clear .item-content {
+    background: none;
+    color: white; }
+    .item-clear .item-content.activated {
+      background: rgba(255, 255, 255, 0.4); }
+
+.logo-50 {
+  width: 50%; }
+
+.img-icon {
+  width: 35px;
+  position: relative;
+  top: 5px;
+  right: 5px; }
+
 .bar {
   background-size: 100% 0; }
 
-.center-content {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: calc(100% - 43px); }
+.responsive-img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto; }
+
+.full-width {
+  width: 100%; }
+
+.no-background {
+  background: rgba(255, 255, 255, 0); }
 
 .animate-item {
   -webkit-animation: fadeInLeft 1s;
           animation: fadeInLeft 1s; }
 
+.picture-bg {
+  background: url("../img/bg.png") center;
+  background-size: cover; }
+
+ion-popover-view.fit {
+  height: auto !important; }
+
+ion-popover-view.fit ion-content {
+  position: relative !important; }
+
+.platform-android ion-popover-view.fit {
+  margin-top: 10px !important; }
+
+.dashboardView {
+  background: url("../img/dashboard.png") center;
+  background-size: cover; }
+  .dashboardView .bar .title {
+    display: none !important; }
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
   display: none !important; }
 
-.loginView {
-  background: #72D2D0; }
-  .loginView .center-content {
-    background: linear-gradient(180deg, #72D2D0, #132157);
-    background-size: 1000% 100%;
-    -webkit-animation: background 26s ease infinite;
-            animation: background 26s ease infinite; }
-    .loginView .center-content .responsive-img {
-      width: 100%;
-      height: auto;
-      margin: 0 auto; }
-    .loginView .center-content .login-container {
-      max-width: 400px;
-      margin: 0 auto; }
+.loginView .login-container {
+  max-width: 400px;
+  padding-top: 50px;
+  margin: 0 auto; }
+  .loginView .login-container .item {
+    width: 90%;
+    margin: auto; }
 
-@-webkit-keyframes background {
-  0% {
-    background-position: 0% 10%; }
-  50% {
-    background-position: 60% 100%; }
-  100% {
-    background-position: 0% 10%; } }
-
-@keyframes background {
-  0% {
-    background-position: 0% 10%; }
-  50% {
-    background-position: 60% 100%; }
-  100% {
-    background-position: 0% 10%; } }
+.RegisterView .register-content {
+  padding-top: 50px; }
+  .RegisterView .register-content .battleName {
+    width: 60%;
+    float: left; }
+  .RegisterView .register-content .battleId {
+    width: 40%;
+    float: left;
+    border-left: none; }
 
 /*# sourceMappingURL=style.css.map */

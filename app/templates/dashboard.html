@@ -1,5 +1,27 @@
-<ion-view class="homeView" view-title="Home" hide-nav-bar="true">
-	<ion-content class="dark-bg light">
-    Hello
+<ion-view class="dashboardView">
+  <ion-nav-title class="hide">Dashboard</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear" ng-click="popover.show($event)" ng-if="user">
+      <img src="img/profile.png" class="img-icon">
+    </button>
+  </ion-nav-buttons>
+	<ion-content padding="true">
+    <div class="padding logo-50">
+      <img src="img/logo2.png" class="responsive-img" />
+    </div>
+
+    <div class="card">
+      <ion-item class="item-positive">
+        <h1 class="light">VIEW</h1>
+        <h1 class="light">STANDINGS</h1>
+      </ion-item>
+    </div>
+
+    <div class="card">
+      <ion-item class="item-positive">
+        <h1 class="light">FIND</h1>
+        <h1 class="light">MATCH</h1>
+      </ion-item>
+    </div>
 	</ion-content>
 </ion-view>
