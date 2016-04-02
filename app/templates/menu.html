@@ -7,6 +7,11 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear" ng-click="popover.show($event)">
+          <img src="img/profile.png" class="img-icon">
+        </button>
+      </ion-nav-buttons>
     </ion-nav-bar>
 
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -26,17 +31,6 @@
         <ion-item menu-close ui-sref="app.dashboard" class="item-clear item-borderless item-icon-left">
           <i class="icon ion-speedometer"></i>
           Dashboard
-        </ion-item>
-
-
-        <ion-item ng-if="!user" menu-close ui-sref="app.login" class="item-clear item-borderless item-icon-left">
-          <i class="icon ion-log-in"></i>
-          Login
-        </ion-item>
-
-        <ion-item ng-if="!user" menu-close ui-sref="app.register" class="item-clear item-borderless item-icon-left">
-          <i class="icon ion-person-add"></i>
-          Register
         </ion-item>
       </ion-list>
     </ion-content>

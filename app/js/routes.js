@@ -5,7 +5,7 @@ function routes ($stateProvider, $urlRouterProvider) {
 
   $urlRouterProvider.otherwise(function ($injector, $location) {
     var $state = $injector.get("$state");
-    $state.go("app.login");
+    $state.go("app.dashboard");
   });
 
   $stateProvider
@@ -23,6 +23,16 @@ function routes ($stateProvider, $urlRouterProvider) {
         'menuContent': {
           templateUrl: 'templates/dashboard.html',
           controller: 'DashboardCtrl'
+        }
+      }
+    })
+    .state('app.standings', {
+      url: '/standings',
+      cache: false,
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/standings.html',
+          controller: 'StandingsCtrl'
         }
       }
     })

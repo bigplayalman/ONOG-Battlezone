@@ -18,8 +18,9 @@
 
 .item-clear {
   background: rgba(0, 0, 0, 0.4);
-  color: white;
   border-bottom: 1px solid white; }
+  .item-clear h1 {
+    color: white; }
   .item-clear .item-content {
     background: none;
     color: white; }
@@ -47,7 +48,7 @@
   width: 100%; }
 
 .no-background {
-  background: rgba(255, 255, 255, 0); }
+  background: none; }
 
 .animate-item {
   -webkit-animation: fadeInLeft 1s;
@@ -58,7 +59,8 @@
   background-size: cover; }
 
 ion-popover-view.fit {
-  height: auto !important; }
+  height: auto !important;
+  width: 170px; }
 
 ion-popover-view.fit ion-content {
   position: relative !important; }
@@ -66,11 +68,8 @@ ion-popover-view.fit ion-content {
 .platform-android ion-popover-view.fit {
   margin-top: 10px !important; }
 
-.dashboardView {
-  background: url("../img/dashboard.png") center;
-  background-size: cover; }
-  .dashboardView .bar .title {
-    display: none !important; }
+.dashboardView .bar .title {
+  display: none !important; }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
   display: none !important; }

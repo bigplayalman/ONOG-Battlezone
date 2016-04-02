@@ -1,3 +1,4 @@
+@import "variables";
 @media (min-width: 680px) {
   .bigModal {
     top: 0 !important;
@@ -28,7 +29,9 @@
 }
 .item-clear {
   background: rgba(0,0,0, 0.4);
-  color: white;
+  h1 {
+    color: white;
+  }
   border-bottom: 1px solid white;
   .item-content {
     background: none;
@@ -37,7 +40,6 @@
       background: rgba(255,255,255, 0.4);
     }
   }
-
 }
 .logo-50 {
   width: 50%;
@@ -60,7 +62,8 @@
   width: 100%;
 }
 .no-background {
-  background: rgba(255,255,255, 0);
+  background: none;
+
 }
 .animate-item{
   animation: fadeInLeft 1s;
@@ -69,8 +72,10 @@
   background: url('../img/bg.png') center;
   background-size: cover;
 }
+
 ion-popover-view.fit {
   height: auto !important;
+  width: 170px;
 }
 
 ion-popover-view.fit ion-content {
