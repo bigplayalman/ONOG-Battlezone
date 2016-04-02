@@ -5,16 +5,21 @@
   width: 115px;
   margin: 0 auto; }
 
+.capitalize {
+  text-transform: uppercase; }
+
 .item-clear {
-  background: rgba(0, 0, 0, 0.4);
-  border-bottom: 1px solid white; }
-  .item-clear h1 {
-    color: white; }
+  background: rgba(255, 255, 255, 0.1); }
+  .item-clear.blue-bg {
+    background: rgba(55, 81, 145, 0.1); }
+  .item-clear.purple-bg {
+    background: rgba(255, 0, 255, 0.1); }
+  .item-clear.green-bg {
+    background: rgba(51, 205, 98, 0.1); }
   .item-clear .item-content {
-    background: none;
-    color: white; }
+    background: none; }
     .item-clear .item-content.activated {
-      background: rgba(255, 255, 255, 0.4); }
+      background: rgba(255, 255, 255, 0.1); }
 
 .logo-50 {
   width: 50%; }
