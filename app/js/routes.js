@@ -26,16 +26,6 @@ function routes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('app.standings', {
-      url: '/standings',
-      cache: false,
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/standings.html',
-          controller: 'StandingsCtrl'
-        }
-      }
-    })
     .state('app.login', {
       url: '/login',
       cache: false,
