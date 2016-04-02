@@ -8,6 +8,11 @@
 .capitalize {
   text-transform: uppercase; }
 
+.row {
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
+
 .item-clear {
   background: rgba(255, 255, 255, 0.1); }
   .item-clear.blue-bg {

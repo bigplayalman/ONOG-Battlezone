@@ -1,6 +1,88 @@
 <ion-view class="JoinLadderView picture-bg">
   <ion-nav-title>Participate</ion-nav-title>
   <ion-content padding="true">
+    <ion-list>
 
+      <div class="item item-input-inset no-background item-borderless">
+        <label class="item-input-wrapper">
+          <input type="text" ng-model="player.battleTag" placeholder="Battle.net Username" autocapitalize="off" autocorrect="off" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="row">
+        <div class="col text-center">
+          <h3 class="light">Select Four Classes</h3>
+        </div>
+      </div>
+
+      <div class="row light text-center">
+        <a class="col col-33" ng-click="selectHero('mage')">
+          <div class="padding">
+            <img src="img/icons/mage.png" class="responsive-img">
+          </div>
+          MAGE
+        </a>
+        <a class="col col-34">
+          <div class="padding">
+            <img src="img/icons/hunter.png" class="responsive-img">
+          </div>
+          HUNTER
+        </a>
+        <a class="col col-33">
+          <div class="padding">
+            <img src="img/icons/paladin.png" class="responsive-img">
+          </div>
+          PALADIN
+        </a>
+
+        <div class="col col-33">
+          <div class="padding">
+            <img src="img/icons/warrior.png" class="responsive-img">
+          </div>
+          WARRIOR
+        </div>
+        <div class="col col-34">
+          <div class="padding">
+            <img src="img/icons/druid.png" class="responsive-img">
+          </div>
+          DRUID
+        </div>
+        <div class="col col-33">
+          <div class="padding">
+            <img src="img/icons/warlock.png" class="responsive-img">
+          </div>
+          WARLOCK
+        </div>
+      </div>
+
+
+      <div class="row light text-center">
+        <div class="col-33">
+          <div class="padding">
+            <img src="img/icons/shaman.png" class="responsive-img">
+          </div>
+          SHAMAN
+        </div>
+        <div class="col-34">
+          <div class="padding">
+            <img src="img/icons/priest.png" class="responsive-img">
+          </div>
+          PRIEST
+        </div>
+        <div class="col-33">
+          <div class="padding">
+            <img src="img/icons/rogue.png" class="responsive-img">
+          </div>
+          ROGUE
+        </div>
+      </div>
+
+      <!--<ion-checkbox ng-repeat="hero in heroList"-->
+                    <!--ng-model="hero.checked"-->
+                    <!--ng-checked="hero.checked">-->
+        <!--{{ hero.text }}-->
+      <!--</ion-checkbox>-->
+
+    </ion-list>
   </ion-content>
 </ion-view>
