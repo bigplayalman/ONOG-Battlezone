@@ -24,6 +24,11 @@ function LadderRoutes ($stateProvider) {
       url: '/join',
       cache: false,
       templateUrl: 'templates/ladder/join.html',
-      controller: 'LadderJoinCtrl'
+      controller: 'LadderJoinCtrl',
+      resolve: {
+        tourney: function (TournamentServices) {
+          return TournamentServices.getTournament();
+        }
+      }
     })
 }

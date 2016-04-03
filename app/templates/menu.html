@@ -33,7 +33,7 @@
           Play Tourney
         </ion-item>
 
-        <ion-item menu-close ui-sref="app.admin.settings" class="item-clear light item-icon-left capitalize">
+        <ion-item menu-close ng-if="user.current()" ui-sref="app.admin.settings" class="item-clear light item-icon-left capitalize" >
           <i class="icon ion-ios-gear"></i>
           Admin
         </ion-item>

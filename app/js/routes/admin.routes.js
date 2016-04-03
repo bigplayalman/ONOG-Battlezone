@@ -20,6 +20,9 @@ function AdminRoutes ($stateProvider) {
       templateUrl: 'templates/admin/admin.settings.html',
       controller: 'AdminSettingsCtrl',
       resolve: {
+        tourney: function (TournamentServices) {
+          return TournamentServices.getTournament();
+        },
         newTournament: function (TournamentServices, tourney) {
           if(tourney.length) {
             return tourney[0];

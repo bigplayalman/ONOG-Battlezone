@@ -3,8 +3,9 @@ angular.module('ONOG.Controllers')
 
   .controller('LadderJoinCtrl', LadderJoinCtrl);
 
-LadderJoinCtrl.$inject = ['$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory'];
-function LadderJoinCtrl($scope, Parse, $filter, $ionicPopup, $state, $ionicHistory) {
+LadderJoinCtrl.$inject = ['$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory', 'tourney', 'TournamentServices'];
+function LadderJoinCtrl($scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices) {
+  $scope.tournament = tourney[0];
   $scope.user = Parse.User.current();
   $scope.player = {
     battleTag: '',
@@ -43,12 +44,18 @@ function LadderJoinCtrl($scope, Parse, $filter, $ionicPopup, $state, $ionicHisto
     angular.forEach(heroes, function (hero) {
       $scope.player.heroes.push(hero.text);
     });
-
-    SuccessPopup($scope.player).then(function(res) {
-      $ionicHistory.nextViewOptions({
-        disableBack: true
-      });
-      $state.go('app.dashboard');
+    
+    TourneyServices.joinTournament($scope.tournament.tournament, $scope.player).then(function (player) {
+      $scope.tournament.increment('playerCount');
+      $scope.tournament.save().then(function () {
+        SuccessPopup(player).then(function(res) {
+          $ionicHistory.nextViewOptions({
+            disableBack: true
+          });
+          $state.go('app.dashboard');
+        });
+      })
+      
     });
   }
 

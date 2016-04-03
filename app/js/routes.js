@@ -14,12 +14,7 @@ function routes ($stateProvider, $urlRouterProvider) {
       abstract: true,
       cache: false,
       templateUrl: 'templates/menu.html',
-      controller: 'MenuCtrl',
-      resolve: {
-        tourney: function (TournamentServices) {
-          return TournamentServices.getTournament();
-        }
-      }
+      controller: 'MenuCtrl'
     })
     .state('app.dashboard', {
       url: '/dashboard',

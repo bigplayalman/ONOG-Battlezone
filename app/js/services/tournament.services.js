@@ -16,7 +16,19 @@ function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
   return {
     getTournament: getTournament,
     createTournament: createTournament,
-    getLadder: getLadder
+    getLadder: getLadder,
+    joinTournament: joinTournament
+  }
+  function joinTournament(tourney, player) {
+    var player = new Ladder.Model(player);
+    player.set('tournament', tourney);
+    player.set('user', Parse.User.current());
+    player.set('username', Parse.User.current().username);
+    player.set('mmr', 1000);
+    player.set('wins', 0);
+    player.set('losses', 0);
+    player.set('points', 0);
+    return player.save();
   }
   function getTournament() {
     var query = new Parse.Query(Details.Model);
@@ -49,6 +61,7 @@ function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
     return query.find();
   }
 }
+
 function Tournament(Parse) {
   var Model = Parse.Object.extend('Tournament');
   var attributes = ['name', 'game', 'status'];
@@ -69,7 +82,7 @@ function Details(Parse) {
 }
 function Ladder(Parse) {
   var Model = Parse.Object.extend('Ladder');
-  var attributes = ['tournament', 'player', 'wins', 'losses', 'mmr', 'points'];
+  var attributes = ['tournament', 'user','battleTag', 'username', 'heroes', 'wins', 'losses', 'mmr', 'points'];
   Parse.defineAttributes(Model, attributes);
 
   return {
