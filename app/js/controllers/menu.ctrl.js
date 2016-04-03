@@ -3,7 +3,7 @@ angular.module('ONOG.Controllers')
 
 MenuCtrl.$inject = ['$scope','$ionicPopover', '$state', '$ionicHistory', 'Parse'];
 function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse) {
-  $scope.user = Parse.User.current();
+  $scope.user = Parse.User;
 
   $ionicPopover.fromTemplateUrl('templates/popovers/profile.pop.html', {
     scope: $scope,
@@ -12,10 +12,10 @@ function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse) {
   });
 
   $scope.menu = function (link) {
-    $state.go('app.' + link, {reload: true});
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
+    $state.go('app.' + link, {reload: true});
     $scope.popover.hide();
   }
   //Cleanup the popover when we're done with it!

@@ -1,21 +1,23 @@
 <ion-popover-view class="fit">
   <ion-content scroll="false">
-    <div class="list">
-      <a class="item" ng-click="popover.remove()" ng-if="user">
+    <div class="list" ng-if="user.current()">
+      <a class="item" ng-click="popover.remove()">
         Profile
       </a>
-      <a class="item" ng-click="popover.remove()" ng-if="user">
+      <a class="item" ng-click="popover.remove()">
         Change Password
       </a>
 
-      <a class="item" ng-click="menu('login')" ng-if="user">
+      <a class="item" ng-click="menu('login')" >
         Log out
       </a>
+    </div>
 
-      <a class="item" ng-click="menu('login')" ng-if="!user">
+    <div class="list" ng-if="!user.current()">
+      <a class="item" ng-click="menu('login')">
         Log in
       </a>
-      <a class="item" ng-click="menu('register')" ng-if="!user">
+      <a class="item" ng-click="menu('register')">
         Register
       </a>
     </div>
