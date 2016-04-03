@@ -27,8 +27,7 @@
           class="col col-33 capitalize"
           ng-class="{opacity: !hero.checked && canSelect === 5}"
           ng-click="selectHero(hero, $event)"
-          ng-repeat="hero in heroList"
-        >
+          ng-repeat="hero in heroList">
 
           <div class="padding heroClass" ng-class="{'selected': hero.checked}">
             <div class="icon ion-android-checkmark-circle" ng-if="hero.checked" ng-style="{'font-size': image + 'px'}"></div>

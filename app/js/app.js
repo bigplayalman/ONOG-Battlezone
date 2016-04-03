@@ -4,5 +4,6 @@ angular.module('ONOG',
     'ngParse',
     'ngCordova',
     'ngAnimate',
-    'ONOG.Controllers'
+    'ONOG.Controllers',
+    'ONOG.Services'
   ]);
