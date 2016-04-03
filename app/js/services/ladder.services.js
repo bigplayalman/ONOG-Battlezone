@@ -17,7 +17,7 @@ function LadderServices(Parse, Ladder) {
   function getPlayers(tourney) {
     var query = new Parse.Query(Ladder.Model);
     query.equalTo('tournament', tourney);
-    query.descending('points');
+    query.descending('points', 'mmr');
     return query.find();
   }
 
