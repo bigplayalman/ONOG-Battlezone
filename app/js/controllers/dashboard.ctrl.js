@@ -10,7 +10,6 @@ function DashboardCtrl($scope, Parse, LadderServices, tournament) {
   LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
     if(players.length) {
       $scope.player = players[0];
-      console.log($scope.player);
     }
   })
 }

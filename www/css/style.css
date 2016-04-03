@@ -93,6 +93,15 @@ ion-popover-view.fit ion-content {
     left: 0;
     right: 0; }
 
+.standingsView .item-clear.standings-header {
+  background: rgba(51, 205, 98, 0.4); }
+
+.standingsView .item-clear.standings-body:nth-child(even) {
+  background: rgba(255, 255, 255, 0.4); }
+
+.standingsView .item-clear.standings-body:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.5); }
+
 .loginView .login-container {
   max-width: 400px;
   padding-top: 50px;

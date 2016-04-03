@@ -9,8 +9,16 @@ Ladder.$inject = ['Parse'];
 
 function LadderServices(Parse, Ladder) {
   return {
+    getPlayers: getPlayers,
     getPlayer: getPlayer,
     validatePlayer: validatePlayer
+  }
+
+  function getPlayers(tourney) {
+    var query = new Parse.Query(Ladder.Model);
+    query.equalTo('tournament', tourney);
+    query.descending('points');
+    return query.find();
   }
 
   function validatePlayer(tourney, battleTag) {
