@@ -4,13 +4,11 @@ angular.module('ONOG.Services')
   .service('TournamentServices', TournamentServices)
 
   .factory('Tournament', Tournament)
-  .factory('Details', Details)
-  .factory('Ladder', Ladder);
+  .factory('Details', Details);
 
 TournamentServices.$inject = ['Parse', '$q', 'Tournament', 'Details', 'Ladder'];
 Tournament.$inject = ['Parse'];
 Details.$inject = ['Parse'];
-Ladder.$inject = ['Parse'];
 
 function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
   return {
@@ -74,15 +72,6 @@ function Tournament(Parse) {
 function Details(Parse) {
   var Model = Parse.Object.extend('Details');
   var attributes = ['tournament', 'type', 'numOfGames', 'playerCount'];
-  Parse.defineAttributes(Model, attributes);
-
-  return {
-    Model: Model
-  }
-}
-function Ladder(Parse) {
-  var Model = Parse.Object.extend('Ladder');
-  var attributes = ['tournament', 'user','battleTag', 'username', 'heroes', 'wins', 'losses', 'mmr', 'points'];
   Parse.defineAttributes(Model, attributes);
 
   return {

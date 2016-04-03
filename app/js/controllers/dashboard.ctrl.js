@@ -3,8 +3,14 @@ angular.module('ONOG.Controllers')
 
   .controller('DashboardCtrl', DashboardCtrl);
 
-DashboardCtrl.$inject = ['$scope', 'Parse'];
-function DashboardCtrl($scope, Parse) {
+DashboardCtrl.$inject = ['$scope', 'Parse', 'LadderServices', 'tournament'];
+function DashboardCtrl($scope, Parse, LadderServices, tournament) {
+  $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User;
-  $scope.player;
+  LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
+    if(players.length) {
+      $scope.player = players[0];
+      console.log($scope.player);
+    }
+  })
 }

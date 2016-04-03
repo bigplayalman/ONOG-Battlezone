@@ -3,8 +3,14 @@ angular.module('ONOG.Controllers')
 
   .controller('LadderJoinCtrl', LadderJoinCtrl);
 
-LadderJoinCtrl.$inject = ['$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory', 'tourney', 'TournamentServices'];
-function LadderJoinCtrl($scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices) {
+LadderJoinCtrl.$inject =
+  [
+    '$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory', 'tourney', 'TournamentServices', 'LadderServices', '$q'
+  ];
+function LadderJoinCtrl
+(
+  $scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices, LadderServices, $q
+) {
   $scope.tournament = tourney[0];
   $scope.user = Parse.User.current();
   $scope.player = {
@@ -32,59 +38,67 @@ function LadderJoinCtrl($scope, Parse, $filter, $ionicPopup, $state, $ionicHisto
   }
 
   $scope.registerPlayer = function () {
-    var heroes = $filter('filter')($scope.heroList, {checked: true}, true);
-    if(!validateBattleTag()) {
-      return;
-    }
-    if(!validateHeroes(heroes)){
-      return;
-    }
+    validateBattleTag().then(
+      function (tag) {
+        console.log(tag);
+        var heroes = $filter('filter')($scope.heroList, {checked: true}, true);
+        if(!validateHeroes(heroes)){
+          return;
+        }
 
-    $scope.player.heroes = [];
-    angular.forEach(heroes, function (hero) {
-      $scope.player.heroes.push(hero.text);
-    });
-    
-    TourneyServices.joinTournament($scope.tournament.tournament, $scope.player).then(function (player) {
-      $scope.tournament.increment('playerCount');
-      $scope.tournament.save().then(function () {
-        SuccessPopup(player).then(function(res) {
-          $ionicHistory.nextViewOptions({
-            disableBack: true
-          });
-          $state.go('app.dashboard');
+        $scope.player.heroes = [];
+        angular.forEach(heroes, function (hero) {
+          $scope.player.heroes.push(hero.text);
         });
-      })
-      
-    });
+
+        TourneyServices.joinTournament($scope.tournament.tournament, $scope.player).then(function (player) {
+          $scope.tournament.increment('playerCount');
+          $scope.tournament.save().then(function () {
+            SuccessPopup(player).then(function(res) {
+              $ionicHistory.nextViewOptions({
+                disableBack: true
+              });
+              $state.go('app.dashboard');
+            });
+          })
+        
+        });
+      },
+      function (error) {
+        ErrorPopup(error);
+      });
   }
 
   function validateBattleTag () {
-    var valid = true;
+    var cb = $q.defer();
+
     var tag = $scope.player.battleTag;
-    var message = '';
+
     if(tag.length < 8) {
-      message = 'Enter your full battle tag'
-      valid = false;
+      cb.reject('Enter your full battle tag');
+      return cb.promise;
     }
     var split = tag.split('#');
-    if(valid && split.length !== 2) {
-      message = 'Enter your full BATTLETAG™ including # and four digits';
-      valid = false;
+    if(split.length !== 2) {
+      cb.reject('Enter your full BATTLETAG™ including # and four digits');
+      return cb.promise;
     }
-    if(valid && split[1].length != 4) {
-      message = 'Your BATTLETAG™ must including four digits after #!';
-      valid = false;
+    if(split[1].length != 4) {
+      cb.reject('Your BATTLETAG™ must including four digits after #!');
+      return cb.promise;
     }
-    if(valid && isNaN(split[1])) {
-      message = 'Your BATTLETAG™ must including four digits after #';
-      valid = false;
+    if(isNaN(split[1])) {
+      cb.reject('Your BATTLETAG™ must including four digits after #');
+      return cb.promise;
     }
-
-    if(!valid) {
-      ErrorPopup(message);
-    }
-    return valid;
+    LadderServices.validatePlayer($scope.tournament.tournament, tag).then(function (results) {
+      if(results.length) {
+        cb.reject('The BATTLETAG™ you entered is already registered.')
+      } else {
+        cb.resolve(tag);
+      } 
+    });
+    return cb.promise;
   }
 
   function validateHeroes (heroes) {
