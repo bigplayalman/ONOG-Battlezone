@@ -9,17 +9,18 @@
         </label>
       </div>
 
-      <div class="row" ng-if="canSelect < 5">
-        <div class="col text-center">
-          <span class="light">Select Four Classes</span>
+      <div class="padding" ng-if="canSelect < 5">
+        <div class="row">
+          <div class="col text-center">
+            <span class="light">Select Four Classes</span>
+          </div>
         </div>
       </div>
 
-      <div class="row" ng-if="canSelect === 5">
-        <div class="col">
-          <button class="full-width button-calm button button-small" ng-click="registerPlayer()">Register</button>
-        </div>
+      <div class="padding" ng-if="canSelect === 5">
+        <button class="full-width button-calm button button-small" ng-click="registerPlayer()">Register</button>
       </div>
+
 
       <div class="row light text-center">
         <a
