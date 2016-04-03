@@ -22,8 +22,8 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $i
       scope: $scope,
       template:
         '<div class="row">' +
-        '<div class="col text-center" ng-repeat="hero in heroes">' +
-        '<img ng-src="img/icons/{{hero}}.png" class="responsive-img">{{hero}}' +
+        '<div class="col-25 text-center" ng-repeat="hero in heroes">' +
+        '<img ng-src="img/icons/{{hero}}.png" class="responsive-img" style="padding:3px;">{{hero}}' +
         '</div>' +
         '</div>'
     });
