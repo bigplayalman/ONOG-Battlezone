@@ -25,8 +25,8 @@
             <img src="img/onog.png"/>
           </div>
         </div>
-        <ion-item ng-if="user" class="item-clear item-borderless light capitalize">
-          Hi, {{user.username}}
+        <ion-item ng-if="user.current()" class="item-clear item-borderless light capitalize">
+          Hi, {{user.current().username}}
         </ion-item>
         <ion-item menu-close ui-sref="app.dashboard" class="item-clear light item-icon-left capitalize">
           <i class="icon ion-ios-game-controller-b"></i>

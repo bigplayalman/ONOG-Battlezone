@@ -19,10 +19,17 @@
       </ion-item>
     </div>
 
-    <div class="padding" ng-if="!player">
+    <div class="padding" ng-if="!player && user.current()">
       <ion-item class="item-clear light blue-bg" ui-sref="app.ladder.join">
         <h1 class="light">JOIN</h1>
         <h1 class="light">LADDER</h1>
+      </ion-item>
+    </div>
+
+    <div class="padding" ng-if="!user.current()">
+      <ion-item class="item-clear light green-bg" ui-sref="app.login">
+        <h1 class="light">LOG IN TO</h1>
+        <h1 class="light">TOURNEY</h1>
       </ion-item>
     </div>
 	</ion-content>
