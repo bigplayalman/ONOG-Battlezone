@@ -14,6 +14,9 @@
       -ms-flex-wrap: wrap;
           flex-wrap: wrap; }
 
+.loading-container .loading {
+  width: 80%; }
+
 .item-clear {
   background: rgba(255, 255, 255, 0.1); }
   .item-clear.blue-bg {
