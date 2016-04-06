@@ -13,10 +13,19 @@
     </div>
 
     <div class="padding" ng-if="player">
-      <ion-item class="item-clear light green-bg" ui-sref="app.match.find">
+      <ion-item class="item-clear light green-bg" ng-click="startSearch()" ng-if="!searching">
         <h1 class="light">FIND</h1>
         <h1 class="light">MATCH</h1>
       </ion-item>
+
+      <div class="item item-clear light blue-bg text-center loading-item" ng-if="searching">
+        <div>
+          <ion-spinner icon="lines" class="spinner-energized"></ion-spinner>
+          <span>Searching for</span>
+        </div>
+        <div> {{myOpponent.name }}</div>
+        <button class="button button-assertive button-block button-small" ng-click="stop()">Cancel</button>
+      </div>
     </div>
 
     <div class="padding" ng-if="!player && user.current()">

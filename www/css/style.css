@@ -17,6 +17,10 @@
 .loading-container .loading {
   width: 80%; }
 
+.padding {
+  max-width: 400px;
+  margin: 0 auto; }
+
 .item-clear {
   background: rgba(255, 255, 255, 0.1); }
   .item-clear.blue-bg {
@@ -73,6 +77,13 @@ ion-popover-view.fit ion-content {
 
 .dashboardView .bar .title {
   display: none !important; }
+
+.dashboardView .loading-item {
+  padding: 12px; }
+  .dashboardView .loading-item span {
+    position: relative;
+    top: -8px;
+    left: 4px; }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
   display: none !important; }
