@@ -62,7 +62,7 @@ function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
 
 function Tournament(Parse) {
   var Model = Parse.Object.extend('Tournament');
-  var attributes = ['name', 'game', 'status'];
+  var attributes = ['name', 'game', 'status', 'disabled', 'disabledReason'];
   Parse.defineAttributes(Model, attributes);
 
   return {

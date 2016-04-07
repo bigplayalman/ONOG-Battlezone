@@ -9,7 +9,6 @@ Ladder.$inject = ['Parse'];
 
 function LadderServices(Parse, Ladder) {
   var opponent = {
-    searching: false,
     list: ['Easy Pickings', 'Your Worst Nightmare', 'World class paste eater',
       'A Murloc', 'Gourd critic', 'Nose and mouth breather', 'Hogger', 'A cardish Ian',
       'Mopey Mage', 'Wombat Warlock', 'Rouged up Rogue', 'Waifish Warrior', 'Damp Druid',
