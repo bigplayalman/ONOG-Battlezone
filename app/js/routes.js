@@ -29,7 +29,23 @@ function routes ($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/dashboard.html',
           controller: 'DashboardCtrl'
         }
+      },
+      resolve: {
+        player: function (Parse, LadderServices, tournament) {
+          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
+        },
+        queue: function (Parse, QueueServices, tournament) {
+          return QueueServices.checkStatus(tournament[0].tournament, Parse.User.current());
+        },
+        match: function (MatchServices, player) {
+          if(player.length) {
+            return MatchServices.getMatch();
+          } else {
+            return [];
+          }
+        }
       }
+
     })
     .state('app.login', {
       url: '/login',

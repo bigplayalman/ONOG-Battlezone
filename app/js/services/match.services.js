@@ -7,96 +7,21 @@ MatchServices.$inject = ['Parse', 'Match'];
 Match.$inject = ['Parse'];
 
 function MatchServices(Parse, Match) {
-
+  var user = Parse.User.current();
   return {
-    checkQueueMatches: checkQueueMatches,
-    checkPendingMatches: checkPendingMatches,
-    activateMatch: activateMatch,
-    createMatch: createMatch,
-    fillMatch: fillMatch,
-    concedeMatch: concedeMatch,
-    matchWinner: matchWinner,
-    reportMatch: reportMatch,
-    adminMatch: adminMatch,
-    cancelQueueMatch: cancelQueueMatch,
-    cancelPendingMatch: cancelPendingMatch
+    getMatch: getMatch
   }
-  
-  function cancelQueueMatch(match) {
-    return match.destroy();
-  }
-  function cancelPendingMatch(match) {
-    match.unset('player2');
-    match.set('status', 'queue');
-    return match.save();
-  }
+  function getMatch() {
+    var player1 = new Parse.Query(Match.Model);
+    player1.equalTo('player1', user);
 
-  function checkQueueMatches(player) {
-    var query = new Parse.Query(Match.Model);
-    query.equalTo('status', 'queue');
-    if(player.lastOpponent) {
-      query.notEqualTo('lastOpponent', player.lastOpponent);
-    }
-    return query.find();
-  }
+    var player2 = new Parse.Query(Match.Model);
+    player2.equalTo('player2', user);
 
-  function checkPendingMatches(player) {
-    var query = new Parse.Query(Match.Model);
-    query.equalTo('player2', player);
-    query.equalTo('status', 'pending');
-    return query.find();
+    var mainQuery = Parse.Query.or(player1, player2);
+    mainQuery.equalTo('status', 'active');
+    return mainQuery.find();
   }
-  
-  function activateMatch(match) {
-    match.set('status', 'active');
-    return match.save();
-  }
-  
-  function fillMatch(match, player) {
-    match.set('player2', player);
-    match.set('status', 'pending');
-    return match.save();
-  }
-
-  function createMatch(tourney, player) {
-    var match = new Match.Model();
-    match.set('tournament', tourney);
-    match.set('player1', player);
-    if(player.lastOpponent) {
-      match.set('lastOpponent', player.lastOpponent);
-    }
-    match.set('status', 'queue');
-    return match.save();
-  }
-  
-  function concedeMatch(match, winner, loser) {
-    match.set('winner', winner);
-    match.set('loser', loser);
-    match.set('status', 'finished');
-  }
-
-  function matchWinner(match, winner, loser, screenshot) {
-    match.set('winner', winner);
-    match.set('loser', loser);
-    match.set('screenshot', screenshot);
-    match.set('status', 'finished');
-    return match.save();
-  }
-  
-  function reportMatch(match, report, screenshot) {
-    match.set('report', report);
-    match.set('reportedScreenshot', screenshot);
-    match.set('status', 'reported');
-    return match.save();
-  }
-
-  function adminMatch(match, winner, loser) {
-    match.set('winner', winner);
-    match.set('loser', loser);
-    match.set('status', 'administered');
-    return match.save();
-  }
-  
 }
 
 function Match(Parse) {
