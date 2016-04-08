@@ -6,6 +6,7 @@ angular.module('ONOG.Controllers')
 DashboardCtrl.$inject = ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', 'Parse', 'QueueServices', 'tournament', 'player', 'match', 'queue'];
 function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup, Parse, QueueServices, tournament, player, match, queue) {
   var promise;
+  $scope.status = 'open';
   $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User;
   $scope.player = player;
@@ -48,7 +49,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
 
   $scope.selectHero = function (hero) {
     $scope.image = angular.element(document.querySelector('.heroClass'))[0].clientWidth;
-    
+
     if(hero.checked) {
       hero.checked = !hero.checked;
       $scope.selected.status = true;
@@ -91,19 +92,19 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
       })
       .then(function (res) {
         if(res) {
-          QueueServices.joinQueue($scope.tournament, $scope.user.current(), res.text).then(function (queue) {
+          QueueServices.joinQueue($scope.tournament, $scope.user.current(), res.text, $scope.player[0].battleTag).then(function (queue) {
             $scope.status = 'queue';
             $scope.queue.push(queue);
             $scope.startSearch();
             checkStatus();
           });
         }
-        
+
       });
   }
 
   function checkUserStatus() {
-    if(!$scope.user.current) {
+    if(!$scope.user.current()) {
       $scope.status = 'unauthorized';
       return;
     }
@@ -129,23 +130,26 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
         $scope.searching = false;
         return;
       }
-      
+
       if(queue[0].status === 'pending') {
         $scope.queue[0] = queue[0];
         $scope.startSearch();
       }
-      
+
 
       if(queue[0].status === 'found') {
         $scope.status = 'match';
         worthyPopup(queue[0]);
         return;
       }
-      
+
       if(queue[0].status === 'completed') {
         console.log(queue);
       }
-      $timeout(checkStatus, 15000)
+      Parse.Cloud.run('MatchMaking').then(function(ratings) {
+        console.log(ratings);
+        $timeout(checkStatus, 7000);
+      });
 
     });
   }
@@ -154,14 +158,13 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
     var queue = queue;
     $ionicPopup.alert({
       title: 'Matchmaking',
-      template: '<div class="text-center"><strong>A Worthy Opponent<br> has been found!</strong></div>'
+      template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>'
     }).then(function(res) {
       queue.set('status', 'completed');
       queue.save().then(function () {
         $scope.status = 'match';
         $state.go('app.match.view');
-      })
-
+      });
     });
   }
 

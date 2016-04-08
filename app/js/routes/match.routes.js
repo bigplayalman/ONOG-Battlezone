@@ -15,7 +15,7 @@ function MatchRoutes ($stateProvider) {
       }
     })
     .state('app.match.view', {
-      url: '',
+      url: '/view',
       cache: false,
       templateUrl: 'templates/match/match.view.html',
       controller: 'MatchViewCtrl',

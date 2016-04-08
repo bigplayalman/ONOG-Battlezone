@@ -35,7 +35,15 @@ function QueueServices(Parse, Queue) {
     heroes: heroes,
     checkStatus: checkStatus,
     joinQueue: joinQueue,
-    cancelQueue: cancelQueue
+    cancelQueue: cancelQueue,
+    opponentHasConfirmed: opponentHasConfirmed
+  }
+  
+  function opponentHasConfirmed(user) {
+    var query = new Parse.Query(Queue.Model);
+    query.equalTo('user', user);
+    query.equalTo('status', 'found');
+    return query.find();
   }
 
   function checkStatus(tournament, user) {
@@ -46,11 +54,12 @@ function QueueServices(Parse, Queue) {
     return query.find();
   }
 
-  function joinQueue(tournament, user, hero) {
+  function joinQueue(tournament, user, hero, battleTag) {
     var queue = new Queue.Model();
     queue.set('user', user);
     queue.set('tournament', tournament);
     queue.set('status', 'pending');
+    queue.set('battleTag', battleTag);
     queue.set('hero', hero);
     return queue.save();
   }
@@ -64,7 +73,7 @@ function QueueServices(Parse, Queue) {
 
 function Queue(Parse) {
   var Model = Parse.Object.extend('Queue');
-  var attributes = ['tournament', 'user', 'status', 'hero'];
+  var attributes = ['tournament', 'user', 'status', 'hero', 'battleTag'];
   Parse.defineAttributes(Model, attributes);
 
   return {
