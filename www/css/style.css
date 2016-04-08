@@ -85,6 +85,23 @@ ion-popover-view.fit ion-content {
     top: -8px;
     left: 4px; }
 
+.selectHeroPopup.row {
+  padding: 0; }
+  .selectHeroPopup.row .col {
+    padding: 0; }
+
+.selectHeroPopup .opacity {
+  opacity: .3; }
+
+.selectHeroPopup .selected {
+  color: #33cd5f;
+  position: relative; }
+  .selectHeroPopup .selected .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0; }
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
   display: none !important; }
 
@@ -94,18 +111,6 @@ ion-popover-view.fit ion-content {
 
 .JoinLadderView span.light {
   font-size: 20px; }
-
-.JoinLadderView .opacity {
-  opacity: .3; }
-
-.JoinLadderView .selected {
-  color: white;
-  position: relative; }
-  .JoinLadderView .selected .icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0; }
 
 .standingsView .item-clear.standings-header {
   background: rgba(51, 205, 98, 0.4); }

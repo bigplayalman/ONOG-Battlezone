@@ -6,19 +6,6 @@
   span.light {
     font-size: 20px;
   }
-  .opacity {
-    opacity: .3;
-  }
- .selected {
-   color: white;
-   position: relative;
-   .icon {
-     position: absolute;
-     top: 0;
-     left: 0;
-     right: 0;
-   }
- }
 }
 .standingsView {
   .item-clear{
@@ -32,5 +19,4 @@
       background: rgba(255, 255, 255, 0.5);
     }
   }
-
 }

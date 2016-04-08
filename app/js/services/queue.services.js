@@ -19,8 +19,20 @@ function QueueServices(Parse, Queue) {
       'A Little Puppy'
     ]
   };
+  var heroes = [
+    {text: 'mage', checked: false},
+    {text: 'hunter', checked: false},
+    {text: 'paladin', checked: false},
+    {text: 'warrior', checked: false},
+    {text: 'druid', checked: false},
+    {text: 'warlock', checked: false},
+    {text: 'shaman', checked: false},
+    {text: 'priest', checked: false},
+    {text: 'rogue', checked: false}
+  ]
   return {
     opponent: opponent,
+    heroes: heroes,
     checkStatus: checkStatus,
     joinQueue: joinQueue,
     cancelQueue: cancelQueue
@@ -34,11 +46,12 @@ function QueueServices(Parse, Queue) {
     return query.find();
   }
 
-  function joinQueue(tournament, user) {
+  function joinQueue(tournament, user, hero) {
     var queue = new Queue.Model();
     queue.set('user', user);
     queue.set('tournament', tournament);
     queue.set('status', 'pending');
+    queue.set('hero', hero);
     return queue.save();
   }
 
@@ -51,7 +64,7 @@ function QueueServices(Parse, Queue) {
 
 function Queue(Parse) {
   var Model = Parse.Object.extend('Queue');
-  var attributes = ['tournament', 'user', 'status'];
+  var attributes = ['tournament', 'user', 'status', 'hero'];
   Parse.defineAttributes(Model, attributes);
 
   return {

@@ -1,3 +1,4 @@
+@import "variables";
 .dashboardView {
   .bar {
     .title {display: none !important;}
@@ -10,5 +11,26 @@
       left: 4px;
     }
   }
+}
 
+.selectHeroPopup {
+  &.row {
+    padding: 0;
+    .col {
+      padding: 0;
+    }
+  }
+  .opacity {
+    opacity: .3;
+  }
+  .selected {
+    color: $balanced;
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
 }

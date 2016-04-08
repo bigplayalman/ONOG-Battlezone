@@ -3,14 +3,16 @@ angular.module('ONOG.Controllers')
 
   .controller('DashboardCtrl', DashboardCtrl);
 
-DashboardCtrl.$inject = ['$scope', '$state', '$timeout', '$interval', '$ionicPopup', 'Parse', 'QueueServices', 'tournament', 'player', 'match', 'queue'];
-function DashboardCtrl($scope, $state, $timeout, $interval, $ionicPopup, Parse, QueueServices, tournament, player, match, queue) {
+DashboardCtrl.$inject = ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', 'Parse', 'QueueServices', 'tournament', 'player', 'match', 'queue'];
+function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup, Parse, QueueServices, tournament, player, match, queue) {
   var promise;
   $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User;
   $scope.player = player;
   $scope.match = match;
   $scope.queue = queue;
+  $scope.heroList = QueueServices.heroes;
+  $scope.selected = {status: true};
 
   $scope.opponent = QueueServices.opponent;
   $scope.myOpponent = {name:'PAX Attendee'};
@@ -19,16 +21,13 @@ function DashboardCtrl($scope, $state, $timeout, $interval, $ionicPopup, Parse, 
   console.log($scope.status);
 
   $scope.startQueue = function () {
-    QueueServices.joinQueue($scope.tournament, $scope.user.current()).then(function (queue) {
-      $scope.status = 'queue';
-      $scope.queue.push(queue);
-      $scope.startSearch();
-    })
+    joinQueuePopup();
   }
 
   $scope.cancelQueue = function () {
     QueueServices.cancelQueue($scope.queue[0]).then(function () {
       $scope.status = 'open';
+      $scope.queue = [];
       $scope.stop();
     });
   }
@@ -46,6 +45,62 @@ function DashboardCtrl($scope, $state, $timeout, $interval, $ionicPopup, Parse, 
   $scope.$on('$destroy', function() {
     $scope.stop();
   });
+
+  $scope.selectHero = function (hero) {
+    $scope.image = angular.element(document.querySelector('.heroClass'))[0].clientWidth;
+    
+    if(hero.checked) {
+      hero.checked = !hero.checked;
+      $scope.selected.status = true;
+      return;
+    }
+
+    if(!hero.checked && $scope.selected.status) {
+      hero.checked = !hero.checked;
+      $scope.selected.status = false;
+      return;
+    }
+  }
+
+  function joinQueuePopup () {
+    $scope.selected.status = true;
+    var heroes = $filter('filter')($scope.heroList, {checked: true}, true);
+    if(heroes.length) {
+      heroes[0].checked = false;
+    }
+    $ionicPopup.show(
+      {
+        templateUrl: 'templates/popups/select.hero.html',
+        title: 'Select Hero Class',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: '<b>Queue</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              var hero = $filter('filter')($scope.heroList, {checked: true}, true);
+              if (!hero.length) {
+                e.preventDefault();
+              } else {
+                return hero[0];
+              }
+            }
+          }
+        ]
+      })
+      .then(function (res) {
+        if(res) {
+          QueueServices.joinQueue($scope.tournament, $scope.user.current(), res.text).then(function (queue) {
+            $scope.status = 'queue';
+            $scope.queue.push(queue);
+            $scope.startSearch();
+            checkStatus();
+          });
+        }
+        
+      });
+  }
 
   function checkUserStatus() {
     if(!$scope.user.current) {
@@ -67,31 +122,34 @@ function DashboardCtrl($scope, $state, $timeout, $interval, $ionicPopup, Parse, 
     }
     $scope.status = 'open';
   }
-  
+
   function checkStatus () {
     QueueServices.checkStatus($scope.tournament, $scope.user.current()).then(function (queue) {
       if(!queue.length) {
         $scope.searching = false;
         return;
       }
-
-      switch (queue[0].status) {
-        case 'pending':
-          $scope.queue = queue[0];
-          $scope.startSearch();
-          break;
-        case 'found':
-          worthyPopup(queue[0]);
-          break;
+      
+      if(queue[0].status === 'pending') {
+        $scope.queue[0] = queue[0];
+        $scope.startSearch();
       }
+      
 
-      if(queue[0].status != 'found') {
-        $timeout(checkStatus, 15000)
+      if(queue[0].status === 'found') {
+        $scope.status = 'match';
+        worthyPopup(queue[0]);
+        return;
       }
+      
+      if(queue[0].status === 'completed') {
+        console.log(queue);
+      }
+      $timeout(checkStatus, 15000)
 
     });
   }
-  
+
   function worthyPopup(queue) {
     var queue = queue;
     $ionicPopup.alert({
