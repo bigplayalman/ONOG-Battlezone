@@ -1,49 +1,44 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('DashboardCtrl', 
+  .controller('DashboardCtrl',
     [
-      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', 
-      'Parse', 'TournamentServices', 'MatchServices', 'QueueServices', 'LadderServices',
+      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup',
+      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices',
       DashboardCtrl
     ]);
 
 function DashboardCtrl(
-  $scope, $state, $filter, $timeout, $interval, $ionicPopup, 
-  Parse, TournamentServices, MatchServices, QueueServices, LadderServices
+  $scope, $state, $filter, $timeout, $interval, $ionicPopup,
+  Parse, tournament, MatchServices, QueueServices, LadderServices
 ) {
   var promise;
   $scope.user = Parse.User;
   $scope.status = 'open';
-  TournamentServices.getTournament().then(function (tournaments) {
-    $scope.tournament = tournaments[0].tournament;
-    LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
-      $scope.player = players;
-      if($scope.player.length) {
-        QueueServices.checkStatus($scope.tournament, $scope.user.current()).then(function (queues) {
-          $scope.queue = queues;
-          MatchServices.getMatch().then(function (matches) {
-            $scope.match = matches;
-            checkUserStatus();
-          });
+  $scope.tournament = tournament[0].tournament;
+
+  LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
+    $scope.player = players;
+    if($scope.player.length) {
+      QueueServices.checkStatus($scope.tournament, $scope.user.current()).then(function (queues) {
+        $scope.queue = queues;
+        MatchServices.getMatch().then(function (matches) {
+          $scope.match = matches;
+          checkUserStatus();
         });
-      } else {
-        $scope.queue = [];
-        $scope.match = [];
-        checkUserStatus();
-      }
-    });
+      });
+    } else {
+      $scope.queue = [];
+      $scope.match = [];
+      checkUserStatus();
+    }
   });
-  
- 
+
   $scope.heroList = QueueServices.heroes;
   $scope.selected = {status: true};
 
   $scope.opponent = QueueServices.opponent;
   $scope.myOpponent = {name:'PAX Attendee'};
-
-  
-  console.log($scope.status);
 
   $scope.startQueue = function () {
     joinQueuePopup();
