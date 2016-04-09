@@ -27,5 +27,5 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $i
         '</div>' +
         '</div>'
     });
-  }
-}
+  };
+};

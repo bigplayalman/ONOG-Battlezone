@@ -3,6 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="img-src 'self' data:; default-src *;
+    script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;
+    127.0.0.1:*
+    localhost:*
+    http://*.ionicframework.com
+    http://*.parse.com
+    http://localhost:*
+    http://10.1.10.197:*;
+    style-src  &apos;self&apos; &apos;unsafe-inline&apos;
+    127.0.0.1
+    http://*.ionicframework.com
+    http://*.parse.com
+    http://localhost:*">
     <title>One Nation Of Gamers</title>
 
     <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -33,13 +46,13 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <script src="lib/parse/dist/parse-latest.min.js"></script>
-    <script src="lib/angular-parse-bower/angular-parse.js"></script>
 
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
+    <script src="lib/parse/dist/parse-latest.min.js?t=1234"></script>
+    <script src="lib/angular-parse-bower/angular-parse.js"></script>
     <!-- your app's js -->
     <script src="build/app.js"></script>
   </head>

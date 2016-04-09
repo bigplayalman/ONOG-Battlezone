@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "angular-parse": "^0.2.2",
-    "parse": "1.8.1"
+    "parse": "1.6.14"
   },
   "devDependencies": {
     "bower": "^1.3.3",

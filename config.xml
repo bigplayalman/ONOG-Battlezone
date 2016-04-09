@@ -4,29 +4,24 @@
   <description>
         ONOG Tournaments
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
+  <author email="almas@oomzie.com" href="http://oomzie.com/">
       Almas Barzhaxynov
     </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <allow-navigation href="*" />
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="5000"/>
-  <preference name="orientation" value="portrait" />
+  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="orientation" value="portrait"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
-  <plugin name="cordova-plugin-device" spec="~1.1.1"/>
-  <plugin name="cordova-plugin-console" spec="~1.0.2"/>
-  <plugin name="cordova-plugin-whitelist" spec="~1.2.1"/>
-  <plugin name="cordova-plugin-splashscreen" spec="~3.2.0"/>
-  <plugin name="cordova-plugin-statusbar" spec="~2.1.1"/>
-  <plugin name="ionic-plugin-keyboard" spec="~1.0.8"/>
-  <plugin name="cordova-sqlite-ext" spec="https://github.com/litehelpers/cordova-sqlite-ext"/>
+
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>

@@ -2,7 +2,7 @@
   "name": "onog",
   "app_id": "4eb31319",
   "gulpStartupTasks": [
-    "sass",
+    "default",
     "watch"
   ],
   "watchPatterns": [

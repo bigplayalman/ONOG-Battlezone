@@ -23,4 +23,4 @@ function LoginCtrl($scope, $state, Parse, $ionicHistory) {
   $scope.$watch('user', function(newVal, oldVal){
     $scope.warning = null;
   }, true);
-}
+};

@@ -1,10 +1,7 @@
 angular.module('ONOG.Services')
 
-  .service('QueueServices', QueueServices)
-  .factory('Queue', Queue);
-
-QueueServices.$inject = ['Parse', 'Queue'];
-Queue.$inject = ['Parse'];
+  .service('QueueServices',['Parse', 'Queue',  QueueServices])
+  .factory('Queue', ['Parse', Queue]);
 
 function QueueServices(Parse, Queue) {
   var opponent = {

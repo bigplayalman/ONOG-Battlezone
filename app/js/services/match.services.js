@@ -1,10 +1,7 @@
 angular.module('ONOG.Services')
 
-  .service('MatchServices', MatchServices)
-  .factory('Match', Match);
-
-MatchServices.$inject = ['Parse', 'Match'];
-Match.$inject = ['Parse'];
+  .service('MatchServices', ['Parse', 'Match', MatchServices])
+  .factory('Match', ['Parse', Match]);
 
 function MatchServices(Parse, Match) {
   var user = Parse.User.current();

@@ -1,29 +1,53 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('DashboardCtrl', DashboardCtrl);
+  .controller('DashboardCtrl', 
+    [
+      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', 
+      'Parse', 'TournamentServices', 'MatchServices', 'QueueServices', 'LadderServices',
+      DashboardCtrl
+    ]);
 
-DashboardCtrl.$inject = ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', 'Parse', 'QueueServices', 'tournament', 'player', 'match', 'queue'];
-function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup, Parse, QueueServices, tournament, player, match, queue) {
+function DashboardCtrl(
+  $scope, $state, $filter, $timeout, $interval, $ionicPopup, 
+  Parse, TournamentServices, MatchServices, QueueServices, LadderServices
+) {
   var promise;
-  $scope.status = 'open';
-  $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User;
-  $scope.player = player;
-  $scope.match = match;
-  $scope.queue = queue;
+  $scope.status = 'open';
+  TournamentServices.getTournament().then(function (tournaments) {
+    $scope.tournament = tournaments[0].tournament;
+    LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
+      $scope.player = players;
+      if($scope.player.length) {
+        QueueServices.checkStatus($scope.tournament, $scope.user.current()).then(function (queues) {
+          $scope.queue = queues;
+          MatchServices.getMatch().then(function (matches) {
+            $scope.match = matches;
+            checkUserStatus();
+          });
+        });
+      } else {
+        $scope.queue = [];
+        $scope.match = [];
+        checkUserStatus();
+      }
+    });
+  });
+  
+ 
   $scope.heroList = QueueServices.heroes;
   $scope.selected = {status: true};
 
   $scope.opponent = QueueServices.opponent;
   $scope.myOpponent = {name:'PAX Attendee'};
 
-  checkUserStatus();
+  
   console.log($scope.status);
 
   $scope.startQueue = function () {
     joinQueuePopup();
-  }
+  };
 
   $scope.cancelQueue = function () {
     QueueServices.cancelQueue($scope.queue[0]).then(function () {
@@ -31,7 +55,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
       $scope.queue = [];
       $scope.stop();
     });
-  }
+  };
 
   $scope.stop = function() {
     $interval.cancel(promise);
@@ -61,7 +85,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
       $scope.selected.status = false;
       return;
     }
-  }
+  };
 
   function joinQueuePopup () {
     $scope.selected.status = true;
@@ -101,7 +125,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
         }
 
       });
-  }
+  };
 
   function checkUserStatus() {
     if(!$scope.user.current()) {
@@ -122,7 +146,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
       return;
     }
     $scope.status = 'open';
-  }
+  };
 
   function checkStatus () {
     QueueServices.checkStatus($scope.tournament, $scope.user.current()).then(function (queue) {
@@ -152,7 +176,7 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
       });
 
     });
-  }
+  };
 
   function worthyPopup(queue) {
     var queue = queue;
@@ -166,10 +190,10 @@ function DashboardCtrl($scope, $state, $filter, $timeout, $interval, $ionicPopup
         $state.go('app.match.view');
       });
     });
-  }
+  };
 
   function changeWord () {
     $scope.myOpponent.name = $scope.opponent.list[Math.floor(Math.random()*$scope.opponent.list.length)];
 
-  }
-}
+  };
+};

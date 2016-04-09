@@ -1,14 +1,10 @@
 
 angular.module('ONOG.Services')
 
-  .service('TournamentServices', TournamentServices)
+  .service('TournamentServices', ['Parse', '$q', 'Tournament', 'Details', 'Ladder', TournamentServices])
 
-  .factory('Tournament', Tournament)
-  .factory('Details', Details);
-
-TournamentServices.$inject = ['Parse', '$q', 'Tournament', 'Details', 'Ladder'];
-Tournament.$inject = ['Parse'];
-Details.$inject = ['Parse'];
+  .factory('Tournament', ['Parse', Tournament])
+  .factory('Details', ['Parse', Details]);
 
 function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
   return {

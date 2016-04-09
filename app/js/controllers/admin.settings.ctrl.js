@@ -13,4 +13,4 @@ function AdminSettingsCtrl($scope, TournamentServices, newTournament) {
   // });
   
   
-}
+};

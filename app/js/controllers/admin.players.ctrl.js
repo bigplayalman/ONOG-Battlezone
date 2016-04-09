@@ -6,4 +6,4 @@ angular.module('ONOG.Controllers')
 AdminPlayersCtrl.$inject = ['$scope', 'Parse'];
 function AdminPlayersCtrl($scope, Parse) {
   
-}
+};

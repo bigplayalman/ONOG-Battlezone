@@ -33,7 +33,7 @@ var onError = function (err) {
   console.log(err.toString());
 };
 
-gulp.task('default', ['sass', 'index', 'scripts', 'styles', 'templates', 'images', 'lib', 'parse']);
+gulp.task('default', ['sass', 'clean-templates', 'scripts', 'styles', 'templates', 'parse', 'lib', 'index']);
 
 gulp.task('parse', function() {
   return gulp.src(paths.parse, {cwd: './node_modules/'})

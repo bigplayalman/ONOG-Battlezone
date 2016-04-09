@@ -8,9 +8,7 @@ LadderJoinCtrl.$inject =
     '$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory', 'tourney', 'TournamentServices', 'LadderServices', '$q'
   ];
 function LadderJoinCtrl
-(
-  $scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices, LadderServices, $q
-) {
+($scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices, LadderServices, $q) {
   $scope.tournament = tourney[0];
   $scope.user = Parse.User.current();
   $scope.player = {
@@ -36,7 +34,7 @@ function LadderJoinCtrl
       function (error) {
         ErrorPopup(error);
       });
-  }
+  };
 
   function validateBattleTag () {
     var cb = $q.defer();
@@ -68,19 +66,19 @@ function LadderJoinCtrl
       } 
     });
     return cb.promise;
-  }
+  };
 
   function ErrorPopup (message) {
     return $ionicPopup.alert({
       title: 'Registration Error',
       template: message
     });
-  }
+  };
 
   function SuccessPopup (player) {
     return $ionicPopup.alert({
       title: 'Congratulations ' + player.battleTag + '!',
       template: 'You have successfully signed up! Now go find a valiant opponent.'
     });
-  }
-}
+  };
+};

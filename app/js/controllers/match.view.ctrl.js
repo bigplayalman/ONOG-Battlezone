@@ -3,30 +3,20 @@ angular.module('ONOG.Controllers')
 
   .controller('MatchViewCtrl', MatchViewCtrl);
 
-MatchViewCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPopup', '$ionicHistory', 'match', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices'];
-function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, match, Parse, LadderServices, MatchServices, QueueServices) {
-  console.log(match);
+MatchViewCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices'];
+function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices) {
   $scope.count = 0;
   $scope.user = Parse.User.current();
-  $scope.match = match;
-  $scope.opponent = {
-    hero: null,
-    battleTag: null
-  }
-  if($scope.match.player1.id === $scope.user.id) {
-    $scope.opponent.hero = $scope.match.hero2;
-    $scope.opponent.username = $scope.match.username2;
-    $scope.opponent.battleTag = $scope.match.battleTag2;
-    $scope.opponent.user = $scope.match.player2;
-  }
-  if($scope.match.player2.id === $scope.user.id) {
-    $scope.opponent.hero = $scope.match.hero1;
-    $scope.opponent.username = $scope.match.username1;
-    $scope.opponent.battleTag = $scope.match.battleTag1;
-    $scope.opponent.user = $scope.match.player1;
-  }
-  opponentFound();
-
+  
+  MatchServices.getMatch().then(function (matches) {
+    if(!matches.length) {
+      $state.go('app.dashboard');
+    } else {
+      $scope.match = matches[0];
+      getMatchDetails();
+    }
+  });
+  
   $scope.record = function (record) {
     MatchServices.getMatch().then(function (matches) {
       if(matches.length) {
@@ -68,6 +58,26 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, mat
       }
 
     });
+  };
+
+  function getMatchDetails() {
+    $scope.opponent = {
+      hero: null,
+      battleTag: null
+    }
+    if($scope.match.player1.id === $scope.user.id) {
+      $scope.opponent.hero = $scope.match.hero2;
+      $scope.opponent.username = $scope.match.username2;
+      $scope.opponent.battleTag = $scope.match.battleTag2;
+      $scope.opponent.user = $scope.match.player2;
+    }
+    if($scope.match.player2.id === $scope.user.id) {
+      $scope.opponent.hero = $scope.match.hero1;
+      $scope.opponent.username = $scope.match.username1;
+      $scope.opponent.battleTag = $scope.match.battleTag1;
+      $scope.opponent.user = $scope.match.player1;
+    }
+    opponentFound();
   }
   function opponentFound() {
     QueueServices.opponentHasConfirmed($scope.opponent.user).then(function (queue) {
@@ -97,4 +107,4 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, mat
       $timeout(opponentFound, 15000);
     });
   }
-}
+};

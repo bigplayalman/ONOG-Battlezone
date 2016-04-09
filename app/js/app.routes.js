@@ -3,10 +3,7 @@ angular.module('ONOG')
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise(function ($injector, $location) {
-    var $state = $injector.get("$state");
-    $state.go("app.dashboard");
-  });
+  $urlRouterProvider.otherwise('app/dashboard');
 
   $stateProvider
     .state('app', {
@@ -14,12 +11,7 @@ function routes ($stateProvider, $urlRouterProvider) {
       abstract: true,
       cache: false,
       templateUrl: 'templates/menu.html',
-      controller: 'MenuCtrl',
-      resolve: {
-        tournament: function (TournamentServices) {
-          return TournamentServices.getTournament();
-        }
-      }
+      controller: 'MenuCtrl'
     })
     .state('app.dashboard', {
       url: '/dashboard',
@@ -29,23 +21,7 @@ function routes ($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/dashboard.html',
           controller: 'DashboardCtrl'
         }
-      },
-      resolve: {
-        player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
-        },
-        queue: function (Parse, QueueServices, tournament) {
-          return QueueServices.checkStatus(tournament[0].tournament, Parse.User.current());
-        },
-        match: function (MatchServices, player) {
-          if(player.length) {
-            return MatchServices.getMatch();
-          } else {
-            return [];
-          }
-        }
       }
-
     })
     .state('app.login', {
       url: '/login',
