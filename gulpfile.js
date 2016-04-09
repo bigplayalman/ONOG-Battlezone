@@ -24,7 +24,9 @@ var paths = {
   styles: 'app/scss/*.scss',
   templates: 'app/templates/**/*.html',
   images: 'app/img/**/*',
-  parse: 'parse/**/*',
+  parse: 'parse/dist/*.min.js',
+  moment: 'moment/min/moment.min.js',
+  
   //Destination folders
   destImages: './www/img/',
   destTemplates: './www/templates/'
@@ -33,11 +35,16 @@ var onError = function (err) {
   console.log(err.toString());
 };
 
-gulp.task('default', ['sass', 'clean-templates', 'scripts', 'styles', 'templates', 'parse', 'lib', 'index']);
+gulp.task('default', ['sass', 'clean-templates', 'scripts', 'styles', 'templates', 'parse', 'moment', 'lib', 'index']);
 
 gulp.task('parse', function() {
   return gulp.src(paths.parse, {cwd: './node_modules/'})
     .pipe(gulp.dest("./www/lib/parse/"));
+});
+
+gulp.task('moment', function() {
+  return gulp.src(paths.moment, {cwd: './node_modules/'})
+    .pipe(gulp.dest("./www/lib/moment/"));
 });
 
 gulp.task('sass', function (done) {

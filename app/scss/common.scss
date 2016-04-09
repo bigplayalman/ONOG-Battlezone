@@ -46,7 +46,14 @@
   max-width: 400px;
   margin: 0 auto;
 }
-
+.item-input-clear {
+  background: rgba(255, 255, 255, 0.8);
+  .item-content {
+    background: none;
+  }
+  margin-bottom: 10px !important;
+  border-radius: 5px;
+}
 .item-clear {
   &.blue-bg {
     background: rgba(55, 81, 145, 0.1);

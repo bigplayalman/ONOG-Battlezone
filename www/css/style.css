@@ -21,6 +21,13 @@
   max-width: 400px;
   margin: 0 auto; }
 
+.item-input-clear {
+  background: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px !important;
+  border-radius: 5px; }
+  .item-input-clear .item-content {
+    background: none; }
+
 .item-clear {
   background: rgba(255, 255, 255, 0.1); }
   .item-clear.blue-bg {
