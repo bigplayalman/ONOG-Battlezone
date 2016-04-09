@@ -1,5 +1,5 @@
 angular.module('ONOG')
-
+  .constant("moment", moment)
   .run(['$ionicPlatform', run]);
 
 function run ($ionicPlatform) {
@@ -14,36 +14,14 @@ function run ($ionicPlatform) {
       // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
     }
-
-    if(window.cordova) {
-      window.parsePlugin.subscribe('SampleChannel', function() {
-        console.log('Successfully subscribed to SampleChannel.');
-
-
-        window.parsePlugin.getInstallationId(function(id) {
-          // update the view to show that we have the install ID
-          console.log('Retrieved install id: ' + id);
-
-          /**
-           * Now you can construct an object and save it to your own services, or Parse, and corrilate users to parse installations
-           *
-           var install_data = {
-                  installation_id: id,
-                  channels: ['SampleChannel']
-               }
-           *
-           */
-
-        }, function(e) {
-          console.log('Failure to retrieve install id.');
-        });
-
-      }, function(e) {
-        console.log('Failed trying to subscribe to SampleChannel.');
-      });
-    }
     if(window.StatusBar) {
       StatusBar.styleDefault();
+    }
+
+    if(window.ParsePushPlugin){
+      ParsePushPlugin.on('receivePN', function(pn){
+        alert('yo i got this push notification:' + JSON.stringify(pn));
+      });
     }
   });
 }
