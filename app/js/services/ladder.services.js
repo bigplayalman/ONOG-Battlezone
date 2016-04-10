@@ -8,7 +8,8 @@ function LadderServices(Parse, Ladder) {
   return {
     getPlayers: getPlayers,
     getPlayer: getPlayer,
-    validatePlayer: validatePlayer
+    validatePlayer: validatePlayer,
+    joinTournament: joinTournament
   };
 
   function getPlayers(tourney) {
@@ -29,13 +30,21 @@ function LadderServices(Parse, Ladder) {
     var query = new Parse.Query(Ladder.Model);
     query.equalTo('tournament', tourney);
     query.equalTo('user', user);
+    query.limit(1);
     return query.find();
+  }
+
+  function joinTournament(tourney, user, userData) {
+    var player = new Ladder.Model(userData);
+    player.set('tournament', tourney);
+    player.set('user', user);
+    return player.save();
   }
 };
 
 function Ladder(Parse) {
   var Model = Parse.Object.extend('Ladder');
-  var attributes = ['tournament', 'user','battleTag', 'username', 'heroes', 'wins', 'losses', 'mmr', 'points'];
+  var attributes = ['tournament', 'user', 'battleTag', 'username', 'hero', 'player', 'status', 'cancelTimer', 'wins', 'losses', 'mmr', 'points'];
   Parse.defineAttributes(Model, attributes);
 
   return {

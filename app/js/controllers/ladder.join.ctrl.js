@@ -1,15 +1,14 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('LadderJoinCtrl', LadderJoinCtrl);
+  .controller('LadderJoinCtrl', ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', LadderJoinCtrl]);
 
-LadderJoinCtrl.$inject =
-  [
-    '$scope', 'Parse', '$filter', '$ionicPopup', '$state', '$ionicHistory', 'tourney', 'TournamentServices', 'LadderServices', '$q'
-  ];
 function LadderJoinCtrl
-($scope, Parse, $filter, $ionicPopup, $state, $ionicHistory, tourney, TourneyServices, LadderServices, $q) {
-  $scope.tournament = tourney[0];
+($scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices) {
+  $ionicHistory.nextViewOptions({
+    disableBack: true
+  });
+  $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User.current();
   $scope.player = {
     battleTag: ''
@@ -18,17 +17,12 @@ function LadderJoinCtrl
   $scope.registerPlayer = function () {
     validateBattleTag().then(
       function (tag) {
-        TourneyServices.joinTournament($scope.tournament.tournament, $scope.player).then(function (player) {
-          $scope.tournament.increment('playerCount');
-          $scope.tournament.save().then(function () {
-            SuccessPopup(player).then(function(res) {
-              $ionicHistory.nextViewOptions({
-                disableBack: true
-              });
-              $state.go('app.dashboard');
-            });
-          })
-        
+        $scope.player.username = $scope.user.username;
+        $scope.player.status = 'open';
+        LadderServices.joinTournament($scope.tournament, $scope.user, $scope.player).then(function (player) {
+          SuccessPopup(player).then(function(res) {
+            $state.go('app.dashboard');
+          });
         });
       },
       function (error) {
@@ -38,7 +32,6 @@ function LadderJoinCtrl
 
   function validateBattleTag () {
     var cb = $q.defer();
-
     var tag = $scope.player.battleTag;
 
     if(tag.length < 8) {
@@ -77,7 +70,7 @@ function LadderJoinCtrl
 
   function SuccessPopup (player) {
     return $ionicPopup.alert({
-      title: 'Congratulations ' + player.battleTag + '!',
+      title: 'Congratulations ' + player.username + '!',
       template: 'You have successfully signed up! Now go find a valiant opponent.'
     });
   };

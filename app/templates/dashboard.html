@@ -25,14 +25,19 @@
         </ion-item>
       </div>
 
-      <div class="padding">
+      <div class="padding" ng-if="user.current()">
 
-        <ion-item class="item-clear light green-bg" ng-click="startQueue()" ng-if="status === 'open'">
+        <ion-item class="item-clear light blue-bg" ui-sref="app.ladder.join" ng-if="!player.status">
+          <h1 class="light">JOIN</h1>
+          <h1 class="light">LADDER</h1>
+        </ion-item>
+
+        <ion-item class="item-clear light green-bg" ng-click="startQueue()" ng-if="player.status === 'open'">
           <h1 class="light">FIND</h1>
           <h1 class="light">MATCH</h1>
         </ion-item>
 
-        <div class="item item-clear light blue-bg text-center loading-item" ng-if="status === 'queue'">
+        <div class="item item-clear light blue-bg text-center loading-item" ng-if="player.status === 'queue'">
           <div>
             <ion-spinner icon="lines" class="spinner-energized"></ion-spinner>
             <span>Searching for</span>
@@ -41,21 +46,32 @@
           <button class="button button-assertive button-block button-small" ng-click="cancelQueue()">Cancel</button>
         </div>
 
-        <ion-item class="item-clear light blue-bg" ui-sref="app.ladder.join" ng-if="status === 'unregistered'">
-          <h1 class="light">JOIN</h1>
-          <h1 class="light">LADDER</h1>
-        </ion-item>
+        <div class="item item-clear light blue-bg text-center loading-item" ng-if="player.status === 'confirmed'">
+          <div>
+            <ion-spinner icon="ripple" class="spinner-energized"></ion-spinner>
+          </div>
+          <h2 class="light">Waiting For</h2>
+          <h2 class="light">Opponent</h2>
+        </div>
 
-        <ion-item class="item-clear light green-bg" ui-sref="app.login" ng-if="status === 'unauthorized'">
-          <h1 class="light">LOG IN TO</h1>
-          <h1 class="light">TOURNEY</h1>
-        </ion-item>
-
-        <ion-item class="item-clear light green-bg" ui-sref="app.match.view" ng-if="status === 'match'">
+        <ion-item class="item-clear light green-bg" ui-sref="app.match.view" ng-if="player.status === 'playing'">
           <h1 class="light">MATCH</h1>
           <h1 class="light">DETAILS</h1>
         </ion-item>
+
+        <ion-item class="item-clear light green-bg" ui-sref="app.match.view" ng-if="player.status === 'cancelled'">
+          <h2>Please Wait for</h2>
+          <h2>time</h2>
+        </ion-item>
       </div>
+
+      <div class="padding" ng-if="!user.current()">
+        <ion-item class="item-clear light green-bg" ui-sref="app.login">
+          <h1 class="light">LOG IN TO</h1>
+          <h1 class="light">TOURNEY</h1>
+        </ion-item>
+      </div>
+
     </div>
 
 	</ion-content>
