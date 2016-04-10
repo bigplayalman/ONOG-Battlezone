@@ -21,22 +21,23 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
   });
 
   $scope.record = function (record) {
-    MatchServices.getMatch().then(function (matches) {
+    MatchServices.getMatch('active').then(function (matches) {
       if(matches.length) {
         var match = matches[0];
-        if(match.get('status') === 'active') {
-          switch (record) {
-            case 'win':
-              match.set('winner', $scope.user);
-              match.set('loser', $scope.opponent.user);
-              break;
-            case 'loss':
-              match.set('winner', $scope.opponent.user);
-              match.set('loser', $scope.user);
-              break;
-          }
-          match.set('status', 'completed');
-          match.save().then(function () {
+        switch (record) {
+          case 'win':
+            match.set('winner', $scope.user);
+            match.set('loser', $scope.opponent.user);
+            break;
+          case 'loss':
+            match.set('winner', $scope.opponent.user);
+            match.set('loser', $scope.user);
+            break;
+        }
+        match.set('status', 'completed');
+        match.save().then(function () {
+          $scope.player.set('status', 'open');
+          $scope.player.save().then(function () {
             $ionicPopup.alert({
               title: 'Match Submitted',
               template: '<div class="text-center">Thank you for submitting results</div>'
@@ -46,8 +47,8 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
               });
               $state.go('app.dashboard');
             });
-          })
-        }
+          });
+        });
       } else {
         $ionicPopup.alert({
           title: 'Match Error',
@@ -81,34 +82,5 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
       $scope.opponent.battleTag = $scope.match.battleTag1;
       $scope.opponent.user = $scope.match.user1;
     }
-    opponentFound();
-  }
-  function opponentFound() {
-    QueueServices.opponentHasConfirmed($scope.opponent.user).then(function (queue) {
-      if(queue.length) {
-        $scope.noOpponent = true;
-        if($scope.count < 2) {
-          $scope.count++;
-        } else {
-          queue[0].destroy().then(function () {
-            $scope.match.destroy().then(function () {
-              $ionicPopup.alert({
-                title: 'Match Error',
-                template: '<div class="text-center">Your Opponent never confirmed!</div>'
-              }).then(function(res) {
-                $ionicHistory.nextViewOptions({
-                  disableBack: true
-                });
-                $state.go('app.dashboard');
-              });
-            });
-          });
-        }
-      } else {
-        $scope.noOpponent = false;
-        return;
-      }
-      $timeout(opponentFound, 15000);
-    });
   }
 };

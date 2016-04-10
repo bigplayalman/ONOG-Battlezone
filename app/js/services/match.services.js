@@ -37,7 +37,7 @@ function Match(Parse) {
   var Model = Parse.Object.extend('Match');
   var attributes = [
     'tournament', 'player1', 'player2', 'hero1', 'hero2', 'username1', 'username2', 'battleTag1', 'battleTag2', 'status', 'winner', 'loser',
-    'screenshot', 'report', 'reportedScreenshot'
+    'screenshot', 'report', 'reportedScreenshot', 'activeDate', 'user1', 'user2'
   ];
   Parse.defineAttributes(Model, attributes);
 

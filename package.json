@@ -39,7 +39,8 @@
       "locator": "https://github.com/taivo/parse-push-plugin",
       "id": "com.phonegap.parsepushplugin"
     },
-    "ionic-plugin-deploy"
+    "ionic-plugin-deploy",
+    "org.apache.cordova.splashscreen"
   ],
   "cordovaPlatforms": [
     "android",
