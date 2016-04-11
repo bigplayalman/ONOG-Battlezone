@@ -1,12 +1,9 @@
 angular.module('ONOG')
   .constant("moment", moment)
-  .run(['$ionicPlatform', run]);
+  .run(['$ionicPlatform', '$state', run]);
 
-function run ($ionicPlatform) {
+function run ($ionicPlatform, $state) {
   $ionicPlatform.ready(function() {
-    setTimeout(function () {
-      navigator.splashscreen.hide();
-    }, 750);
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -23,7 +20,8 @@ function run ($ionicPlatform) {
 
     if(window.ParsePushPlugin){
       ParsePushPlugin.on('receivePN', function(pn){
-        alert('yo i got this push notification:' + JSON.stringify(pn));
+        console.log(pn);
+        $state.go('app.dashboard');
       });
     }
   });

@@ -11,7 +11,9 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
   $scope.match = match[0];
   $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User.current();
-
+  $ionicHistory.nextViewOptions({
+    disableBack: true
+  });
 
   LadderServices.getPlayer($scope.tournament, $scope.user).then(function (players) {
     $scope.player = players[0];
@@ -42,9 +44,6 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
               title: 'Match Submitted',
               template: '<div class="text-center">Thank you for submitting results</div>'
             }).then(function (res) {
-              $ionicHistory.nextViewOptions({
-                disableBack: true
-              });
               $state.go('app.dashboard');
             });
           });
@@ -69,7 +68,6 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
       hero: null,
       battleTag: null
     }
-
     if($scope.player.player === 'player1') {
       $scope.opponent.hero = $scope.match.hero2;
       $scope.opponent.username = $scope.match.username2;

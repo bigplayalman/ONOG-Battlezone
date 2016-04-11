@@ -69,7 +69,7 @@
           animation: fadeInLeft 1s; }
 
 .picture-bg {
-  background: url("../img/bg.png") center;
+  background: url("../img/bg.png") center black;
   background-size: cover; }
 
 ion-popover-view.fit {

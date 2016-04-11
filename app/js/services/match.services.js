@@ -4,16 +4,16 @@ angular.module('ONOG.Services')
   .factory('Match', ['Parse', Match]);
 
 function MatchServices(Parse, Match) {
-  var user = Parse.User.current();
+  var user = Parse.User;
   return {
     getMatch: getMatch,
     getConfirmedMatch: getConfirmedMatch
   }
   function getConfirmedMatch () {
     var player1 = new Parse.Query('Match');
-    player1.equalTo('username1', user.username);
+    player1.equalTo('username1', user.current().username);
     var player2 = new Parse.Query('Match');
-    player2.equalTo('username2', user.username);
+    player2.equalTo('username2', user.current().username);
 
     var mainQuery = Parse.Query.or(player1, player2);
     mainQuery.equalTo('status', 'active');
@@ -23,9 +23,9 @@ function MatchServices(Parse, Match) {
   }
   function getMatch(status) {
     var player1 = new Parse.Query('Match');
-    player1.equalTo('username1', user.username);
+    player1.equalTo('username1', user.current().username);
     var player2 = new Parse.Query('Match');
-    player2.equalTo('username2', user.username);
+    player2.equalTo('username2', user.current().username);
 
     var mainQuery = Parse.Query.or(player1, player2);
     mainQuery.equalTo('status', status);

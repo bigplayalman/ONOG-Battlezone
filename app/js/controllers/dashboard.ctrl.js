@@ -12,13 +12,19 @@ function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup,
   Parse, tournament, MatchServices, QueueServices, LadderServices
 ) {
-  
   var promise = null;
   $scope.user = Parse.User;
   $scope.previousMatch = null;
   $scope.tournament = tournament[0].tournament;
   $scope.opponent = QueueServices.opponent;
+  $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
+
+  if(window.ParsePushPlugin){
+    ParsePushPlugin.on('receivePN', function(pn){
+      console.log('triggered', pn);
+    });
+  }
 
   getCurrentStatus();
 
@@ -27,6 +33,7 @@ function DashboardCtrl(
       if(res) {
         $scope.player.set('hero', res.text);
         $scope.player.set('status', 'queue');
+        sub();
         savePlayer();
       }
       var hero = $filter('filter')($scope.heroList, {checked: true}, true);
@@ -39,13 +46,13 @@ function DashboardCtrl(
     $scope.player.unset('hero');
     $scope.stop();
     savePlayer();
-    
+
   };
 
   $scope.stop = function() {
     $interval.cancel(promise);
   };
-  
+
   $scope.startSearch = function() {
     $scope.stop();
     promise = $interval(function () {changeWord()}, 2000);
@@ -55,6 +62,17 @@ function DashboardCtrl(
     $scope.stop();
   });
 
+  function sub () {
+    if(window.ParsePushPlugin) {
+      ParsePushPlugin.subscribe($scope.player.username, function(msg) {
+        console.log('subbed');
+      }, function(e) {
+        console.log('failed to sub');
+      });
+    }
+  }
+
+  
   function savePlayer () {
     $scope.player.save().then(function (player) {
       $scope.player = player;
@@ -63,7 +81,6 @@ function DashboardCtrl(
   }
 
   function joinQueuePopup () {
-    $scope.heroList = QueueServices.heroes;
     $scope.selected = {status: true};
     $scope.selectHero = function (hero) {
       $scope.image = angular.element(document.querySelector('.heroClass'))[0].clientWidth;
@@ -87,7 +104,7 @@ function DashboardCtrl(
         scope: $scope,
         buttons: [
           { text: 'Cancel'},
-          { text: '<b>Queue</b>', 
+          { text: '<b>Queue</b>',
             type: 'button-positive',
             onTap: function(e) {
               var hero = $filter('filter')($scope.heroList, {checked: true}, true);
@@ -107,6 +124,7 @@ function DashboardCtrl(
       case 'open':
         break;
       case 'queue':
+        $scope.startSearch();
         $timeout(matchMaking, 7000);
         break;
       case 'found':
@@ -158,13 +176,14 @@ function DashboardCtrl(
       }
     });
   }
-  
+
   function waitingForOpponent () {
     Parse.Cloud.run('ConfirmMatch').then(function () {
       MatchServices.getConfirmedMatch().then(function (matches) {
         if(matches.length) {
           $scope.player.set('status', 'playing');
           savePlayer();
+          
         }
       });
     });
@@ -227,7 +246,7 @@ function DashboardCtrl(
 
     });
   }
-  
+
   function startTimer() {
     //TODO do timer
   }
@@ -251,6 +270,5 @@ function DashboardCtrl(
 
   function changeWord () {
     $scope.myOpponent.name = $scope.opponent.list[Math.floor(Math.random()*$scope.opponent.list.length)];
-
   };
 };
