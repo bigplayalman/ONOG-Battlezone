@@ -9,7 +9,16 @@ function LadderServices(Parse, Ladder) {
     getPlayers: getPlayers,
     getPlayer: getPlayer,
     validatePlayer: validatePlayer,
-    joinTournament: joinTournament
+    joinTournament: joinTournament,
+    getPendingPlayers: getPendingPlayers
+  };
+
+  function getPendingPlayers(tournament, user) {
+    var query = new Parse.Query(Ladder.Model);
+    query.equalTo('tournament', tourney);
+    query.notEqualTO('user', user);
+    query.equalTo('status', 'queue');
+    return query.find();
   };
 
   function getPlayers(tourney) {

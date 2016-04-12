@@ -1,13 +1,14 @@
 angular.module('ONOG.Services')
 
-  .service('MatchServices', ['Parse', 'Match', MatchServices])
+  .service('MatchServices', ['Parse', 'Match', '$q', MatchServices])
   .factory('Match', ['Parse', Match]);
 
-function MatchServices(Parse, Match) {
+function MatchServices(Parse, Match, $q) {
   var user = Parse.User;
   return {
     getMatch: getMatch,
-    getConfirmedMatch: getConfirmedMatch
+    getConfirmedMatch: getConfirmedMatch,
+    cancelMatch: cancelMatch
   }
   function getConfirmedMatch () {
     var player1 = new Parse.Query('Match');
@@ -30,6 +31,23 @@ function MatchServices(Parse, Match) {
     var mainQuery = Parse.Query.or(player1, player2);
     mainQuery.equalTo('status', status);
     return mainQuery.find();
+  }
+  function cancelMatch (user, player) {
+    var cb = $q.defer();
+    var query = new Parse.Query(Match.Model);
+    if(player = 'player1') {
+      query.equalTo('user1', user);
+    } else {
+      query.equalTo('user2', user);
+    }
+    query.equalTo('status', 'pending');
+    query.find().then(function (matches) {
+      Parse.Object.destroyAll(matches).then(function () {
+        cb.resolve(true);
+      });
+    });
+    return cb.promise;
+
   }
 }
 

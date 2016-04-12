@@ -20,8 +20,11 @@ function run ($ionicPlatform, $state) {
 
     if(window.ParsePushPlugin){
       ParsePushPlugin.on('receivePN', function(pn){
-        console.log(pn);
-        $state.go('app.dashboard');
+        if(pn.title) {
+          switch (pn.title) {
+            case 'matchmaking': $state.go('app.dashboard'); break;
+          }
+        }
       });
     }
   });
