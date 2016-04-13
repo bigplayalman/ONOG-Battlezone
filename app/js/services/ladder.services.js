@@ -44,9 +44,13 @@ function LadderServices(Parse, Ladder) {
   }
 
   function joinTournament(tourney, user, userData) {
-    var player = new Ladder.Model(userData);
+    var player = new Ladder.Model();
     player.set('tournament', tourney);
     player.set('user', user);
+    player.set(userData);
+    player.set('wins', 0);
+    player.set('losses', 0);
+    player.set('points', 0);
     return player.save();
   }
 };

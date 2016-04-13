@@ -27,8 +27,16 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, resourceService
       $ionicLoading.hide();
     });
 
-    if(window.ParsePushPlugin){
-      $state.go('app.dashboard');
+    if(window.ParsePushPlugin) {
+      ParsePushPlugin.on('receivePN', function(pn){
+        if(pn.title) {
+          switch (pn.title) {
+            case 'opponent:found': $state.go('app.dashboard'); break;
+            case 'opponent:confirmed': break;
+            case 'resultsUpdated': $state.go('app.dashboard'); break;
+          }
+        }
+      });
     }
 
   });

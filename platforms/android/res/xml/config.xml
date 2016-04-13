@@ -39,9 +39,9 @@
     <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
     <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
     <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-    <name>ONOG Battlezone</name>
+    <name>Battlezone</name>
     <description>
-    ONOG Battlezone
+    Battlezone
     </description>
     <author email="almas@oomzie.com" href="http://oomzie.com/">
     Almas Barzhaxynov
@@ -56,8 +56,7 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="2000" />
+    <preference name="FadeSplashScreen" value="false" />
     <preference name="SplashScreenBackgroundColor" value="black" />
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="orientation" value="portrait" />

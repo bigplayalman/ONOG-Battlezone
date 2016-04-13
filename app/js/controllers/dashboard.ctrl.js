@@ -4,17 +4,18 @@ angular.module('ONOG.Controllers')
   .controller('DashboardCtrl',
     [
       '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
-      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices',
+      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices', 'player',
       DashboardCtrl
     ]);
 
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
-  Parse, tournament, MatchServices, QueueServices, LadderServices) {
+  Parse, tournament, MatchServices, QueueServices, LadderServices, player) {
 
   var promise = null;
   $scope.foundCount = 0;
   $scope.user = Parse.User;
+  $scope.player = player[0];
   $scope.tournament = tournament[0].tournament;
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
@@ -26,35 +27,24 @@ function DashboardCtrl(
         switch (pn.title) {
           case 'opponent:found': opponentFound(); break;
           case 'opponent:confirmed': opponentConfirmed(); break;
-          case 'match:results': matchPlayed(); break;
+          case 'resultsUpdated': matchPlayed(); break;
         }
       }
     });
   }
-  getCurrentStatus(false);
 
   $scope.doRefresh = function() {
     getCurrentStatus(true);
   };
 
   $scope.startQueue = function () {
-    var hero = $filter('filter')($scope.heroList, {checked: true}, true);
-    if(hero.length) {
-      hero[0].checked = false;
-    }
-    joinQueuePopup().then(function (res) {
-      if(res) {
-        $scope.matchmaking = 0;
-        $scope.player.set('hero', res.text);
-        $scope.player.set('status', 'queue');
-        savePlayer();
-      }
-    });
+    sub();
+    $scope.player.set('status', 'queue');
+    savePlayer();
   };
 
   $scope.cancelQueue = function () {
     $scope.player.set('status', 'open');
-    $scope.player.unset('hero');
     $scope.stop();
     savePlayer();
   };
@@ -72,7 +62,8 @@ function DashboardCtrl(
     $scope.stop();
   });
 
-
+  status();
+  
   function savePlayer () {
     $scope.player.save().then(function (player) {
       $scope.player = player;
@@ -80,51 +71,12 @@ function DashboardCtrl(
     });
   }
 
-  function joinQueuePopup () {
-    sub();
-    $scope.selected = {status: true};
-    $scope.selectHero = function (hero) {
-      $scope.image = angular.element(document.querySelector('.heroClass'))[0].clientWidth;
-
-      if(hero.checked) {
-        hero.checked = !hero.checked;
-        $scope.selected.status = true;
-        return;
-      }
-
-      if(!hero.checked && $scope.selected.status) {
-        hero.checked = !hero.checked;
-        $scope.selected.status = false;
-        return;
-      }
-    };
-    return $ionicPopup.show(
-      {
-        templateUrl: 'templates/popups/select.hero.html',
-        title: 'Select Hero Class',
-        scope: $scope,
-        buttons: [
-          { text: 'Cancel'},
-          { text: '<b>Queue</b>',
-            type: 'button-positive',
-            onTap: function(e) {
-              var hero = $filter('filter')($scope.heroList, {checked: true}, true);
-              if (!hero.length) {
-                e.preventDefault();
-              } else {
-                return hero[0];
-              }
-            }
-          }
-        ]
-      });
-  };
-
   function status () {
     switch ($scope.player.status) {
       case 'open':
         break;
       case 'queue':
+        $scope.hasFound = false;
         $scope.showOpponents();
         matchMaking();
         break;
@@ -132,14 +84,17 @@ function DashboardCtrl(
         playerFound();
         break;
       case 'confirmed':
+        $scope.hasFound = false;
         waitingForOpponent();
         break;
       case 'noOpponent':
         noOpponent();
         break;
       case 'playing':
+        getLastMatch();
         break;
       case 'cancelled':
+        $scope.hasFound = false;
         playerCancelled();
         break;
     }
@@ -157,37 +112,35 @@ function DashboardCtrl(
       }
     });
   }
+  function getLastMatch() {
+    MatchServices.getLatestMatch($scope.player).then(function (matches) {
+      if(matches[0].get('status') === 'completed') {
+        $scope.player.set('status', 'open');
+        savePlayer();
+      }
+    })
+  }
 
   function matchMaking() {
-    if($scope.matchmaking < 3) {
-      $timeout(function () {
-        Parse.Cloud.run('matchmaking').then(function (status) {
-          getCurrentStatus(false);
-          $scope.matchmaking++;
-          console.log($scope.matchmaking);
-        });
-      }, 10000);
-    } else {
-      $scope.cancelQueue();
-      showEmptyQueue();
-    }
+    $timeout(function () {
+      Parse.Cloud.run('matchmaking').then(function () {
+        getCurrentStatus(false);
+      });
+    }, 5000);
+    
   }
 
-  function showEmptyQueue() {
-    $ionicPopup.alert({
-      title: 'Please try again',
-      template: '<div class="text-center">No Opponents have been found at this time.</div>'
-    });
-  }
   function opponentFound() {
-    $scope.player.set('status', 'found');
     savePlayer();
   }
 
   function playerFound() {
     $scope.stop();
-    if(!$scope.foundCount) {
-      var opponentFound = $ionicPopup.show({
+
+    if(!$scope.hasFound) {
+      console.log($scope.hasFound)
+      $scope.hasFound = true;
+      var popup = $ionicPopup.show({
         title: 'Matchmaking',
         template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
         buttons: [
@@ -207,36 +160,36 @@ function DashboardCtrl(
           }
         ]
       });
-      $scope.foundCount++;
-    }
+      popup.then(function(res) {
+        if(res) {
+          MatchServices.getLatestMatch($scope.player).then(function (matches) {
+            var match = matches[0];
 
-    opponentFound.then(function(res) {
-      if(res) {
-        MatchServices.getMatch('pending').then(function (matches) {
-          if(matches.length) {
-            $scope.player.set('status', 'confirmed');
-            if($scope.player.player === 'player1') {
-              matches[0].set('confirm1', true);
+            if(match.get('status') === 'pending') {
+              $scope.player.set('status', 'confirmed');
+              if($scope.player.player === 'player1') {
+                match.set('confirm1', true);
+              } else {
+                match.set('confirm2', true);
+              }
+              match.save().then(function () {
+                savePlayer();
+              });
             } else {
-              matches[0].set('confirm2', true);
+              alert('no match');
             }
-            matches[0].save().then(function () {
-              $scope.foundCount = 0;
-              savePlayer();
-            });
-          }
-        });
-      } else {
-        $scope.foundCount = 0;
-        playerCancelled();
-      }
-    });
+          });
+        } else {
+          playerCancelled();
+        }
+      });
 
-    $timeout(function () {
-      if($scope.player.get('status') !== 'confirmed') {
-        playerFound.close(false);
-      }
-    }, 60000);
+      $timeout(function () {
+        if($scope.player.get('status') !== 'confirmed') {
+          popup.close(false);
+        }
+      }, 60000);
+    }
   }
 
   function playerCancelled() {
@@ -269,13 +222,12 @@ function DashboardCtrl(
 
   function waitingForOpponent () {
     Parse.Cloud.run('confirmMatch').then(function (num) {
-      MatchServices.getConfirmedMatch().then(function (matches) {
+      MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
         if (matches.length) {
           $scope.player.set('status', 'playing');
           $rootScope.$broadcast('show:loading');
           $scope.player.save().then(function () {
             $rootScope.$broadcast('hide:loading');
-
             $state.go('app.match.view');
           });
         }
@@ -283,7 +235,7 @@ function DashboardCtrl(
       if(!num) {
         $timeout(function () {
           if($scope.player.get('status') === 'confirmed') {
-            MatchServices.getConfirmedMatch().then(function (matches) {
+            MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
               if(!matches.length) {
                 $scope.player.set('status', 'noOpponent');
                 savePlayer();
@@ -294,6 +246,8 @@ function DashboardCtrl(
                 });
               }
             });
+          } else {
+            status();
           }
         }, 60000);
       }
@@ -358,3 +312,42 @@ function DashboardCtrl(
     $scope.myOpponent.name = $scope.opponent.list[Math.floor(Math.random()*$scope.opponent.list.length)];
   };
 };
+// function joinQueuePopup () {
+//   sub();
+//   $scope.selected = {status: true};
+//   $scope.selectHero = function (hero) {
+//     $scope.image = angular.element(document.querySelector('.heroClass'))[0].clientWidth;
+//
+//     if(hero.checked) {
+//       hero.checked = !hero.checked;
+//       $scope.selected.status = true;
+//       return;
+//     }
+//
+//     if(!hero.checked && $scope.selected.status) {
+//       hero.checked = !hero.checked;
+//       $scope.selected.status = false;
+//       return;
+//     }
+//   };
+//   return $ionicPopup.show(
+//     {
+//       templateUrl: 'templates/popups/select.hero.html',
+//       title: 'Select Hero Class',
+//       scope: $scope,
+//       buttons: [
+//         { text: 'Cancel'},
+//         { text: '<b>Queue</b>',
+//           type: 'button-positive',
+//           onTap: function(e) {
+//             var hero = $filter('filter')($scope.heroList, {checked: true}, true);
+//             if (!hero.length) {
+//               e.preventDefault();
+//             } else {
+//               return hero[0];
+//             }
+//           }
+//         }
+//       ]
+//     });
+// };

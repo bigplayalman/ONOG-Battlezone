@@ -20,9 +20,9 @@ function MatchRoutes ($stateProvider) {
       templateUrl: 'templates/match/match.view.html',
       controller: 'MatchViewCtrl',
       resolve: {
-        match: function (MatchServices, $state, $q) {
+        match: function (MatchServices, $state, $q, player) {
           var cb = $q.defer();
-          MatchServices.getMatch('active').then(function (matches) {
+          MatchServices.getLatestMatch(player[0]).then(function (matches) {
             if(!matches.length) {
               cb.reject();
               $state.go('app.dashboard');

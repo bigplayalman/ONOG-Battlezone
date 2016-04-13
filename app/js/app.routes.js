@@ -15,6 +15,9 @@ function routes ($stateProvider, $urlRouterProvider) {
       resolve: {
         tournament: function (TournamentServices) {
           return TournamentServices.getTournament();
+        },
+        player: function (Parse, LadderServices, tournament) {
+          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
         }
       }
     })

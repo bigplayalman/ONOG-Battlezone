@@ -6,48 +6,57 @@ angular.module('ONOG.Services')
 function MatchServices(Parse, Match, $q) {
   var user = Parse.User;
   return {
-    getMatch: getMatch,
     getConfirmedMatch: getConfirmedMatch,
-    cancelMatch: cancelMatch
+    cancelMatch: cancelMatch,
+    getLatestMatch: getLatestMatch
   }
-  function getConfirmedMatch () {
-    var player1 = new Parse.Query('Match');
-    player1.equalTo('username1', user.current().username);
-    var player2 = new Parse.Query('Match');
-    player2.equalTo('username2', user.current().username);
 
-    var mainQuery = Parse.Query.or(player1, player2);
-    mainQuery.equalTo('status', 'active');
-    mainQuery.equalTo('confirm1', true);
-    mainQuery.equalTo('confirm2', true);
-    return mainQuery.find();
-  }
-  function getMatch(status) {
-    var player1 = new Parse.Query('Match');
-    player1.equalTo('username1', user.current().username);
-    var player2 = new Parse.Query('Match');
-    player2.equalTo('username2', user.current().username);
-
-    var mainQuery = Parse.Query.or(player1, player2);
-    mainQuery.equalTo('status', status);
-    return mainQuery.find();
-  }
-  function cancelMatch (user, player) {
-    var cb = $q.defer();
+  function getLatestMatch(player) {
+    var type = player.get('player')
     var query = new Parse.Query(Match.Model);
-    if(player = 'player1') {
-      query.equalTo('user1', user);
+    query.descending("createdAt");
+    query.limit(1);
+    if(type === 'player1') {
+      query.equalTo('player1', player);
     } else {
-      query.equalTo('user2', user);
+      query.equalTo('player2', player);
+    }
+    return query.find();
+  }
+  
+  function getConfirmedMatch (player) {
+    var type = player.get('player');
+    var query = new Parse.Query('Match');
+    if(type === 'player1') {
+      query.equalTo('player1', player)
+    } else {
+      query.equalTo('player2', player)
+    }
+    query.equalTo('confirm1', true);
+    query.equalTo('confirm2', true);
+    query.limit(1);
+    
+    return query.find();
+  }
+  function cancelMatch(player) {
+    var cb = $q.defer();
+    var type = player.get('player')
+    var query = new Parse.Query(Match.Model);
+    query.descending("createdAt");
+    query.limit(1);
+    if(type === 'player1') {
+      query.equalTo('player1', player);
+    } else {
+      query.equalTo('player2', player);
     }
     query.equalTo('status', 'pending');
+    query.limit(1);
     query.find().then(function (matches) {
-      Parse.Object.destroyAll(matches).then(function () {
+      matches[0].destroy().then(function () {
         cb.resolve(true);
       });
     });
     return cb.promise;
-
   }
 }
 

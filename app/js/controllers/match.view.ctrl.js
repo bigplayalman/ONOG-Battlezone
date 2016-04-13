@@ -4,73 +4,125 @@ angular.module('ONOG.Controllers')
   .controller('MatchViewCtrl', MatchViewCtrl);
 
 MatchViewCtrl.$inject = [
-  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'tournament', 'match'
+  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'tournament', 'match', 'player'
 ];
-function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices, tournament, match) {
+function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices, tournament, match, player) {
   $scope.match = match[0];
   $scope.tournament = tournament[0].tournament;
+  $scope.player = player[0];
   $scope.user = Parse.User;
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
-  
   if(window.ParsePushPlugin) {
-    ParsePushPlugin.on('receivePN', function (pn) {
-      if (pn.title) {
+    ParsePushPlugin.on('receivePN', function(pn){
+      if(pn.title) {
         switch (pn.title) {
-          case 'match:results':
-            $state.go('app.dashboard');
+          case 'opponent:found': break;
+          case 'opponent:confirmed':
+            $scope.player.fetch().then(function (player) {
+              $scope.player = player;
+            });
             break;
+          case 'resultsUpdated': break;
         }
       }
     });
   }
 
-  LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
-    $scope.player = players[0];
-    if ($scope.player) {
-      getMatchDetails();
-    }
-  });
-
   $scope.record = function (record) {
-    MatchServices.getMatch('active').then(function (matches) {
+    MatchServices.getLatestMatch($scope.player).then(function (matches) {
       var username = null;
-      if(matches.length) {
-        var match = matches[0];
+      $scope.match = matches[0];
+      if($scope.match.get('status') === 'active') {
         switch (record) {
           case 'win':
-            match.set('winner', $scope.user.current());
-            match.set('loser', $scope.opponent.user);
-            username = $scope.opponent.username
+            winMatch().then(function(res) {
+              console.log(res);
+              if(res) {
+                $scope.match.set('winner', $scope.player);
+                $scope.match.set('loser', $scope.opponent.user);
+                username = $scope.opponent.username
+                recordMatch($scope.match, username);
+              }
+            })
             break;
           case 'loss':
-            match.set('winner', $scope.opponent.user);
-            match.set('loser', $scope.user.current());
-            username = $scope.user.current().username
+            loseMatch().then(function(res) {
+              console.log(res);
+              if(res) {
+                $scope.match.set('winner', $scope.opponent.user);
+                $scope.match.set('loser', $scope.player);
+                username = $scope.opponent.username;
+                recordMatch($scope.match, username);
+              }
+            });
             break;
         }
-        match.set('status', 'completed');
-        match.save().then(function () {
-          $scope.player.set('status', 'open');
-          $scope.player.save().then(function () {
-            $ionicPopup.alert({
-              title: 'Match Submitted',
-              template: '<div class="text-center">Thank you for submitting results</div>'
-            }).then(function (res) {
-              $rootScope.$broadcast('show:loading');
-              Parse.Cloud.run('matchResults', {username: username}).then(function (results) {
-                $rootScope.$broadcast('hide:loading');
-                $state.go('app.dashboard');
-              });
-            });
-          });
-        });
-      } else {
-        showResultsPopup();
       }
     });
   };
+
+  getMatchDetails();
+
+  function loseMatch() {
+    return $ionicPopup.show(
+      {
+        templateUrl: 'templates/popups/lose.match.html',
+        title: 'Select Hero Class',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel'},
+          { text: '<b>Confirm</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              return true;
+            }
+          }
+        ]
+      });
+  }
+
+  function recordMatch(match, username) {
+
+    match.set('status', 'completed');
+    match.save().then(function (match) {
+      $rootScope.$broadcast('show:loading');
+      Parse.Cloud.run('matchResults', {username: username, match: match.id}).then(function (results) {
+        $rootScope.$broadcast('hide:loading');
+        $ionicPopup.alert({
+          title: 'Match Submitted',
+          template: '<div class="text-center">Thank you for submitting results</div>'
+        }).then(function (res) {
+          $state.go('app.dashboard');
+        });
+      });
+    });
+  }
+
+  function winMatch () {
+    $scope.image = null;
+
+    return $ionicPopup.show(
+      {
+        templateUrl: 'templates/popups/win.match.html',
+        title: 'Select Hero Class',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel'},
+          { text: '<b>Confirm</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if (!$scope.image) {
+                e.preventDefault();
+              } else {
+                return $scope.image;
+              }
+            }
+          }
+        ]
+      });
+  }
 
   function getMatchDetails() {
     $scope.opponent = {
@@ -81,13 +133,13 @@ function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, P
       $scope.opponent.hero = $scope.match.hero2;
       $scope.opponent.username = $scope.match.username2;
       $scope.opponent.battleTag = $scope.match.battleTag2;
-      $scope.opponent.user = $scope.match.user2;
+      $scope.opponent.user = $scope.match.player2;
     }
     if($scope.player.player === 'player2') {
       $scope.opponent.hero = $scope.match.hero1;
       $scope.opponent.username = $scope.match.username1;
       $scope.opponent.battleTag = $scope.match.battleTag1;
-      $scope.opponent.user = $scope.match.user1;
+      $scope.opponent.user = $scope.match.player1;
     }
   }
 };
