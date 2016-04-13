@@ -4,23 +4,22 @@ angular.module('ONOG.Controllers')
   .controller('MatchViewCtrl', MatchViewCtrl);
 
 MatchViewCtrl.$inject = [
-  '$scope', '$state', '$timeout', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'tournament', 'match'
+  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'tournament', 'match'
 ];
-function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices, tournament, match) {
-  $scope.count = 0;
+function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices, tournament, match) {
   $scope.match = match[0];
   $scope.tournament = tournament[0].tournament;
   $scope.user = Parse.User;
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
-
-  if(window.ParsePushPlugin){
-    ParsePushPlugin.on('receivePN', function(pn){
-      if(pn.title) {
+  
+  if(window.ParsePushPlugin) {
+    ParsePushPlugin.on('receivePN', function (pn) {
+      if (pn.title) {
         switch (pn.title) {
           case 'match:results':
-            showResultsPopup();
+            $state.go('app.dashboard');
             break;
         }
       }
@@ -33,20 +32,6 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
       getMatchDetails();
     }
   });
-  function showResultsPopup() {
-    $ionicPopup.alert({
-      title: 'Match Results',
-      template: '<div class="text-center">Your Opponent has updated the results!</div>'
-    }).then(function(res) {
-      $ionicHistory.nextViewOptions({
-        disableBack: true
-      });
-      $scope.player.set('status', 'open');
-      $scope.player.save().then(function () {
-        $state.go('app.dashboard');
-      });
-    });
-  }
 
   $scope.record = function (record) {
     MatchServices.getMatch('active').then(function (matches) {
@@ -73,13 +58,16 @@ function MatchViewCtrl($scope, $state, $timeout, $ionicPopup, $ionicHistory, Par
               title: 'Match Submitted',
               template: '<div class="text-center">Thank you for submitting results</div>'
             }).then(function (res) {
+              $rootScope.$broadcast('show:loading');
               Parse.Cloud.run('matchResults', {username: username}).then(function (results) {
-                console.log(results);
+                $rootScope.$broadcast('hide:loading');
                 $state.go('app.dashboard');
               });
             });
           });
         });
+      } else {
+        showResultsPopup();
       }
     });
   };

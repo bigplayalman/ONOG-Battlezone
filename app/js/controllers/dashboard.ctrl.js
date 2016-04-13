@@ -3,16 +3,17 @@ angular.module('ONOG.Controllers')
 
   .controller('DashboardCtrl',
     [
-      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup',
+      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
       'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices',
       DashboardCtrl
     ]);
 
 function DashboardCtrl(
-  $scope, $state, $filter, $timeout, $interval, $ionicPopup,
+  $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
   Parse, tournament, MatchServices, QueueServices, LadderServices) {
 
   var promise = null;
+  $scope.foundCount = 0;
   $scope.user = Parse.User;
   $scope.tournament = tournament[0].tournament;
   $scope.opponent = QueueServices.opponent;
@@ -25,6 +26,7 @@ function DashboardCtrl(
         switch (pn.title) {
           case 'opponent:found': opponentFound(); break;
           case 'opponent:confirmed': opponentConfirmed(); break;
+          case 'match:results': matchPlayed(); break;
         }
       }
     });
@@ -42,6 +44,7 @@ function DashboardCtrl(
     }
     joinQueuePopup().then(function (res) {
       if(res) {
+        $scope.matchmaking = 0;
         $scope.player.set('hero', res.text);
         $scope.player.set('status', 'queue');
         savePlayer();
@@ -156,16 +159,18 @@ function DashboardCtrl(
   }
 
   function matchMaking() {
-    $timeout(function () {
-      Parse.Cloud.run('matchmaking').then(function (status) {
-        if(status) {
+    if($scope.matchmaking < 3) {
+      $timeout(function () {
+        Parse.Cloud.run('matchmaking').then(function (status) {
           getCurrentStatus(false);
-        } else {
-          $scope.cancelQueue();
-          showEmptyQueue();
-        }
-      });
-    }, 7000);
+          $scope.matchmaking++;
+          console.log($scope.matchmaking);
+        });
+      }, 10000);
+    } else {
+      $scope.cancelQueue();
+      showEmptyQueue();
+    }
   }
 
   function showEmptyQueue() {
@@ -181,26 +186,29 @@ function DashboardCtrl(
 
   function playerFound() {
     $scope.stop();
-    var opponentFound = $ionicPopup.show({
-      title: 'Matchmaking',
-      template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
-      buttons: [
-        {
-          text: '<b>Cancel</b>',
-          type: 'button-assertive',
-          onTap: function(e) {
-            return false;
+    if(!$scope.foundCount) {
+      var opponentFound = $ionicPopup.show({
+        title: 'Matchmaking',
+        template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+        buttons: [
+          {
+            text: '<b>Cancel</b>',
+            type: 'button-assertive',
+            onTap: function(e) {
+              return false;
+            }
+          },
+          {
+            text: '<b>Confirm</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              return true;
+            }
           }
-        },
-        {
-          text: '<b>Confirm</b>',
-          type: 'button-positive',
-          onTap: function(e) {
-            return true;
-          }
-        }
-      ]
-    })
+        ]
+      });
+      $scope.foundCount++;
+    }
 
     opponentFound.then(function(res) {
       if(res) {
@@ -213,11 +221,13 @@ function DashboardCtrl(
               matches[0].set('confirm2', true);
             }
             matches[0].save().then(function () {
+              $scope.foundCount = 0;
               savePlayer();
             });
           }
         });
       } else {
+        $scope.foundCount = 0;
         playerCancelled();
       }
     });
@@ -258,15 +268,47 @@ function DashboardCtrl(
   }
 
   function waitingForOpponent () {
-    Parse.Cloud.run('confirmMatch');
-    $timeout(function () {
+    Parse.Cloud.run('confirmMatch').then(function (num) {
       MatchServices.getConfirmedMatch().then(function (matches) {
-        if(!matches.length) {
-          $scope.player.set('status', 'noOpponent');
-          savePlayer();
+        if (matches.length) {
+          $scope.player.set('status', 'playing');
+          $rootScope.$broadcast('show:loading');
+          $scope.player.save().then(function () {
+            $rootScope.$broadcast('hide:loading');
+
+            $state.go('app.match.view');
+          });
         }
       });
-    }, 70000);
+      if(!num) {
+        $timeout(function () {
+          if($scope.player.get('status') === 'confirmed') {
+            MatchServices.getConfirmedMatch().then(function (matches) {
+              if(!matches.length) {
+                $scope.player.set('status', 'noOpponent');
+                savePlayer();
+              } else {
+                $scope.player.set('status', 'playing');
+                $scope.player.save().then(function () {
+                  $state.go('app.match.view');
+                });
+              }
+            });
+          }
+        }, 60000);
+      }
+    });
+  }
+  function matchPlayed() {
+    $ionicPopup.alert({
+      title: 'Match Results Entered',
+      template: '<div class="text-center">Your Opponent has entered the results!</div>'
+    }).then(function(res) {
+      $scope.player.set('status', 'open');
+      $scope.player.save().then(function () {
+        status();
+      });
+    });
   }
 
   function noOpponent () {

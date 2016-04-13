@@ -1,8 +1,10 @@
 angular.module('ONOG')
   .constant("moment", moment)
-  .run(['$ionicPlatform', '$state', run]);
+  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', run])
 
-function run ($ionicPlatform, $state) {
+
+
+function run ($ionicPlatform, $state, $rootScope, $ionicLoading, resourceService) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,15 +19,17 @@ function run ($ionicPlatform, $state) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    $rootScope.$on('show:loading', function() {
+      $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-calm"></ion-spinner>', showBackdrop: true, animation: 'fade-in'});
+    });
+
+    $rootScope.$on('hide:loading', function() {
+      $ionicLoading.hide();
+    });
 
     if(window.ParsePushPlugin){
-      ParsePushPlugin.on('receivePN', function(pn){
-        if(pn.title) {
-          switch (pn.title) {
-            case 'matchmaking': $state.go('app.dashboard'); break;
-          }
-        }
-      });
+      $state.go('app.dashboard');
     }
+
   });
 }
