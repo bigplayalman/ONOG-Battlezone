@@ -30,11 +30,11 @@ function MatchViewCtrl(
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
-          case 'opponent:found': break;
-          case 'opponent:confirmed':
+          case 'Opponent Found': break;
+          case 'Opponent Confirmed':
             $state.go($state.current, {}, {reload: true});
             break;
-          case 'results:updated':
+          case 'Results Entered':
             $state.go($state.current, {}, {reload: true});
             break;
         }
@@ -82,7 +82,7 @@ function MatchViewCtrl(
     return $ionicPopup.show(
       {
         templateUrl: 'templates/popups/lose.match.html',
-        title: 'Select Hero Class',
+        title: 'Report a Loss',
         scope: $scope,
         buttons: [
           { text: 'Cancel'},
@@ -119,7 +119,7 @@ function MatchViewCtrl(
     return $ionicPopup.show(
       {
         templateUrl: 'templates/popups/win.match.html',
-        title: 'Select Hero Class',
+        title: 'Report a Win',
         scope: $scope,
         buttons: [
           { text: 'Cancel'},

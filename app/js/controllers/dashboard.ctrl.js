@@ -29,13 +29,16 @@ function DashboardCtrl(
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
-          case 'opponent:found':
-            getCurrentStatus(false);
+          case 'Opponent Found':
+            if($scope.foundCount === 0) {
+              $scope.foundCount++;
+              getCurrentStatus(false);
+            }
             break;
-          case 'opponent:confirmed':
+          case 'Opponent Confirmed':
             opponentConfirmed();
             break;
-          case 'resultsUpdated':
+          case 'Results Entered':
             matchPlayed();
             break;
         }
@@ -119,7 +122,7 @@ function DashboardCtrl(
         if($scope.foundCount === 0) {
           $scope.foundCount++;
           playerFound();
-        }
+        };
         break;
       case 'confirmed':
         waitingForOpponent();
@@ -165,17 +168,19 @@ function DashboardCtrl(
   }
 
   function matchMaking() {
-    $timeout(function () {
-      Parse.Cloud.run('matchmaking').then(function () {
-        getCurrentStatus(false);
-      });
-    }, 5000);
+    Parse.Cloud.run('matchmaking').then(function () {
+      $timeout(function () {
+        if($scope.player.get('status') === 'queue') {
+          getCurrentStatus(false);
+        }
+      }, 5000);
+    });
 
   }
 
   function playerFound() {
     $scope.stop();
-    var popup = $ionicPopup.show({
+    $scope.popup = $ionicPopup.show({
       title: 'Matchmaking',
       template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
       buttons: [
@@ -217,7 +222,7 @@ function DashboardCtrl(
 
     $timeout(function () {
       if($scope.player.get('status') === 'found') {
-        popup.close(false);
+        $scope.popup.close(false);
       }
     }, 60000);
   }
@@ -256,43 +261,34 @@ function DashboardCtrl(
 
   function waitingForOpponent () {
     Parse.Cloud.run('confirmMatch').then(function (num) {
-      MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
-        if (matches.length) {
-          $scope.player.set('status', 'playing');
-          $rootScope.$broadcast('show:loading');
-          $scope.player.save().then(function () {
-            $rootScope.$broadcast('hide:loading');
-            $state.go('app.match.view');
-          });
-        }
-      });
-      if(!num) {
-        $timeout(function () {
-          if($scope.player.get('status') === 'confirmed') {
-            MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
-              if(!matches.length) {
-                $scope.player.set('status', 'noOpponent');
-                savePlayer();
-              } else {
-                $scope.player.set('status', 'playing');
-                $scope.player.save().then(function () {
-                  $state.go('app.match.view');
-                });
-              }
-            });
-          } else {
-            status();
-          }
-        }, 60000);
-      }
+      checkOpponent(5000, false);
+      checkOpponent(50000, true);
     });
+  }
+  
+  function checkOpponent (timeout, alreadyChecked) {
+    $timeout(function () {
+      if($scope.player.get('status') === 'confirmed') {
+        MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
+          if(!matches.length && alreadyChecked) {
+            $scope.player.set('status', 'noOpponent');
+            savePlayer();
+          } else {
+            $scope.player.set('status', 'playing');
+            $rootScope.$broadcast('show:loading');
+            $scope.player.save().then(function () {
+              $rootScope.$broadcast('hide:loading');
+              $state.go('app.match.view');
+            });
+          }
+        });
+      }
+    }, timeout);
   }
   function matchPlayed() {
     if($scope.player.get('status') !== 'open') {
       $scope.player.set('status', 'open');
-      $scope.player.save().then(function () {
-        status();
-      });
+      savePlayer();
     }
   }
 
