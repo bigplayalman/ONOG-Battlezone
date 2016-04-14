@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "ngCordova": "^0.1.24-alpha",
-    "angular-parse-bower": "^0.2.3"
+    "angular-parse-bower": "^0.2.3",
+    "humanize-duration": "^3.7.0",
+    "angular-timer": "^1.3.3"
   }
 }

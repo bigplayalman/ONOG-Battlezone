@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.onog.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Battlezone</name>
+  <name>Battlezone Beta</name>
   <description>
-    Battlezone
+    Battlezone Beta
     </description>
   <author email="almas@oomzie.com" href="http://oomzie.com/">
     Almas Barzhaxynov

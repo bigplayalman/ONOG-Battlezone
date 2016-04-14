@@ -4,27 +4,39 @@ angular.module('ONOG.Controllers')
   .controller('MatchViewCtrl', MatchViewCtrl);
 
 MatchViewCtrl.$inject = [
-  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory', 'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'tournament', 'match', 'player'
+  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory',
+  'Parse', 'LadderServices', 'MatchServices', 'QueueServices',
+  'tournament', 'match', 'player'
 ];
-function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, Parse, LadderServices, MatchServices, QueueServices, tournament, match, player) {
+function MatchViewCtrl(
+  $scope, $state, $rootScope, $ionicPopup, $ionicHistory,
+  Parse, LadderServices, MatchServices, QueueServices,
+  tournament, match, player
+) {
   $scope.match = match[0];
   $scope.tournament = tournament[0].tournament;
   $scope.player = player[0];
   $scope.user = Parse.User;
+  $scope.end = {
+    time: 0
+  };
+
+
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
+  
   if(window.ParsePushPlugin) {
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
           case 'opponent:found': break;
           case 'opponent:confirmed':
-            $scope.player.fetch().then(function (player) {
-              $scope.player = player;
-            });
+            $state.go($state.current, {}, {reload: true});
             break;
-          case 'resultsUpdated': break;
+          case 'results:updated':
+            $state.go($state.current, {}, {reload: true});
+            break;
         }
       }
     });
@@ -62,8 +74,9 @@ function MatchViewCtrl($scope, $state, $rootScope, $ionicPopup, $ionicHistory, P
       }
     });
   };
-
+  
   getMatchDetails();
+  
 
   function loseMatch() {
     return $ionicPopup.show(

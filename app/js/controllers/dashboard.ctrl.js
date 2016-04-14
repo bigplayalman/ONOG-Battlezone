@@ -20,14 +20,24 @@ function DashboardCtrl(
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
+  $scope.end = {
+    canPlay: true,
+    time: parseInt(moment().format('x'))
+  }
 
   if(window.ParsePushPlugin) {
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
-          case 'opponent:found': opponentFound(); break;
-          case 'opponent:confirmed': opponentConfirmed(); break;
-          case 'resultsUpdated': matchPlayed(); break;
+          case 'opponent:found':
+            getCurrentStatus(false);
+            break;
+          case 'opponent:confirmed':
+            opponentConfirmed();
+            break;
+          case 'resultsUpdated':
+            matchPlayed();
+            break;
         }
       }
     });
@@ -61,9 +71,34 @@ function DashboardCtrl(
   $scope.$on('$destroy', function() {
     $scope.stop();
   });
+  $scope.finished = function () {
+    $timeout(timer, 1500);
+  }
 
   status();
-  
+
+  function matchTime() {
+    if(!$scope.match) {
+      MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        if (matches.length) {
+          $scope.match = matches[0];
+          timer();
+        }
+      });
+    } else {
+      timer();
+    }
+  }
+
+  function timer () {
+    var now = moment();
+    var matchTime = moment($scope.match.get('activeDate'));
+    var fiveMinutes = matchTime.add(1, 'minutes');
+    $scope.end.time = parseFloat(fiveMinutes.format('x'));
+    $scope.end.canPlay = now.isAfter(fiveMinutes, 'seconds');
+    console.log('timer is ' + $scope.end.canPlay);
+  }
+
   function savePlayer () {
     $scope.player.save().then(function (player) {
       $scope.player = player;
@@ -74,17 +109,19 @@ function DashboardCtrl(
   function status () {
     switch ($scope.player.status) {
       case 'open':
+        $scope.foundCount = 0;
         break;
       case 'queue':
-        $scope.hasFound = false;
         $scope.showOpponents();
         matchMaking();
         break;
       case 'found':
-        playerFound();
+        if($scope.foundCount === 0) {
+          $scope.foundCount++;
+          playerFound();
+        }
         break;
       case 'confirmed':
-        $scope.hasFound = false;
         waitingForOpponent();
         break;
       case 'noOpponent':
@@ -94,10 +131,10 @@ function DashboardCtrl(
         getLastMatch();
         break;
       case 'cancelled':
-        $scope.hasFound = false;
         playerCancelled();
         break;
     }
+    matchTime();
   }
 
   function getCurrentStatus(refresh) {
@@ -106,15 +143,21 @@ function DashboardCtrl(
       $scope.player = players[0];
       if ($scope.player) {
         status();
-      }
-      if(refresh) {
-        $scope.$broadcast('scroll.refreshComplete');
+        if(refresh) {
+          $scope.$broadcast('scroll.refreshComplete');
+        }
       }
     });
   }
   function getLastMatch() {
     MatchServices.getLatestMatch($scope.player).then(function (matches) {
-      if(matches[0].get('status') === 'completed') {
+      if(matches.length) {
+        $scope.match = matches[0];
+        if($scope.match.get('status') === 'completed') {
+          $scope.player.set('status', 'open');
+          savePlayer();
+        }
+      } else {
         $scope.player.set('status', 'open');
         savePlayer();
       }
@@ -127,69 +170,56 @@ function DashboardCtrl(
         getCurrentStatus(false);
       });
     }, 5000);
-    
-  }
 
-  function opponentFound() {
-    savePlayer();
   }
 
   function playerFound() {
     $scope.stop();
-
-    if(!$scope.hasFound) {
-      console.log($scope.hasFound)
-      $scope.hasFound = true;
-      var popup = $ionicPopup.show({
-        title: 'Matchmaking',
-        template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
-        buttons: [
-          {
-            text: '<b>Cancel</b>',
-            type: 'button-assertive',
-            onTap: function(e) {
-              return false;
-            }
-          },
-          {
-            text: '<b>Confirm</b>',
-            type: 'button-positive',
-            onTap: function(e) {
-              return true;
-            }
+    var popup = $ionicPopup.show({
+      title: 'Matchmaking',
+      template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+      buttons: [
+        {
+          text: '<b>Cancel</b>',
+          type: 'button-assertive',
+          onTap: function(e) {
+            return false;
           }
-        ]
-      });
-      popup.then(function(res) {
-        if(res) {
-          MatchServices.getLatestMatch($scope.player).then(function (matches) {
-            var match = matches[0];
-
-            if(match.get('status') === 'pending') {
-              $scope.player.set('status', 'confirmed');
-              if($scope.player.player === 'player1') {
-                match.set('confirm1', true);
-              } else {
-                match.set('confirm2', true);
-              }
-              match.save().then(function () {
-                savePlayer();
-              });
+        },
+        {
+          text: '<b>Confirm</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            return true;
+          }
+        }
+      ]
+    }).then(function(res) {
+      if(res) {
+        MatchServices.getLatestMatch($scope.player).then(function (matches) {
+          $scope.match = matches[0];
+          if($scope.match.get('status') === 'pending') {
+            if($scope.player.player === 'player1') {
+              $scope.match.set('confirm1', true);
             } else {
-              alert('no match');
+              $scope.match.set('confirm2', true);
             }
-          });
-        } else {
-          playerCancelled();
-        }
-      });
+            $scope.match.save().then(function () {
+              $scope.player.set('status', 'confirmed');
+              savePlayer();
+            });
+          }
+        });
+      } else {
+        playerCancelled();
+      }
+    });
 
-      $timeout(function () {
-        if($scope.player.get('status') !== 'confirmed') {
-          popup.close(false);
-        }
-      }, 60000);
-    }
+    $timeout(function () {
+      if($scope.player.get('status') === 'found') {
+        popup.close(false);
+      }
+    }, 60000);
   }
 
   function playerCancelled() {
@@ -214,10 +244,14 @@ function DashboardCtrl(
   }
 
   function opponentConfirmed () {
-    $scope.player.set('status', 'playing');
-    $scope.player.save().then(function () {
+    if($scope.player.get('status') === 'confirmed') {
+      $scope.player.set('status', 'playing');
+      $scope.player.save().then(function () {
+        $state.go('app.match.view');
+      });
+    } else if ($scope.player.get('status') === 'playing'){
       $state.go('app.match.view');
-    });
+    }
   }
 
   function waitingForOpponent () {
@@ -254,15 +288,12 @@ function DashboardCtrl(
     });
   }
   function matchPlayed() {
-    $ionicPopup.alert({
-      title: 'Match Results Entered',
-      template: '<div class="text-center">Your Opponent has entered the results!</div>'
-    }).then(function(res) {
+    if($scope.player.get('status') !== 'open') {
       $scope.player.set('status', 'open');
       $scope.player.save().then(function () {
         status();
       });
-    });
+    }
   }
 
   function noOpponent () {

@@ -39,8 +39,20 @@
         </ion-item>
 
         <ion-item class="item-clear light green-bg" ng-click="startQueue()" ng-if="player.status === 'open'">
-          <h1 class="light">FIND</h1>
-          <h1 class="light">MATCH</h1>
+
+          <div ng-if="!end.canPlay" class="text-center">
+            <div>
+              <strong>Please wait for:</strong>
+            </div>
+            <timer end-time="end.time" finish-callback="finished()">{{minutes}} minutes, {{seconds}} seconds</timer>
+            <div>before playing again.</div>
+          </div>
+
+          <div ng-if="end.canPlay">
+            <h1 class="light">FIND</h1>
+            <h1 class="light">MATCH</h1>
+          </div>
+
         </ion-item>
 
         <div class="item item-clear light blue-bg text-center loading-item" ng-if="player.status === 'queue'">

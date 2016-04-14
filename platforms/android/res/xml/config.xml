@@ -39,9 +39,9 @@
     <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
     <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
     <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-    <name>Battlezone</name>
+    <name>Battlezone Beta</name>
     <description>
-    Battlezone
+    Battlezone Beta
     </description>
     <author email="almas@oomzie.com" href="http://oomzie.com/">
     Almas Barzhaxynov

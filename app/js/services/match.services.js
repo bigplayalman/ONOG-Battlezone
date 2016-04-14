@@ -14,6 +14,8 @@ function MatchServices(Parse, Match, $q) {
   function getLatestMatch(player) {
     var type = player.get('player')
     var query = new Parse.Query(Match.Model);
+    query.include('winner');
+    query.include('loser');
     query.descending("createdAt");
     query.limit(1);
     if(type === 'player1') {
@@ -27,6 +29,8 @@ function MatchServices(Parse, Match, $q) {
   function getConfirmedMatch (player) {
     var type = player.get('player');
     var query = new Parse.Query('Match');
+    query.equalTo('status', 'active');
+    query.descending("createdAt");
     if(type === 'player1') {
       query.equalTo('player1', player)
     } else {
