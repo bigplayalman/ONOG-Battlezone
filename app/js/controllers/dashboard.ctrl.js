@@ -164,13 +164,7 @@ function DashboardCtrl(
   }
 
   function matchMaking() {
-    Parse.Cloud.run('matchmaking').then(function () {
-      $timeout(function () {
-        if($scope.player.get('status') === 'queue') {
-          getCurrentStatus(false);
-        }
-      }, 50000);
-    });
+    Parse.Cloud.run('matchmaking');
   }
 
   function playerConfirm() {
@@ -213,10 +207,10 @@ function DashboardCtrl(
         if($scope.player.get('status') === 'found') {
           confirmPopup.close();
         }
-      }, 10000);
+      }, 20000);
     });
   }
-  
+
   function showFailPopup() {
     var failPopup = $ionicPopup.show({
       title: 'Matchmaking',
@@ -233,7 +227,7 @@ function DashboardCtrl(
     });
 
     failPopup.then(function (res) {
-      
+
     });
   }
 
@@ -275,7 +269,7 @@ function DashboardCtrl(
               });
               break;
           }
-          
+
         });
       }
     }, timeout);
