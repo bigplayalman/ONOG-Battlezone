@@ -1,10 +1,10 @@
 angular.module('ONOG')
   .constant("moment", moment)
-  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', run])
+  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', '$ionicPopup', run])
 
 
 
-function run ($ionicPlatform, $state, $rootScope, $ionicLoading, resourceService) {
+function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -29,15 +29,18 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, resourceService
 
     if(window.ParsePushPlugin) {
       ParsePushPlugin.on('receivePN', function(pn){
-        if(pn.title) {
-          switch (pn.title) {
-            case 'opponent:found': $state.go('app.dashboard'); break;
-            case 'opponent:confirmed': break;
-            case 'resultsUpdated': $state.go('app.dashboard'); break;
-          }
+        console.log(pn);
+        if(!pn.title) {
+          $ionicPopup.alert({
+            title: 'Announcement',
+            template: '<div class="text-center">'+ pn.alert + '</div>'
+          }).then(function(res) {
+
+          });
         }
       });
     }
+
 
   });
 }

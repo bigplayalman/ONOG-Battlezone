@@ -15,9 +15,6 @@ function routes ($stateProvider, $urlRouterProvider) {
       resolve: {
         tournament: function (TournamentServices) {
           return TournamentServices.getTournament();
-        },
-        player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
         }
       }
     })
@@ -28,6 +25,11 @@ function routes ($stateProvider, $urlRouterProvider) {
         'menuContent': {
           templateUrl: 'templates/dashboard.html',
           controller: 'DashboardCtrl'
+        }
+      },
+      resolve: {
+        player: function (Parse, LadderServices, tournament) {
+          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
         }
       }
     })

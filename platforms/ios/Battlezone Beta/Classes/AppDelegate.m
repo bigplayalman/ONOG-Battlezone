@@ -19,7 +19,7 @@
 
 //
 //  AppDelegate.m
-//  ONOG Tournaments
+//  Battlezone Beta
 //
 //  Created by ___FULLUSERNAME___ on ___DATE___.
 //  Copyright ___ORGANIZATIONNAME___ ___YEAR___. All rights reserved.
@@ -27,9 +27,9 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import <Parse/Parse.h>
 
 #import <Cordova/CDVPlugin.h>
-#import <Parse/Parse.h>
 
 @implementation AppDelegate
 
@@ -89,7 +89,8 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
-    [Parse setApplicationId:@"nYsB6tmBMYKYMzM5iV9BUcBvHWX89ItPX5GfbN6Q" clientKey:@"rocr0YBaRQ1GiNFdX5mwfdp3OauhRXypXtO7GvaC"];
+    // Initialize Parse
+        [Parse setApplicationId:@"nYsB6tmBMYKYMzM5iV9BUcBvHWX89ItPX5GfbN6Q" clientKey:@"rocr0YBaRQ1GiNFdX5mwfdp3OauhRXypXtO7GvaC"];
 
         //
         // Basic notification config, left as cut-and-paste instead of part of plugin code for easy customization
@@ -98,12 +99,11 @@
         [application registerUserNotificationSettings:settings];
         [application registerForRemoteNotifications];
 
-
     return YES;
 }
 
 // this happens while we are running ( in the background, or from within our own app )
-// only valid if ONOG Tournaments-Info.plist specifies a protocol to handle
+// only valid if Battlezone Beta-Info.plist specifies a protocol to handle
 - (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation
 {
     if (!url) {

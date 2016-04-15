@@ -33,6 +33,10 @@
         <a class="button button-block button-calm" ui-sref="app.dashboard">Back to Dashboard</a>
       </ion-item>
 
+      <ion-item class="item-clear light item-borderless item-text-wrap" ng-if="match.winner && match.winner.id !== player.id">
+        <a class="button button-block button-calm" ng-click="showReport()">Report Match</a>
+      </ion-item>
+
     </div>
 
 	</ion-content>

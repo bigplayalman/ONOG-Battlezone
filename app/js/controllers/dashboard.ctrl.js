@@ -11,11 +11,11 @@ angular.module('ONOG.Controllers')
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
   Parse, tournament, MatchServices, QueueServices, LadderServices, player) {
-
+  $scope.tournament = tournament[0].tournament;
   var promise = null;
   $scope.user = Parse.User;
   $scope.player = player[0];
-  $scope.tournament = tournament[0].tournament;
+  
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
@@ -23,13 +23,14 @@ function DashboardCtrl(
     canPlay: true,
     time: parseFloat(moment().format('x'))
   }
+  
 
   if(window.ParsePushPlugin) {
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
           case 'Opponent Found':
-            getCurrentStatus(false);
+            playerConfirm(false);
             break;
           case 'Opponent Confirmed':
             opponentConfirmed(false);
@@ -109,30 +110,33 @@ function DashboardCtrl(
   }
 
   function status () {
-    switch ($scope.player.get('status')) {
-      case 'open':
-        break;
-      case 'queue':
-        $scope.showOpponents();
-        matchMaking();
-        break;
-      case 'found':
-        playerConfirm();
-        break;
-      case 'confirmed':
-        waitingForOpponent();
-        break;
-      case 'noOpponent':
-        noOpponent();
-        break;
-      case 'playing':
-        getLastMatch();
-        break;
-      case 'cancelled':
-        playerCancelled();
-        break;
+    if($scope.player) {
+      switch ($scope.player.get('status')) {
+        case 'open':
+          break;
+        case 'queue':
+          $scope.showOpponents();
+          matchMaking();
+          break;
+        case 'found':
+          playerConfirm();
+          break;
+        case 'confirmed':
+          waitingForOpponent();
+          break;
+        case 'noOpponent':
+          noOpponent();
+          break;
+        case 'playing':
+          getLastMatch();
+          break;
+        case 'cancelled':
+          playerCancelled();
+          break;
+      }
+      console.log($scope.player.get('status'));
+      matchTime();
     }
-    matchTime();
   }
 
   function getCurrentStatus(refresh) {
@@ -169,45 +173,51 @@ function DashboardCtrl(
 
   function playerConfirm() {
     $scope.stop();
-    MatchServices.getPendingMatch($scope.player).then(function (matches) {
+    MatchServices.getLatestMatch($scope.player).then(function (matches) {
       $scope.match = matches[0];
 
-      var confirmPopup = $ionicPopup.show({
-        title: 'Matchmaking',
-        template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
-        buttons: [
-          {
-            text: '<b>Confirm</b>',
-            type: 'button-positive',
-            onTap: function(e) {
-              return true;
+      if($scope.match.status === 'pending') {
+        var confirmPopup = $ionicPopup.show({
+          title: 'Matchmaking',
+          template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+          buttons: [
+            {
+              text: '<b>Confirm</b>',
+              type: 'button-positive',
+              onTap: function(e) {
+                return true;
+              }
             }
-          }
-        ]
-      });
+          ]
+        });
 
-      confirmPopup.then(function (res) {
-        if(res) {
-          if ($scope.player.player === 'player1') {
-            $scope.match.set('confirm1', true);
+        confirmPopup.then(function (res) {
+          if(res) {
+            if ($scope.player.player === 'player1') {
+              $scope.match.set('confirm1', true);
+            } else {
+              $scope.match.set('confirm2', true);
+            }
+            $scope.match.save().then(function () {
+              $scope.player.set('status', 'confirmed');
+              savePlayer();
+            });
           } else {
-            $scope.match.set('confirm2', true);
-          }
-          $scope.match.save().then(function () {
-            $scope.player.set('status', 'confirmed');
+            showFailPopup();
+            $scope.player.set('status', 'open');
             savePlayer();
-          });
-        } else {
-          showFailPopup();
-          $scope.player.set('status', 'open');
-          savePlayer();
-        }
-      });
-      $timeout(function () {
-        if($scope.player.get('status') === 'found') {
-          confirmPopup.close();
-        }
-      }, 20000);
+          }
+        });
+        $timeout(function () {
+          if($scope.player.get('status') === 'found') {
+            confirmPopup.close();
+          }
+        }, 20000);
+      }
+      if($scope.match.status === 'cancelled') {
+        $scope.player.set('status', 'open');
+        savePlayer();
+      }
     });
   }
 

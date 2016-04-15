@@ -20,6 +20,9 @@ function MatchRoutes ($stateProvider) {
       templateUrl: 'templates/match/match.view.html',
       controller: 'MatchViewCtrl',
       resolve: {
+        player: function (Parse, LadderServices, tournament) {
+          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
+        },
         match: function (MatchServices, $state, $q, player) {
           var cb = $q.defer();
           MatchServices.getLatestMatch(player[0]).then(function (matches) {

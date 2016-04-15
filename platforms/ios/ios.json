@@ -37,11 +37,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
+                            "xml": "<feature name=\"IonicDeploy\"><param name=\"ios-package\" onload=\"true\" value=\"IonicDeploy\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"IonicDeploy\"><param name=\"ios-package\" onload=\"true\" value=\"IonicDeploy\" /></feature>",
+                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -68,10 +68,10 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.onog.app"
         },
-        "ionic-plugin-keyboard": {
+        "ionic-plugin-deploy": {
             "PACKAGE_NAME": "com.onog.app"
         },
-        "ionic-plugin-deploy": {
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.onog.app"
         }
     },
@@ -126,6 +126,14 @@
             ]
         },
         {
+            "file": "plugins/ionic-plugin-deploy/www/ionicdeploy.js",
+            "id": "ionic-plugin-deploy.IonicDeploy",
+            "pluginId": "ionic-plugin-deploy",
+            "clobbers": [
+                "IonicDeploy"
+            ]
+        },
+        {
             "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
             "id": "ionic-plugin-keyboard.keyboard",
             "pluginId": "ionic-plugin-keyboard",
@@ -133,14 +141,6 @@
                 "cordova.plugins.Keyboard"
             ],
             "runs": true
-        },
-        {
-            "file": "plugins/ionic-plugin-deploy/www/ionicdeploy.js",
-            "id": "ionic-plugin-deploy.IonicDeploy",
-            "pluginId": "ionic-plugin-deploy",
-            "clobbers": [
-                "IonicDeploy"
-            ]
         }
     ],
     "plugin_metadata": {
@@ -150,7 +150,7 @@
         "cordova-plugin-splashscreen": "3.2.1",
         "cordova-plugin-statusbar": "2.1.2",
         "cordova-plugin-whitelist": "1.2.1",
-        "ionic-plugin-keyboard": "2.0.1",
-        "ionic-plugin-deploy": "0.5.0"
+        "ionic-plugin-deploy": "0.5.0",
+        "ionic-plugin-keyboard": "2.0.1"
     }
 }
