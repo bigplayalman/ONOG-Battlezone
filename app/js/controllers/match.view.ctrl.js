@@ -30,12 +30,14 @@ function MatchViewCtrl(
     ParsePushPlugin.on('receivePN', function(pn){
       if(pn.title) {
         switch (pn.title) {
-          case 'Opponent Found': break;
+          case 'Opponent Found': 
+            getMatch();
+            break;
           case 'Opponent Confirmed':
-            $state.go($state.current, {}, {reload: true});
+            getMatch();
             break;
           case 'Results Entered':
-            $state.go($state.current, {}, {reload: true});
+            getMatch();
             break;
         }
       }
@@ -94,6 +96,12 @@ function MatchViewCtrl(
           }
         ]
       });
+  }
+  
+  function getMatch() {
+    MatchServices.getLatestMatch($scope.player).then(function (matches) {
+      $scope.match = matches[0];
+    })
   }
 
   function recordMatch(match, username) {

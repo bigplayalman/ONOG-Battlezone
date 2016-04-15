@@ -13,7 +13,6 @@ function DashboardCtrl(
   Parse, tournament, MatchServices, QueueServices, LadderServices, player) {
 
   var promise = null;
-  $scope.foundCount = 0;
   $scope.user = Parse.User;
   $scope.player = player[0];
   $scope.tournament = tournament[0].tournament;
@@ -22,7 +21,7 @@ function DashboardCtrl(
   $scope.myOpponent = {name:'PAX Attendee'};
   $scope.end = {
     canPlay: true,
-    time: parseInt(moment().format('x'))
+    time: parseFloat(moment().format('x'))
   }
 
   if(window.ParsePushPlugin) {
@@ -30,13 +29,10 @@ function DashboardCtrl(
       if(pn.title) {
         switch (pn.title) {
           case 'Opponent Found':
-            if($scope.foundCount === 0) {
-              $scope.foundCount++;
-              getCurrentStatus(false);
-            }
+            getCurrentStatus(false);
             break;
           case 'Opponent Confirmed':
-            opponentConfirmed();
+            opponentConfirmed(false);
             break;
           case 'Results Entered':
             matchPlayed();
@@ -51,9 +47,11 @@ function DashboardCtrl(
   };
 
   $scope.startQueue = function () {
-    sub();
-    $scope.player.set('status', 'queue');
-    savePlayer();
+    if($scope.end.canPlay) {
+      sub();
+      $scope.player.set('status', 'queue');
+      savePlayer();
+    }
   };
 
   $scope.cancelQueue = function () {
@@ -95,11 +93,12 @@ function DashboardCtrl(
 
   function timer () {
     var now = moment();
-    var matchTime = moment($scope.match.get('activeDate'));
-    var fiveMinutes = matchTime.add(1, 'minutes');
-    $scope.end.time = parseFloat(fiveMinutes.format('x'));
-    $scope.end.canPlay = now.isAfter(fiveMinutes, 'seconds');
-    console.log('timer is ' + $scope.end.canPlay);
+    var time = $scope.match.get('activeDate');
+    if(time) {
+      var fiveMinutes = moment(time).add(1, 'minutes');
+      $scope.end.time = parseFloat(fiveMinutes.format('x'));
+      $scope.end.canPlay = now.isAfter(fiveMinutes, 'seconds');
+    }
   }
 
   function savePlayer () {
@@ -110,19 +109,15 @@ function DashboardCtrl(
   }
 
   function status () {
-    switch ($scope.player.status) {
+    switch ($scope.player.get('status')) {
       case 'open':
-        $scope.foundCount = 0;
         break;
       case 'queue':
         $scope.showOpponents();
         matchMaking();
         break;
       case 'found':
-        if($scope.foundCount === 0) {
-          $scope.foundCount++;
-          playerFound();
-        };
+        playerConfirm();
         break;
       case 'confirmed':
         waitingForOpponent();
@@ -145,6 +140,7 @@ function DashboardCtrl(
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       $scope.player = players[0];
       if ($scope.player) {
+        console.log('currentStatus');
         status();
         if(refresh) {
           $scope.$broadcast('scroll.refreshComplete');
@@ -173,114 +169,113 @@ function DashboardCtrl(
         if($scope.player.get('status') === 'queue') {
           getCurrentStatus(false);
         }
-      }, 5000);
+      }, 50000);
     });
-
   }
 
-  function playerFound() {
+  function playerConfirm() {
     $scope.stop();
-    $scope.popup = $ionicPopup.show({
+    MatchServices.getPendingMatch($scope.player).then(function (matches) {
+      $scope.match = matches[0];
+
+      var confirmPopup = $ionicPopup.show({
+        title: 'Matchmaking',
+        template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+        buttons: [
+          {
+            text: '<b>Confirm</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              return true;
+            }
+          }
+        ]
+      });
+
+      confirmPopup.then(function (res) {
+        if(res) {
+          if ($scope.player.player === 'player1') {
+            $scope.match.set('confirm1', true);
+          } else {
+            $scope.match.set('confirm2', true);
+          }
+          $scope.match.save().then(function () {
+            $scope.player.set('status', 'confirmed');
+            savePlayer();
+          });
+        } else {
+          showFailPopup();
+          $scope.player.set('status', 'open');
+          savePlayer();
+        }
+      });
+      $timeout(function () {
+        if($scope.player.get('status') === 'found') {
+          confirmPopup.close();
+        }
+      }, 10000);
+    });
+  }
+  
+  function showFailPopup() {
+    var failPopup = $ionicPopup.show({
       title: 'Matchmaking',
-      template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+      template: '<div class="text-center">You Failed to Confirm Match</div>',
       buttons: [
         {
-          text: '<b>Cancel</b>',
-          type: 'button-assertive',
-          onTap: function(e) {
-            return false;
-          }
-        },
-        {
-          text: '<b>Confirm</b>',
+          text: '<b>Close</b>',
           type: 'button-positive',
           onTap: function(e) {
             return true;
           }
         }
       ]
-    }).then(function(res) {
-      if(res) {
-        MatchServices.getLatestMatch($scope.player).then(function (matches) {
-          $scope.match = matches[0];
-          if($scope.match.get('status') === 'pending') {
-            if($scope.player.player === 'player1') {
-              $scope.match.set('confirm1', true);
-            } else {
-              $scope.match.set('confirm2', true);
-            }
-            $scope.match.save().then(function () {
-              $scope.player.set('status', 'confirmed');
-              savePlayer();
-            });
-          }
-        });
-      } else {
-        playerCancelled();
-      }
     });
 
-    $timeout(function () {
-      if($scope.player.get('status') === 'found') {
-        $scope.popup.close(false);
-      }
-    }, 60000);
-  }
-
-  function playerCancelled() {
-    if($scope.player.get('cancelTimer')) {
-      if(moment($scope.player.get('cancelTimer')).isAfter()) {
-        $scope.player.set('status', 'open');
-        $scope.player.unset('cancelTimer');
-        savePlayer();
-      } else {
-        startTimer();
-      }
-    } else {
-      var time = moment().add('2', 'minutes').format();
-      $scope.player.set('status', 'cancelled');
-      $scope.player.set('cancelTimer', time);
-      savePlayer();
-    }
-  }
-
-  function startTimer() {
-    //TODO do timer
+    failPopup.then(function (res) {
+      
+    });
   }
 
   function opponentConfirmed () {
-    if($scope.player.get('status') === 'confirmed') {
-      $scope.player.set('status', 'playing');
-      $scope.player.save().then(function () {
+    MatchServices.getLatestMatch($scope.player).then(function (matches) {
+      $scope.match = matches[0];
+      if($scope.match.get('status'), 'active') {
         $state.go('app.match.view');
-      });
-    } else if ($scope.player.get('status') === 'playing'){
-      $state.go('app.match.view');
-    }
+      }
+    })
   }
 
   function waitingForOpponent () {
     Parse.Cloud.run('confirmMatch').then(function (num) {
       checkOpponent(5000, false);
-      checkOpponent(50000, true);
+      checkOpponent(30000, true);
     });
   }
-  
+
   function checkOpponent (timeout, alreadyChecked) {
     $timeout(function () {
       if($scope.player.get('status') === 'confirmed') {
-        MatchServices.getConfirmedMatch($scope.player).then(function (matches) {
-          if(!matches.length && alreadyChecked) {
-            $scope.player.set('status', 'noOpponent');
-            savePlayer();
-          } else {
-            $scope.player.set('status', 'playing');
-            $rootScope.$broadcast('show:loading');
-            $scope.player.save().then(function () {
-              $rootScope.$broadcast('hide:loading');
-              $state.go('app.match.view');
-            });
+        MatchServices.getLatestMatch($scope.player).then(function (matches) {
+          $scope.match = matches[0];
+
+          switch ($scope.match.get('status')) {
+            case 'pending':
+              if(alreadyChecked) {
+                $scope.player.set('status', 'noOpponent');
+                savePlayer();
+              }
+              break;
+            case 'active':
+              $scope.player.set('status', 'playing');
+              $rootScope.$broadcast('show:loading');
+              $scope.player.save().then(function () {
+                $rootScope.$broadcast('hide:loading');
+                $state.go('app.match.view');
+              });
+              break;
           }
+          
         });
       }
     }, timeout);
@@ -288,8 +283,19 @@ function DashboardCtrl(
   function matchPlayed() {
     if($scope.player.get('status') !== 'open') {
       $scope.player.set('status', 'open');
-      savePlayer();
+      $scope.player.save().then(function (player) {
+        $scope.player = player;
+        showMatchResultsPopup();
+      })
     }
+  }
+  function showMatchResultsPopup() {
+    var popup = $ionicPopup.alert({
+      title: 'Match Played',
+      template: '<div class="text-center">Your Opponent has submitting results</div>'
+    }).then(function(res) {
+
+    });
   }
 
   function noOpponent () {
@@ -315,8 +321,12 @@ function DashboardCtrl(
     }).then(function(res) {
       if(res) {
         $scope.player.set('status', 'queue');
-        MatchServices.cancelMatch($scope.user.current(), $scope.player.player).then(function () {
-          savePlayer();
+        MatchServices.getLatestMatch($scope.player).then(function (matches) {
+          $scope.match = matches[0];
+          $scope.match.set('status', 'cancelled');
+          $scope.match.save().then(function () {
+            savePlayer();
+          });
         });
       } else {
         $scope.player.set('status', 'open');

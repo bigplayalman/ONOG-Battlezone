@@ -7,7 +7,7 @@ function MatchServices(Parse, Match, $q) {
   var user = Parse.User;
   return {
     getConfirmedMatch: getConfirmedMatch,
-    cancelMatch: cancelMatch,
+    getPendingMatch: getPendingMatch,
     getLatestMatch: getLatestMatch
   }
 
@@ -42,8 +42,7 @@ function MatchServices(Parse, Match, $q) {
     
     return query.find();
   }
-  function cancelMatch(player) {
-    var cb = $q.defer();
+  function getPendingMatch(player) {
     var type = player.get('player')
     var query = new Parse.Query(Match.Model);
     query.descending("createdAt");
@@ -55,12 +54,7 @@ function MatchServices(Parse, Match, $q) {
     }
     query.equalTo('status', 'pending');
     query.limit(1);
-    query.find().then(function (matches) {
-      matches[0].destroy().then(function () {
-        cb.resolve(true);
-      });
-    });
-    return cb.promise;
+    return query.find();
   }
 }
 

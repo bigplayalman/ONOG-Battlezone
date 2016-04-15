@@ -10,6 +10,7 @@
         <img src="img/icon.png" class="responsive-img">
       </div>
     </div>
+
     <div ng-if="tournament.disabled">
       <div class="padding">
         <ion-item class="item-clear purple-bg" ui-sref="app.ladder.leaderboard">
@@ -17,6 +18,7 @@
           <h1 class="light">STANDINGS</h1>
         </ion-item>
       </div>
+
       <div class="padding">
         <ion-item class="item-clear purple-bg item-text-wrap">
           <h1 class="light">{{tournament.disabledReason}}</h1>

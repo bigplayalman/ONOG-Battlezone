@@ -1,6 +1,10 @@
 <ion-view class="standingsView picture-bg">
   <ion-nav-title>Leaderboard</ion-nav-title>
   <ion-content padding="true">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
     <ion-list>
       <ion-item class="padding no-background light item-borderless">
         <div class="row">
