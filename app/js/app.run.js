@@ -28,6 +28,7 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
     });
 
     if(window.ParsePushPlugin) {
+      console.log('new version 1');
       ParsePushPlugin.on('receivePN', function(pn){
         console.log(pn);
         if(!pn.title) {
@@ -37,10 +38,21 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
           }).then(function(res) {
 
           });
+        } else {
+          switch (pn.title) {
+            case 'Opponent Found':
+              $rootScope.$broadcast('opponent:found');
+              break;
+            case 'Opponent Confirmed':
+              $rootScope.$broadcast('opponent:confirmed');
+              break;
+            case 'Results Entered':
+              $rootScope.$broadcast('results:entered');
+              break;
+          }
         }
       });
     }
-
 
   });
 }

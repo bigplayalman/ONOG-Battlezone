@@ -13,6 +13,13 @@ function LoginCtrl($scope, $state, Parse, $ionicHistory) {
         $ionicHistory.nextViewOptions({
           disableBack: true
         });
+        if(window.ParsePushPlugin) {
+          ParsePushPlugin.subscribe(user.username, function(msg) {
+            console.log('subbed');
+          }, function(e) {
+            console.log('failed to sub');
+          });
+        }
         $state.go('app.dashboard');
       },
       error: function (user, error) {

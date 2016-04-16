@@ -1,8 +1,14 @@
 <ion-view class="matchView picture-bg">
   <ion-nav-title>Match Details</ion-nav-title>
 	<ion-content padding="true">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+
     <div class="card no-background list">
-      <div class="row text-center light">
+
+      <div class="row text-center light" ng-if="!match.winner">
         <div class="col text-center">
           <strong>Your Opponent is:</strong>
           <h2 class="light">{{opponent.username}}</h2>
@@ -34,7 +40,7 @@
       </ion-item>
 
       <ion-item class="item-clear light item-borderless item-text-wrap" ng-if="match.winner && match.winner.id !== player.id">
-        <a class="button button-block button-calm" ng-click="showReport()">Report Match</a>
+        <a class="button button-block button-assertive" ui-sref="app.match.report({id: match.id})">Report Match</a>
       </ion-item>
 
     </div>

@@ -4,44 +4,40 @@ angular.module('ONOG.Controllers')
   .controller('DashboardCtrl',
     [
       '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
-      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices', 'player',
+      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices',
       DashboardCtrl
     ]);
 
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
-  Parse, tournament, MatchServices, QueueServices, LadderServices, player) {
+  Parse, tournament, MatchServices, QueueServices, LadderServices) {
   $scope.tournament = tournament[0].tournament;
   var promise = null;
   $scope.user = Parse.User;
-  $scope.player = player[0];
-  
-  $scope.opponent = QueueServices.opponent;
-  $scope.heroList = QueueServices.heroes;
-  $scope.myOpponent = {name:'PAX Attendee'};
   $scope.end = {
     canPlay: true,
     time: parseFloat(moment().format('x'))
   }
+  $scope.opponent = QueueServices.opponent;
+  $scope.heroList = QueueServices.heroes;
+  $scope.myOpponent = {name:'PAX Attendee'};
   
+  $rootScope.$on('opponent:found', playerConfirm);
+  $rootScope.$on('opponent:confirmed', opponentConfirmed);
+  $rootScope.$on('results:entered', matchPlayed);
 
-  if(window.ParsePushPlugin) {
-    ParsePushPlugin.on('receivePN', function(pn){
-      if(pn.title) {
-        switch (pn.title) {
-          case 'Opponent Found':
-            playerConfirm(false);
-            break;
-          case 'Opponent Confirmed':
-            opponentConfirmed(false);
-            break;
-          case 'Results Entered':
-            matchPlayed();
-            break;
-        }
-      }
+  $scope.$on("$ionicView.enter", function(event) {
+    console.log('view loaded');
+    
+    if(navigator && navigator.splashscreen) {
+      navigator.splashscreen.hide();
+    }
+    console.log($scope.user.current().username);
+    LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
+      $scope.player = players[0];
+      status();
     });
-  }
+  });
 
   $scope.doRefresh = function() {
     getCurrentStatus(true);
@@ -49,7 +45,6 @@ function DashboardCtrl(
 
   $scope.startQueue = function () {
     if($scope.end.canPlay) {
-      sub();
       $scope.player.set('status', 'queue');
       savePlayer();
     }
@@ -76,8 +71,6 @@ function DashboardCtrl(
   $scope.finished = function () {
     $timeout(timer, 1500);
   }
-
-  status();
 
   function matchTime() {
     if(!$scope.match) {
@@ -113,6 +106,7 @@ function DashboardCtrl(
     if($scope.player) {
       switch ($scope.player.get('status')) {
         case 'open':
+          $scope.stop();
           break;
         case 'queue':
           $scope.showOpponents();
@@ -138,6 +132,10 @@ function DashboardCtrl(
       matchTime();
     }
   }
+
+  $scope.$on('destroy', function () {
+    console.log('controller destroyed');
+  });
 
   function getCurrentStatus(refresh) {
     var refresh = refresh;
@@ -172,52 +170,53 @@ function DashboardCtrl(
   }
 
   function playerConfirm() {
-    $scope.stop();
     MatchServices.getLatestMatch($scope.player).then(function (matches) {
       $scope.match = matches[0];
-
-      if($scope.match.status === 'pending') {
-        var confirmPopup = $ionicPopup.show({
-          title: 'Matchmaking',
-          template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
-          buttons: [
-            {
-              text: '<b>Confirm</b>',
-              type: 'button-positive',
-              onTap: function(e) {
-                return true;
+      $timeout (function () {
+        $scope.stop();
+        if($scope.match.status === 'pending') {
+          var confirmPopup = $ionicPopup.show({
+            title: 'Matchmaking',
+            template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
+            buttons: [
+              {
+                text: '<b>Confirm</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                  return true;
+                }
               }
-            }
-          ]
-        });
+            ]
+          });
 
-        confirmPopup.then(function (res) {
-          if(res) {
-            if ($scope.player.player === 'player1') {
-              $scope.match.set('confirm1', true);
+          confirmPopup.then(function (res) {
+            if(res) {
+              if ($scope.player.player === 'player1') {
+                $scope.match.set('confirm1', true);
+              } else {
+                $scope.match.set('confirm2', true);
+              }
+              $scope.match.save().then(function () {
+                $scope.player.set('status', 'confirmed');
+                savePlayer();
+              });
             } else {
-              $scope.match.set('confirm2', true);
-            }
-            $scope.match.save().then(function () {
-              $scope.player.set('status', 'confirmed');
+              showFailPopup();
+              $scope.player.set('status', 'open');
               savePlayer();
-            });
-          } else {
-            showFailPopup();
-            $scope.player.set('status', 'open');
-            savePlayer();
-          }
-        });
-        $timeout(function () {
-          if($scope.player.get('status') === 'found') {
-            confirmPopup.close();
-          }
-        }, 20000);
-      }
-      if($scope.match.status === 'cancelled') {
-        $scope.player.set('status', 'open');
-        savePlayer();
-      }
+            }
+          });
+          $timeout(function () {
+            if($scope.player.get('status') === 'found') {
+              confirmPopup.close();
+            }
+          }, 20000);
+        }
+        if($scope.match.status === 'cancelled') {
+          $scope.player.set('status', 'open');
+          savePlayer();
+        }
+      }, 2000);
     });
   }
 
@@ -337,16 +336,6 @@ function DashboardCtrl(
         savePlayer();
       }
     });
-  }
-
-  function sub () {
-    if(window.ParsePushPlugin) {
-      ParsePushPlugin.subscribe($scope.player.username, function(msg) {
-        console.log('subbed');
-      }, function(e) {
-        console.log('failed to sub');
-      });
-    }
   }
 
   function changeWord () {

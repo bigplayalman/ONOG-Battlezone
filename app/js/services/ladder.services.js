@@ -57,7 +57,8 @@ function LadderServices(Parse, Ladder) {
 
 function Ladder(Parse) {
   var Model = Parse.Object.extend('Ladder');
-  var attributes = ['tournament', 'user', 'battleTag', 'username', 'hero', 'player', 'status', 'cancelTimer', 'wins', 'losses', 'mmr', 'points'];
+  var attributes = ['tournament', 'user', 'battleTag', 'username', 
+    'hero', 'player', 'status', 'cancelTimer', 'wins', 'losses', 'mmr', 'points', 'banReason'];
   Parse.defineAttributes(Model, attributes);
 
   return {

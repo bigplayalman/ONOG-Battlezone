@@ -15,19 +15,25 @@ function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse, $timeout)
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
-    $state.go('app.' + link, {reload: true});
+    if(link === 'login') {
+      if(window.ParsePushPlugin) {
+        ParsePushPlugin.unsubscribe($scope.user.current().username, function(msg) {
+          console.log('subbed');
+        }, function(e) {
+          console.log('failed to sub');
+        });
+      }
+      Parse.User.logOut().then(function (user) {
+        $state.go('app.' + link, {reload: true});
+      });
+      
+    } else {
+      $state.go('app.' + link, {reload: true});
+    }
     $scope.popover.hide();
   }
   //Cleanup the popover when we're done with it!
   $scope.$on('$destroy', function() {
     $scope.popover.remove();
-  });
-
-  $scope.$on('$ionicView.loaded', function() {
-    ionic.Platform.ready( function() {
-      if(navigator && navigator.splashscreen) {
-        navigator.splashscreen.hide();
-      }
-    });
   });
 }

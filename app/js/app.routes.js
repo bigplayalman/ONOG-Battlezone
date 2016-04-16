@@ -20,16 +20,10 @@ function routes ($stateProvider, $urlRouterProvider) {
     })
     .state('app.dashboard', {
       url: '/dashboard',
-      cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/dashboard.html',
           controller: 'DashboardCtrl'
-        }
-      },
-      resolve: {
-        player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
         }
       }
     })

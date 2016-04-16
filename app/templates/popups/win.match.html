@@ -1,3 +1,6 @@
 <div class="row text-center">
   <strong>Please Submit a Screenshot of your win.</strong>
+  <span class="assertive" ng-if="errorMessage">{{errorMessage}}</span>
+  <button ng-click="getPicture()" class="button button-block button-calm" ng-if="!picture">Get Screenshot</button>
+  <span class="balanced" ng-if="picture">Screenshot Recieved</span>
 </div>

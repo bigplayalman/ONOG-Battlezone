@@ -13,36 +13,53 @@ function MatchViewCtrl(
   Parse, LadderServices, MatchServices, QueueServices,
   tournament, match, player
 ) {
-  $scope.match = match[0];
   $scope.tournament = tournament[0].tournament;
-  $scope.player = player[0];
   $scope.user = Parse.User;
   $scope.end = {
     time: 0
   };
 
+  $scope.$on("$ionicView.enter", function(event) {
+    $scope.match = match[0];
+    $scope.player = player[0];
+    getMatchDetails();
+  });
+
+  $rootScope.$on('results:entered', getMatch);
+
+  $scope.picture = null;
+  var parseFile = new Parse.File();
+  var imgString = null;
 
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
-  
-  if(window.ParsePushPlugin) {
-    ParsePushPlugin.on('receivePN', function(pn){
-      if(pn.title) {
-        switch (pn.title) {
-          case 'Opponent Found': 
-            getMatch();
-            break;
-          case 'Opponent Confirmed':
-            getMatch();
-            break;
-          case 'Results Entered':
-            getMatch();
-            break;
-        }
-      }
-    });
+
+
+
+  $scope.getPicture = function() {
+    var options = {
+      quality: 90,
+      targetWidth: 320,
+      targetHeight: 500,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: 0,
+      encodingType: 1
+    }
+    navigator.camera.getPicture(onSuccess,onFail,options);
   }
+  var onSuccess = function(imageData) {
+    $scope.picture = 'data:image/png;base64,' + imageData;
+    imgString = imageData;
+    $scope.$apply();
+  };
+  var onFail = function(e) {
+    console.log("On fail " + e);
+  }
+
+  $scope.doRefresh = function() {
+    getMatch(true);
+  };
 
   $scope.record = function (record) {
     MatchServices.getLatestMatch($scope.player).then(function (matches) {
@@ -76,9 +93,32 @@ function MatchViewCtrl(
       }
     });
   };
-  
-  getMatchDetails();
-  
+
+  function winMatch () {
+    $scope.picture = null;
+    $scope.errorMessage = null;
+
+    return $ionicPopup.show(
+      {
+        templateUrl: 'templates/popups/win.match.html',
+        title: 'Report a Win',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel'},
+          { text: '<b>Confirm</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if (!$scope.picture) {
+                $scope.errorMessage = 'Upload a Screenshot';
+                e.preventDefault();
+              } else {
+                return true;
+              }
+            }
+          }
+        ]
+      });
+  }
 
   function loseMatch() {
     return $ionicPopup.show(
@@ -97,10 +137,14 @@ function MatchViewCtrl(
         ]
       });
   }
-  
-  function getMatch() {
-    MatchServices.getLatestMatch($scope.player).then(function (matches) {
-      $scope.match = matches[0];
+
+  function getMatch(refresh) {
+    MatchServices.getMatch($scope.match.id).then(function (match) {
+      $scope.match = match;
+      console.log('match' + $scope.match.get('status'));
+      if(refresh) {
+        $scope.$broadcast('scroll.refreshComplete');
+      }
     })
   }
 
@@ -115,34 +159,10 @@ function MatchViewCtrl(
           title: 'Match Submitted',
           template: '<div class="text-center">Thank you for submitting results</div>'
         }).then(function (res) {
-          $state.go('app.dashboard');
-        });
+
+        })
       });
     });
-  }
-
-  function winMatch () {
-    $scope.image = null;
-
-    return $ionicPopup.show(
-      {
-        templateUrl: 'templates/popups/win.match.html',
-        title: 'Report a Win',
-        scope: $scope,
-        buttons: [
-          { text: 'Cancel'},
-          { text: '<b>Confirm</b>',
-            type: 'button-positive',
-            onTap: function(e) {
-              if (!$scope.image) {
-                e.preventDefault();
-              } else {
-                return $scope.image;
-              }
-            }
-          }
-        ]
-      });
   }
 
   function getMatchDetails() {
