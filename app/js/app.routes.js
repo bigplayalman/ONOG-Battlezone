@@ -1,4 +1,8 @@
-angular.module('ONOG')
+angular.module('ONOG.routes', [
+  'ONOG.routes.matches',
+  'ONOG.routes.ladder',
+  'ONOG.routes.admin'
+])
   .config(['$stateProvider', '$urlRouterProvider', routes]);
 
 function routes ($stateProvider, $urlRouterProvider) {

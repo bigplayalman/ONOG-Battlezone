@@ -1,4 +1,4 @@
-angular.module('ONOG')
+angular.module('ONOG.routes.matches', [])
   .config(['$stateProvider', MatchRoutes]);
 
 function MatchRoutes ($stateProvider) {

@@ -1,6 +1,6 @@
 angular.module('ONOG.Services')
 
-  .service('QueueServices',[QueueServices])
+  .service('QueueServices', QueueServices)
 
 function QueueServices() {
   var opponent = {

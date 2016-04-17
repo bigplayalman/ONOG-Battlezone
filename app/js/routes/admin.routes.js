@@ -1,4 +1,4 @@
-angular.module('ONOG')
+angular.module('ONOG.routes.admin', [])
   .config(['$stateProvider', AdminRoutes]);
 
 function AdminRoutes ($stateProvider) {

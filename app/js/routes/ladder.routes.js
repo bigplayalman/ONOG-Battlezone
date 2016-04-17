@@ -1,4 +1,4 @@
-angular.module('ONOG')
+angular.module('ONOG.routes.ladder', [])
   .config(['$stateProvider', LadderRoutes]);
 
 function LadderRoutes ($stateProvider) {

@@ -26,7 +26,7 @@ var paths = {
   images: 'app/img/**/*',
   parse: 'parse/dist/*.min.js',
   moment: 'moment/min/moment.min.js',
-  
+
   //Destination folders
   destImages: './www/img/',
   destTemplates: './www/templates/'
@@ -73,12 +73,13 @@ gulp.task('scripts', function () {
       errorHandler: onError
     }))
 		.pipe(sourcemaps.init())
-		.pipe(concat("app.js"))
+    //.pipe(uglify())
+		.pipe(concat("app.min.js"))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest("./www/build/"))
-		.pipe(rename('app.min.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest("./www/build/"))
+		// .pipe(rename('app.min.js'))
+		//
+		// .pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));
 });
 

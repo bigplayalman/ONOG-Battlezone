@@ -6,6 +6,7 @@ angular.module('ONOG.Controllers')
 MatchListCtrl.$inject = [
   '$scope', '$state', '$ionicPopup', '$rootScope', 'Parse', 'MatchServices', 'player'
 ];
+
 function MatchListCtrl(
   $scope, $state, $ionicPopup, $rootScope, Parse, MatchServices, player
 ) {

@@ -2,6 +2,7 @@ angular.module('ONOG.Controllers')
   .controller('MenuCtrl', MenuCtrl);
 
 MenuCtrl.$inject = ['$scope','$ionicPopover', '$state', '$ionicHistory', 'Parse', '$timeout'];
+
 function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse, $timeout) {
   $scope.user = Parse.User;
 

@@ -1,6 +1,6 @@
 angular.module('ONOG.Services')
 
-  .service('cameraServices', [cameraServices]);
+  .service('cameraServices', cameraServices);
 
 function cameraServices () {
   

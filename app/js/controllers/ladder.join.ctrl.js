@@ -1,10 +1,12 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('LadderJoinCtrl', ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', LadderJoinCtrl]);
+  .controller('LadderJoinCtrl', [
+    '$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', LadderJoinCtrl]);
 
-function LadderJoinCtrl
-($scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices) {
+function LadderJoinCtrl(
+  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices
+) {
   $ionicHistory.nextViewOptions({
     disableBack: true
   });

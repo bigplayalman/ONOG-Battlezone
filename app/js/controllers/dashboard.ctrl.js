@@ -2,9 +2,11 @@
 angular.module('ONOG.Controllers')
 
   .controller('DashboardCtrl', DashboardCtrl);
+
 DashboardCtrl.$inject =  ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
   'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices', 'locationServices'
 ];
+
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
   Parse, tournament, MatchServices, QueueServices, LadderServices, locationServices

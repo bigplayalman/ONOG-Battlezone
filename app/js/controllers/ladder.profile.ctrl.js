@@ -4,8 +4,9 @@ angular.module('ONOG.Controllers')
   .controller('LadderProfileCtrl',
     ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', 'player', LadderProfileCtrl]);
 
-function LadderProfileCtrl
-($scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player) {
+function LadderProfileCtrl(
+  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player
+) {
 
   $ionicHistory.nextViewOptions({
     disableBack: true

@@ -1,6 +1,6 @@
 angular.module('ONOG')
   .constant("moment", moment)
-  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', '$ionicPopup', 'locationServices', run])
+  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', '$ionicPopup', run]);
 
 function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
   $ionicPlatform.ready(function() {
