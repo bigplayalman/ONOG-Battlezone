@@ -3,11 +3,11 @@ angular.module('ONOG.routes', [
   'ONOG.routes.ladder',
   'ONOG.routes.admin'
 ])
-  .config(['$stateProvider', '$urlRouterProvider', routes]);
+  .config(routes);
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('app/dashboard');
+  $urlRouterProvider.otherwise('app/loading');
 
   $stateProvider
     .state('app', {
@@ -28,14 +28,14 @@ function routes ($stateProvider, $urlRouterProvider) {
             ionic.Platform.exitApp();
           });
           return cb.promise;
-        },
-        location: function (locationServices, $q) {
-          var cb = $q.defer();
-          locationServices.getLocation().then(function (location) {
-            locationServices.setLocation(location);
-            cb.resolve();
-          });
-          return cb.promise;
+        }
+      }
+    })
+    .state('app.loading', {
+      url: '/loading',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/loading.html'
         }
       }
     })

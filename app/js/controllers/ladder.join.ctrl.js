@@ -1,8 +1,7 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('LadderJoinCtrl', [
-    '$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', LadderJoinCtrl]);
+  .controller('LadderJoinCtrl', LadderJoinCtrl);
 
 function LadderJoinCtrl(
   $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices

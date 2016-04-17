@@ -3,10 +3,6 @@ angular.module('ONOG.Controllers')
 
   .controller('MatchReportCtrl', MatchReportCtrl);
 
-MatchReportCtrl.$inject = [
-  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory',
-  'Parse', 'MatchServices', 'cameraServices', 'report'
-];
 function MatchReportCtrl(
   $scope, $state, $rootScope, $ionicPopup, $ionicHistory,
   Parse, MatchServices, cameraServices, report

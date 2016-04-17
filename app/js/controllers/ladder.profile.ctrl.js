@@ -1,8 +1,7 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('LadderProfileCtrl',
-    ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', 'player', LadderProfileCtrl]);
+  .controller('LadderProfileCtrl', LadderProfileCtrl);
 
 function LadderProfileCtrl(
   $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player

@@ -1,8 +1,8 @@
 angular.module('ONOG.Services')
 
-  .service('locationServices', ['Parse', '$cordovaGeolocation', '$q', locationServices]);
+  .service('locationServices', locationServices);
 
-function locationServices (Parse, $cordovaGeolocation, $q) {
+function locationServices (Parse, $cordovaGeolocation, $q, $rootScope) {
 
   var location = {coords: new Parse.GeoPoint()};
   return {

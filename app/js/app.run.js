@@ -1,8 +1,8 @@
 angular.module('ONOG')
   .constant("moment", moment)
-  .run(['$ionicPlatform', '$state', '$rootScope', '$ionicLoading', '$ionicPopup', run]);
+  .run(run);
 
-function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
+function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, locationServices, $ionicHistory) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,6 +17,7 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
     $rootScope.$on('show:loading', function() {
       $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-calm"></ion-spinner>', showBackdrop: true, animation: 'fade-in'});
     });
@@ -51,6 +52,14 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup) {
         }
       });
     }
+
+    locationServices.getLocation().then(function (location) {
+      locationServices.setLocation(location);
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $state.go('app.dashboard');
+    });
 
   });
 }

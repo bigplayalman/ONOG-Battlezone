@@ -3,8 +3,6 @@ angular.module('ONOG.Controllers')
 
   .controller('AdminSettingsCtrl', AdminSettingsCtrl);
 
-AdminSettingsCtrl.$inject = ['$scope', 'locationServices', 'newTournament', 'tournament'];
-
 function AdminSettingsCtrl($scope, locationServices, newTournament, tournament) {
   $scope.details = newTournament;
   

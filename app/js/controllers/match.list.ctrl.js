@@ -3,10 +3,6 @@ angular.module('ONOG.Controllers')
 
   .controller('MatchListCtrl', MatchListCtrl);
 
-MatchListCtrl.$inject = [
-  '$scope', '$state', '$ionicPopup', '$rootScope', 'Parse', 'MatchServices', 'player'
-];
-
 function MatchListCtrl(
   $scope, $state, $ionicPopup, $rootScope, Parse, MatchServices, player
 ) {
@@ -15,7 +11,7 @@ function MatchListCtrl(
 
   if($scope.player) {
     $rootScope.$broadcast('show:loading');
-    MatchServices.getPlayerMatches($scope.player, 'completed').then(function (matches) {
+    MatchServices.getPlayerMatches($scope.player, null).then(function (matches) {
       console.log('matches fetched');
       $scope.matches = matches;
       MatchServices.getPlayerMatches($scope.player, 'reported').then(function (reported) {
@@ -37,6 +33,9 @@ function MatchListCtrl(
     }
     if($scope.reported.length) {
       showReported();
+      return;
+    }
+    if(match.status !== 'completed') {
       return;
     }
     $state.go('app.match.report', {id: match.id});

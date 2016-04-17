@@ -54,7 +54,8 @@
     <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     <name>Battlezone Beta</name>
     <description>
-    Battlezone Beta
+    Battlezone Beta. A Matchmaking app for PAX Bound players to play each other in a friendly
+    game of hearthstone and earn points to win big prizes.
     </description>
     <author email="almas@oomzie.com" href="http://oomzie.com/">
     Almas Barzhaxynov

@@ -1,8 +1,7 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('ResetPasswordCtrl',
-    ['$scope', '$ionicPopup', '$state', '$ionicHistory', 'Parse', ResetPasswordCtrl]);
+  .controller('ResetPasswordCtrl', ResetPasswordCtrl);
 
 function ResetPasswordCtrl
 ($scope, $ionicPopup, $state, $ionicHistory, Parse) {

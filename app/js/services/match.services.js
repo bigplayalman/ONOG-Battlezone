@@ -1,7 +1,7 @@
 angular.module('ONOG.Services')
 
-  .service('MatchServices', ['Parse', 'Match', '$q', MatchServices])
-  .factory('Match', ['Parse', Match]);
+  .service('MatchServices', MatchServices)
+  .factory('Match', Match);
 
 function MatchServices(Parse, Match, $q) {
   var user = Parse.User;
@@ -19,8 +19,11 @@ function MatchServices(Parse, Match, $q) {
     var player2 = new Parse.Query(Match.Model);
     player2.equalTo('player2', player);
     var mainQuery = Parse.Query.or(player1, player2);
+    mainQuery.descending("createdAt");
     mainQuery.limit(10);
-    mainQuery.equalTo('status', status);
+    if(status) {
+      mainQuery.equalTo('status', status);
+    }
     return mainQuery.find();
   }
 

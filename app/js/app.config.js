@@ -1,5 +1,5 @@
 angular.module('ONOG.config', [])
-  .config(['$ionicConfigProvider', '$compileProvider', 'ParseProvider', config]);
+  .config(config);
 
 function config ($ionicConfigProvider, $compileProvider, ParseProvider) {
 

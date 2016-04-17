@@ -3,7 +3,6 @@ angular.module('ONOG.Controllers')
 
   .controller('LeaderBoardsCtrl', LeaderBoardsCtrl);
 
-LeaderBoardsCtrl.$inject = ['$scope', 'LadderServices', 'tournament', 'Parse', '$filter', '$ionicPopup'];
 function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $ionicPopup) {
   $scope.user = Parse.User;
   getPlayers();

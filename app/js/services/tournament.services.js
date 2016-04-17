@@ -1,9 +1,9 @@
 
 angular.module('ONOG.Services')
 
-  .service('TournamentServices', ['Parse', '$q', 'Tournament', 'Details', 'Ladder', TournamentServices])
-  .factory('Tournament', ['Parse', Tournament])
-  .factory('Details', ['Parse', Details]);
+  .service('TournamentServices', TournamentServices)
+  .factory('Tournament', Tournament)
+  .factory('Details', Details);
 
 function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
   return {

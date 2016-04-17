@@ -16,11 +16,12 @@ var imagemin = require('gulp-imagemin');
 var clean = require('gulp-clean');
 var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
+var ngAnnotate = require('gulp-ng-annotate');
 
 var paths = {
   sass: ['scss/**/*.scss'],
   index: 'app/index.html',
-  scripts: ['app/js/app.js', 'app/js/**/*.js'],
+  scripts: ['app/js/**/*.js'],
   styles: 'app/scss/*.scss',
   templates: 'app/templates/**/*.html',
   images: 'app/img/**/*',
@@ -73,13 +74,13 @@ gulp.task('scripts', function () {
       errorHandler: onError
     }))
 		.pipe(sourcemaps.init())
+    .pipe(ngAnnotate({
+      single_quotes: true
+    }))
+		.pipe(concat("app.js"))
     //.pipe(uglify())
-		.pipe(concat("app.min.js"))
-		.pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
 		.pipe(gulp.dest("./www/build/"))
-		// .pipe(rename('app.min.js'))
-		//
-		// .pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));
 });
 

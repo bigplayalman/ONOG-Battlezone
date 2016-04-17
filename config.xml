@@ -2,7 +2,8 @@
 <widget id="com.onog.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Battlezone Beta</name>
   <description>
-    Battlezone Beta
+    Battlezone Beta. A Matchmaking app for PAX Bound players to play each other in a friendly
+    game of hearthstone and earn points to win big prizes.
     </description>
   <author email="almas@oomzie.com" href="http://oomzie.com/">
     Almas Barzhaxynov
@@ -26,6 +27,9 @@
   <preference name="orientation" value="portrait"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
+  </feature>
+  <feature name="Geolocation">
+    <param name="ios-package" value="CDVLocation" />
   </feature>
 
   <platform name="android">

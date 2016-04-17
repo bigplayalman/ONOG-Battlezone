@@ -1,5 +1,5 @@
 angular.module('ONOG.routes.matches', [])
-  .config(['$stateProvider', MatchRoutes]);
+  .config(MatchRoutes);
 
 function MatchRoutes ($stateProvider) {
 
@@ -27,24 +27,7 @@ function MatchRoutes ($stateProvider) {
     .state('app.match.view', {
       url: '/view',
       templateUrl: 'templates/match/match.view.html',
-      controller: 'MatchViewCtrl',
-      resolve: {
-        player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament.tournament, Parse.User.current());
-        },
-        match: function (MatchServices, $state, $q, player) {
-          var cb = $q.defer();
-          MatchServices.getLatestMatch(player[0]).then(function (matches) {
-            if(!matches.length) {
-              cb.reject();
-              $state.go('app.dashboard');
-            } else {
-              cb.resolve(matches);
-            }
-          });
-          return cb.promise;
-        }
-      }
+      controller: 'MatchViewCtrl'
     })
     .state('app.match.report', {
       url: '/report/:id',

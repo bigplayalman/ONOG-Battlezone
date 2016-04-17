@@ -6,7 +6,7 @@
         Join League to record your matches!
       </ion-item>
       <ion-item ng-repeat="match in matches" ng-click="processMatch(match)">
-        <h2 ng-if="match.player1.id !== player.id">{{match.username1}}</h2>
+        <h2 ng-if="match.player1.id !== player.id">{{match.username1}} | {{match.status}}</h2>
         <h2 ng-if="match.player2.id !== player.id">{{match.username2}}</h2>
         {{match.activeDate | date: 'MM/dd/yyyy HH:mm'}}
         <span class="item-note">

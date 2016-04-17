@@ -1,8 +1,8 @@
 
 angular.module('ONOG.Services')
 
-  .service('LadderServices', ['Parse', 'Ladder', LadderServices])
-  .factory('Ladder', ['Parse', Ladder])
+  .service('LadderServices', LadderServices)
+  .factory('Ladder', Ladder)
 
 function LadderServices(Parse, Ladder) {
   return {

@@ -3,10 +3,6 @@ angular.module('ONOG.Controllers')
 
   .controller('DashboardCtrl', DashboardCtrl);
 
-DashboardCtrl.$inject =  ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
-  'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices', 'locationServices'
-];
-
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
   Parse, tournament, MatchServices, QueueServices, LadderServices, locationServices
@@ -19,23 +15,52 @@ function DashboardCtrl(
     canPlay: true,
     time: parseFloat(moment().format('x'))
   }
+  $scope.location = locationServices.location;
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
 
   $rootScope.$on('opponent:found', playerConfirm);
   $rootScope.$on('opponent:confirmed', opponentConfirmed);
-  $rootScope.$on('results:entered', matchPlayed);
 
   $scope.$on("$ionicView.enter", function(event) {
     if(navigator && navigator.splashscreen) {
       navigator.splashscreen.hide();
     }
-    $scope.location = locationServices.location;
+    console.log($scope.location);
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       $scope.player = players[0];
       $scope.player.set('location', $scope.location.coords);
-      status();
+      $scope.player.save().then(function (player) {
+        $scope.player = player;
+        console.log($scope.player);
+        if(window.ParsePushPlugin) {
+          ParsePushPlugin.subscribe($scope.player.username, function(msg) {
+            console.log('subbed to ' + $scope.player.username);
+          }, function(e) {
+            console.log('failed to sub');
+          });
+        }
+        var userGeoPoint = $scope.player.get("location");
+        if(userGeoPoint) {
+          var query = new Parse.Query('Tournament');
+          query.withinMiles("location", userGeoPoint, 50);
+          query.limit(10);
+          query.find({
+            success: function(placesObjects) {
+              console.log(placesObjects);
+              if(window.ParsePushPlugin && placesObjects.length) {
+                ParsePushPlugin.subscribe('pax-east', function(msg) {
+                  console.log('paxed');
+                }, function(e) {
+                  console.log('failed to sub');
+                });
+              }
+            }
+          });
+        }
+        status();
+      });
     });
   });
 
@@ -71,6 +96,9 @@ function DashboardCtrl(
   $scope.finished = function () {
     $timeout(timer, 1500);
   }
+  $scope.$on('destroy', function () {
+    console.log('controller destroyed');
+  });
 
   function matchTime() {
     if(!$scope.match) {
@@ -133,10 +161,6 @@ function DashboardCtrl(
     }
   }
 
-  $scope.$on('destroy', function () {
-    console.log('controller destroyed');
-  });
-
   function getCurrentStatus(refresh) {
     var refresh = refresh;
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
@@ -161,17 +185,21 @@ function DashboardCtrl(
   }
 
   function matchMaking() {
-    Parse.Cloud.run('matchmaking').then(function (){
-      console.log('matchmaking started');
-    });
+    $timeout(function () {
+      Parse.Cloud.run('matchmaking').then(function (res){
+        console.log(res);
+        console.log('matchmaking started');
+      });
+    }, 2000);
   }
 
   function playerConfirm() {
-    MatchServices.getLatestMatch($scope.player).then(function (matches) {
-      $scope.match = matches[0];
-      $timeout (function () {
+    $timeout (function () {
+      MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        $scope.match = matches[0];
+        console.log($scope.match.status);
         $scope.stop();
-        if($scope.match.status === 'pending') {
+        if($scope.match.get('status') === 'pending') {
           var confirmPopup = $ionicPopup.show({
             title: 'Matchmaking',
             template: '<div class="text-center"><strong>A Worthy Opponent</strong><br> has been found!</div>',
@@ -203,18 +231,20 @@ function DashboardCtrl(
               savePlayer();
             }
           });
+          
           $timeout(function () {
             if($scope.player.get('status') === 'found') {
               confirmPopup.close();
             }
           }, 20000);
         }
-        if($scope.match.status === 'cancelled') {
+        
+        if($scope.match.get('status') === 'cancelled') {
           $scope.player.set('status', 'open');
           savePlayer();
         }
-      }, 2000);
-    });
+      });
+    }, 2000);
   }
 
   function showFailPopup() {
@@ -238,39 +268,20 @@ function DashboardCtrl(
   }
 
   function opponentConfirmed () {
-    MatchServices.getLatestMatch($scope.player).then(function (matches) {
-      $scope.match = matches[0];
-      if($scope.match.get('status'), 'active') {
-        $state.go('app.match.view');
-      }
-    })
+    $timeout(function () {
+      MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        $scope.match = matches[0];
+        if($scope.match.get('status'), 'active') {
+          $state.go('app.match.view');
+        }
+      })
+    }, 1000);
   }
 
   function waitingForOpponent () {
     Parse.Cloud.run('confirmMatch').then(function (num) {
       checkOpponent(5000, false);
       checkOpponent(30000, true);
-
-      var userGeoPoint = $scope.player.get("location");
-// Create a query for places
-      var query = new Parse.Query('Tournament');
-// Interested in locations near user.
-      query.withinMiles("location", userGeoPoint, 50);
-// Limit what could be a lot of points.
-      query.limit(10);
-// Final list of objects
-      query.find({
-        success: function(placesObjects) {
-          console.log(placesObjects);
-          if(window.ParsePushPlugin && placesObjects.length) {
-            ParsePushPlugin.subscribe('pax-east', function(msg) {
-              console.log('paxed');
-            }, function(e) {
-              console.log('failed to sub');
-            });
-          }
-        }
-      });
     });
   }
 
@@ -301,23 +312,6 @@ function DashboardCtrl(
       }
     }, timeout);
   }
-  function matchPlayed() {
-    if($scope.player.get('status') !== 'open') {
-      $scope.player.set('status', 'open');
-      $scope.player.save().then(function (player) {
-        $scope.player = player;
-        showMatchResultsPopup();
-      })
-    }
-  }
-  function showMatchResultsPopup() {
-    var popup = $ionicPopup.alert({
-      title: 'Match Played',
-      template: '<div class="text-center">Your Opponent has submitting results</div>'
-    }).then(function(res) {
-
-    });
-  }
 
   function noOpponent () {
     $ionicPopup.show({
@@ -342,16 +336,16 @@ function DashboardCtrl(
     }).then(function(res) {
       if(res) {
         $scope.player.set('status', 'queue');
-        MatchServices.getLatestMatch($scope.player).then(function (matches) {
-          $scope.match = matches[0];
-          $scope.match.set('status', 'cancelled');
-          $scope.match.save().then(function () {
-            savePlayer();
-          });
+        $scope.match.set('status', 'cancelled');
+        $scope.match.save().then(function () {
+          savePlayer();
         });
       } else {
         $scope.player.set('status', 'open');
-        savePlayer();
+        $scope.match.set('status', 'cancelled');
+        $scope.match.save().then(function () {
+          savePlayer();
+        });
       }
     });
   }

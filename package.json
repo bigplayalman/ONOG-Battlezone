@@ -5,7 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "angular-parse": "^0.2.2",
+    "gulp-ng-annotate": "^2.0.0",
     "moment": "^2.12.0",
+    "ng-annotate": "^1.2.1",
     "parse": "1.6.14"
   },
   "devDependencies": {

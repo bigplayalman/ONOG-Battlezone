@@ -68,6 +68,10 @@
   -webkit-animation: fadeInLeft 1s;
           animation: fadeInLeft 1s; }
 
+.loading {
+  background: url("../img/splash.png") center black;
+  background-size: cover; }
+
 .picture-bg {
   background: url("../img/bg.png") center black;
   background-size: cover; }

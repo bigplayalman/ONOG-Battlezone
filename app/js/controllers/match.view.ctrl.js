@@ -3,15 +3,9 @@ angular.module('ONOG.Controllers')
 
   .controller('MatchViewCtrl', MatchViewCtrl);
 
-MatchViewCtrl.$inject = [
-  '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory',
-  'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'cameraServices',
-  'tournament', 'match', 'player'
-];
 function MatchViewCtrl(
-  $scope, $state, $rootScope, $ionicPopup, $ionicHistory,
-  Parse, LadderServices, MatchServices, QueueServices, cameraServices,
-  tournament, match, player
+  $scope, $state, $rootScope, $ionicPopup, $ionicHistory, $timeout,
+  Parse, LadderServices, MatchServices, QueueServices, cameraServices, tournament
 ) {
   $scope.tournament = tournament.tournament;
   $scope.user = Parse.User;
@@ -19,13 +13,48 @@ function MatchViewCtrl(
     time: 0
   };
 
+  $rootScope.$on('results:entered', matchPlayed);
+
   $scope.$on("$ionicView.enter", function(event) {
-    $scope.match = match[0];
-    $scope.player = player[0];
-    getMatchDetails();
+    LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
+      $scope.player = players[0];
+      MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        $scope.match = matches[0];
+        if($scope.match.get('status') === 'cancelled') {
+          $scope.player.set('status', 'open');
+          $scope.player.save().then(function () {
+            $state.go('app.dashboard');
+          });
+        }
+        getMatchDetails();
+      });
+    })
+
   });
 
-  $rootScope.$on('results:entered', getMatch);
+  function matchPlayed() {
+    if($scope.player.get('status') !== 'open') {
+      $scope.player.set('status', 'open');
+      
+      MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        $scope.match = matches[0];
+        $scope.player.save().then(function (player) {
+          $scope.player = player;
+          getMatchDetails();
+          showMatchResultsPopup();
+        });
+      });
+      
+    }
+  }
+  function showMatchResultsPopup() {
+    var popup = $ionicPopup.alert({
+      title: 'Match Played',
+      template: '<div class="text-center">Results have been submitting for this match</div>'
+    }).then(function(res) {
+      
+    });
+  }
 
   $scope.picture = null;
   var parseFile = new Parse.File();
@@ -34,8 +63,6 @@ function MatchViewCtrl(
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
-
-
 
   $scope.getPicture = function() {
     var options = cameraServices.camera;
@@ -135,6 +162,8 @@ function MatchViewCtrl(
     MatchServices.getMatch($scope.match.id).then(function (match) {
       $scope.match = match;
       console.log('match' + $scope.match.get('status'));
+      console.log('match fetched');
+      console.log($scope.match.get('winner'));
       if(refresh) {
         $scope.$broadcast('scroll.refreshComplete');
       }
@@ -148,12 +177,7 @@ function MatchViewCtrl(
       $rootScope.$broadcast('show:loading');
       Parse.Cloud.run('matchResults', {username: username, match: match.id}).then(function (results) {
         $rootScope.$broadcast('hide:loading');
-        $ionicPopup.alert({
-          title: 'Match Submitted',
-          template: '<div class="text-center">Thank you for submitting results</div>'
-        }).then(function (res) {
-
-        })
+        $timeout(matchPlayed, 2000);
       });
     });
   }
