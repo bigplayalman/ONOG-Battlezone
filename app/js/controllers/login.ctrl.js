@@ -20,6 +20,7 @@ function LoginCtrl($scope, $state, Parse, $ionicHistory) {
             console.log('failed to sub');
           });
         }
+        
         $state.go('app.dashboard');
       },
       error: function (user, error) {

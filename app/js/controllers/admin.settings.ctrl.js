@@ -3,14 +3,22 @@ angular.module('ONOG.Controllers')
 
   .controller('AdminSettingsCtrl', AdminSettingsCtrl);
 
-AdminSettingsCtrl.$inject = ['$scope', 'TournamentServices', 'newTournament'];
+AdminSettingsCtrl.$inject = ['$scope', 'locationServices', 'newTournament', 'tournament'];
 
-function AdminSettingsCtrl($scope, TournamentServices, newTournament) {
+function AdminSettingsCtrl($scope, locationServices, newTournament, tournament) {
   $scope.details = newTournament;
   
-  // TournamentServices.getLadder($scope.tournament.tournament).then(function (ladder) {
-  //   $scope.ladder = ladder;
-  // });
+  $scope.tournament = tournament.tournament;
   
+  $scope.setTournamentLocation = function () {
+    locationServices.getLocation().then(function (location) {
+      var point = new Parse.GeoPoint({latitude: location.latitude, longitude: location.longitude});
+      $scope.tournament.set("location", point);
+      $scope.tournament.save().then(function (tournament) {
+        $scope.tournament = tournament;
+        alert('tournmanet location set');
+      });
+    });
+  }
   
 };

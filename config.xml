@@ -21,7 +21,7 @@
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="FadeSplashScreen" value="false" />
   <preference name="SplashScreenBackgroundColor" value="black" />
-  <preference name="SplashScreenDelay" value="10000" />
+  <preference name="SplashScreenDelay" value="20000" />
 
   <preference name="orientation" value="portrait"/>
   <feature name="StatusBar">

@@ -1,25 +1,23 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('LadderJoinCtrl', ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', LadderJoinCtrl]);
+  .controller('LadderProfileCtrl',
+    ['$scope', '$filter', '$ionicPopup', '$state', '$ionicHistory', '$q', 'Parse', 'tournament', 'LadderServices', 'player', LadderProfileCtrl]);
 
-function LadderJoinCtrl
-($scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices) {
+function LadderProfileCtrl
+($scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player) {
+
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
   $scope.tournament = tournament.tournament;
   $scope.user = Parse.User.current();
-  $scope.player = {
-    battleTag: ''
-  };
+  $scope.player = player[0];
 
   $scope.registerPlayer = function () {
     validateBattleTag().then(
       function (tag) {
-        $scope.player.username = $scope.user.username;
-        $scope.player.status = 'open';
-        LadderServices.joinTournament($scope.tournament, $scope.user, $scope.player).then(function (player) {
+        $scope.player.save().then(function () {
           SuccessPopup(player).then(function(res) {
             $state.go('app.dashboard');
           });
@@ -56,14 +54,14 @@ function LadderJoinCtrl
         cb.reject('The BATTLETAG™ you entered is already registered.')
       } else {
         cb.resolve(tag);
-      } 
+      }
     });
     return cb.promise;
   };
 
   function ErrorPopup (message) {
     return $ionicPopup.alert({
-      title: 'Registration Error',
+      title: 'Update Error',
       template: message
     });
   };
@@ -71,7 +69,7 @@ function LadderJoinCtrl
   function SuccessPopup (player) {
     return $ionicPopup.alert({
       title: 'Congratulations ' + player.username + '!',
-      template: 'You have successfully signed up! Now go find a valiant opponent.'
+      template: 'You have successfully updated! Now go and play!'
     });
   };
 };

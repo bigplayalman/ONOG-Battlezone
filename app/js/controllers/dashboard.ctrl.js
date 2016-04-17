@@ -1,17 +1,16 @@
 
 angular.module('ONOG.Controllers')
 
-  .controller('DashboardCtrl',
-    [
-      '$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
-      'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices',
-      DashboardCtrl
-    ]);
-
+  .controller('DashboardCtrl', DashboardCtrl);
+DashboardCtrl.$inject =  ['$scope', '$state', '$filter', '$timeout', '$interval', '$ionicPopup', '$rootScope',
+  'Parse', 'tournament', 'MatchServices', 'QueueServices', 'LadderServices', 'locationServices'
+];
 function DashboardCtrl(
   $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
-  Parse, tournament, MatchServices, QueueServices, LadderServices) {
-  $scope.tournament = tournament[0].tournament;
+  Parse, tournament, MatchServices, QueueServices, LadderServices, locationServices
+) {
+
+  $scope.tournament = tournament.tournament;
   var promise = null;
   $scope.user = Parse.User;
   $scope.end = {
@@ -21,20 +20,19 @@ function DashboardCtrl(
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
-  
+
   $rootScope.$on('opponent:found', playerConfirm);
   $rootScope.$on('opponent:confirmed', opponentConfirmed);
   $rootScope.$on('results:entered', matchPlayed);
 
   $scope.$on("$ionicView.enter", function(event) {
-    console.log('view loaded');
-    
     if(navigator && navigator.splashscreen) {
       navigator.splashscreen.hide();
     }
-    console.log($scope.user.current().username);
+    $scope.location = locationServices.location;
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       $scope.player = players[0];
+      $scope.player.set('location', $scope.location.coords);
       status();
     });
   });
@@ -152,21 +150,18 @@ function DashboardCtrl(
   }
   function getLastMatch() {
     MatchServices.getLatestMatch($scope.player).then(function (matches) {
-      if(matches.length) {
-        $scope.match = matches[0];
-        if($scope.match.get('status') === 'completed') {
-          $scope.player.set('status', 'open');
-          savePlayer();
-        }
-      } else {
+      $scope.match = matches[0];
+      if($scope.match.get('status') === 'completed') {
         $scope.player.set('status', 'open');
         savePlayer();
       }
-    })
+    });
   }
 
   function matchMaking() {
-    Parse.Cloud.run('matchmaking');
+    Parse.Cloud.run('matchmaking').then(function (){
+      console.log('matchmaking started');
+    });
   }
 
   function playerConfirm() {
@@ -253,6 +248,27 @@ function DashboardCtrl(
     Parse.Cloud.run('confirmMatch').then(function (num) {
       checkOpponent(5000, false);
       checkOpponent(30000, true);
+
+      var userGeoPoint = $scope.player.get("location");
+// Create a query for places
+      var query = new Parse.Query('Tournament');
+// Interested in locations near user.
+      query.withinMiles("location", userGeoPoint, 50);
+// Limit what could be a lot of points.
+      query.limit(10);
+// Final list of objects
+      query.find({
+        success: function(placesObjects) {
+          console.log(placesObjects);
+          if(window.ParsePushPlugin && placesObjects.length) {
+            ParsePushPlugin.subscribe('pax-east', function(msg) {
+              console.log('paxed');
+            }, function(e) {
+              console.log('failed to sub');
+            });
+          }
+        }
+      });
     });
   }
 

@@ -5,15 +5,15 @@ angular.module('ONOG.Controllers')
 
 MatchViewCtrl.$inject = [
   '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory',
-  'Parse', 'LadderServices', 'MatchServices', 'QueueServices',
+  'Parse', 'LadderServices', 'MatchServices', 'QueueServices', 'cameraServices',
   'tournament', 'match', 'player'
 ];
 function MatchViewCtrl(
   $scope, $state, $rootScope, $ionicPopup, $ionicHistory,
-  Parse, LadderServices, MatchServices, QueueServices,
+  Parse, LadderServices, MatchServices, QueueServices, cameraServices,
   tournament, match, player
 ) {
-  $scope.tournament = tournament[0].tournament;
+  $scope.tournament = tournament.tournament;
   $scope.user = Parse.User;
   $scope.end = {
     time: 0
@@ -38,14 +38,7 @@ function MatchViewCtrl(
 
 
   $scope.getPicture = function() {
-    var options = {
-      quality: 90,
-      targetWidth: 320,
-      targetHeight: 500,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: 0,
-      encodingType: 1
-    }
+    var options = cameraServices.camera;
     navigator.camera.getPicture(onSuccess,onFail,options);
   }
   var onSuccess = function(imageData) {

@@ -109,8 +109,6 @@ ion-popover-view.fit ion-content {
     left: 0;
     right: 0; }
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
-  display: none !important; }
 
 .JoinLadderView .list {
   max-width: 400px;

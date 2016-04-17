@@ -26,4 +26,15 @@ function LadderRoutes ($stateProvider) {
       templateUrl: 'templates/ladder/join.html',
       controller: 'LadderJoinCtrl'
     })
+    .state('app.ladder.profile', {
+      url: '/profile',
+      cache: false,
+      templateUrl: 'templates/ladder/profile.html',
+      controller: 'LadderProfileCtrl',
+      resolve: {
+        player: function (Parse, LadderServices, tournament) {
+          return LadderServices.getPlayer(tournament.tournament, Parse.User.current());
+        }
+      }
+    });
 }

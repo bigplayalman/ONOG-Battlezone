@@ -5,11 +5,11 @@ angular.module('ONOG.Controllers')
 
 MatchReportCtrl.$inject = [
   '$scope', '$state', '$rootScope', '$ionicPopup', '$ionicHistory',
-  'Parse', 'MatchServices', 'report'
+  'Parse', 'MatchServices', 'cameraServices', 'report'
 ];
 function MatchReportCtrl(
   $scope, $state, $rootScope, $ionicPopup, $ionicHistory,
-  Parse, MatchServices, report
+  Parse, MatchServices, cameraServices, report
 ) {
 
   $scope.match = report;
@@ -20,14 +20,7 @@ function MatchReportCtrl(
   var imgString = null;
 
   $scope.getPicture = function() {
-    var options = {
-      quality: 90,
-      targetWidth: 320,
-      targetHeight: 500,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: 0,
-      encodingType: 1
-    }
+    var options = cameraServices.camera;
     navigator.camera.getPicture(onSuccess,onFail,options);
   }
   var onSuccess = function(imageData) {
@@ -38,7 +31,7 @@ function MatchReportCtrl(
   var onFail = function(e) {
     console.log("On fail " + e);
   }
-  
+
   $scope.processReport = function (name) {
     if(imgString) {
       parseFile = new Parse.File("report.png", {base64:imgString});

@@ -12,7 +12,7 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $i
   }
   
   function getPlayers() {
-    LadderServices.getPlayers(tournament[0].tournament).then(function (players) {
+    LadderServices.getPlayers(tournament.tournament).then(function (players) {
       var rank = 1;
       angular.forEach(players, function (player) {
         player.rank = rank;

@@ -18,14 +18,17 @@ function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse, $timeout)
     if(link === 'login') {
       if(window.ParsePushPlugin) {
         ParsePushPlugin.unsubscribe($scope.user.current().username, function(msg) {
-          console.log('subbed');
+          console.log('unsubbed');
         }, function(e) {
           console.log('failed to sub');
         });
       }
-      Parse.User.logOut().then(function (user) {
-        $state.go('app.' + link, {reload: true});
-      });
+      $timeout(function () {
+        Parse.User.logOut().then(function (user) {
+          $state.go('app.' + link, {reload: true});
+        });
+      }, 1000);
+      
       
     } else {
       $state.go('app.' + link, {reload: true});

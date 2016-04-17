@@ -1,0 +1,17 @@
+<ion-view class="JoinLadderView picture-bg">
+  <ion-nav-title>Profile</ion-nav-title>
+  <ion-content padding="true">
+    <ion-list>
+
+      <ion-item class="item-input item-input-clear">
+        <input type="text" ng-model="player.battleTag" placeholder="Enter BATTLETAG™: ItsOVER#9001"
+               autocapitalize="off" autocorrect="off" autocomplete="off">
+      </ion-item>
+
+      <div class="padding">
+        <button class="full-width button-calm button button-small" ng-click="registerPlayer()" ng-if="user">Update</button>
+      </div>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

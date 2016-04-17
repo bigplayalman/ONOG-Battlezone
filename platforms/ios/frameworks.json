@@ -1,7 +1,7 @@
 {
     "AudioToolbox.framework": 1,
     "CFNetwork.framework": 1,
-    "CoreLocation.framework": 2,
+    "CoreLocation.framework": 3,
     "QuartzCore.framework": 1,
     "Security.framework": 1,
     "StoreKit.framework": 1,

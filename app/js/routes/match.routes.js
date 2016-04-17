@@ -20,7 +20,7 @@ function MatchRoutes ($stateProvider) {
       cache: false,
       resolve: {
         player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
+          return LadderServices.getPlayer(tournament.tournament, Parse.User.current());
         }
       }
     })
@@ -30,7 +30,7 @@ function MatchRoutes ($stateProvider) {
       controller: 'MatchViewCtrl',
       resolve: {
         player: function (Parse, LadderServices, tournament) {
-          return LadderServices.getPlayer(tournament[0].tournament, Parse.User.current());
+          return LadderServices.getPlayer(tournament.tournament, Parse.User.current());
         },
         match: function (MatchServices, $state, $q, player) {
           var cb = $q.defer();
