@@ -40,13 +40,18 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
         } else {
           switch (pn.title) {
             case 'Opponent Found':
-              $rootScope.$broadcast('opponent:found');
+              $state.go('app.dashboard', {reload: true});
               break;
             case 'Opponent Confirmed':
-              $rootScope.$broadcast('opponent:confirmed');
+              $state.go('app.dashboard', {reload: true});
               break;
             case 'Results Entered':
-              $rootScope.$broadcast('results:entered');
+              $ionicPopup.alert({
+                title: 'Match Played',
+                template: '<div class="text-center">Results have been submitted</div>'
+              }).then(function(res) {
+                $state.go('app.dashboard', {reload: true});
+              });
               break;
           }
         }

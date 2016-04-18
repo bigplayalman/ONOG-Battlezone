@@ -71,6 +71,16 @@
           <button class="button button-assertive button-block button-small" ng-click="cancelQueue()">Cancel</button>
         </div>
 
+        <ion-item class="item-clear light blue-bg text-center" ng-if="player.status === 'found'">
+          <strong>Match Found! Please Confirm</strong>
+          <button class="button button-balanced button-block button-small" ng-click="playerConfirm()">Confirm</button>
+        </ion-item>
+
+        <ion-item class="item-clear light blue-bg"  ng-if="player.status === 'failedToConfirm'">
+          <h2 class="light">You Failed to Confirm Match.</h2>
+          <button class="button button-assertive button-block button-small" ng-click="setToOpen()">OK</button>
+        </ion-item>
+
         <div class="item item-clear light blue-bg text-center loading-item" ng-if="player.status === 'confirmed'">
           <div>
             <ion-spinner icon="ripple" class="spinner-energized"></ion-spinner>

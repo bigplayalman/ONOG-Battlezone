@@ -7,14 +7,18 @@ function MatchViewCtrl(
   $scope, $state, $rootScope, $ionicPopup, $ionicHistory, $timeout,
   Parse, LadderServices, MatchServices, QueueServices, cameraServices, tournament
 ) {
+  
+  var parseFile = new Parse.File();
+  var imgString = null;
+  
   $scope.tournament = tournament.tournament;
   $scope.user = Parse.User;
-  $scope.end = {
-    time: 0
-  };
+  $scope.picture = null;
 
-  $rootScope.$on('results:entered', matchPlayed);
-
+  $ionicHistory.nextViewOptions({
+    disableBack: true
+  });
+  
   $scope.$on("$ionicView.enter", function(event) {
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       $scope.player = players[0];
@@ -28,40 +32,12 @@ function MatchViewCtrl(
         }
         getMatchDetails();
       });
-    })
-
-  });
-
-  function matchPlayed() {
-    if($scope.player.get('status') !== 'open') {
-      $scope.player.set('status', 'open');
-      
-      MatchServices.getLatestMatch($scope.player).then(function (matches) {
-        $scope.match = matches[0];
-        $scope.player.save().then(function (player) {
-          $scope.player = player;
-          getMatchDetails();
-          showMatchResultsPopup();
-        });
-      });
-      
-    }
-  }
-  function showMatchResultsPopup() {
-    var popup = $ionicPopup.alert({
-      title: 'Match Played',
-      template: '<div class="text-center">Results have been submitting for this match</div>'
-    }).then(function(res) {
-      
     });
-  }
-
-  $scope.picture = null;
-  var parseFile = new Parse.File();
-  var imgString = null;
-
-  $ionicHistory.nextViewOptions({
-    disableBack: true
+  });
+  
+  $scope.$on('$ionicView.leave', function(event) {
+    loseMatch().close();
+    winMatch().close();
   });
 
   $scope.getPicture = function() {
@@ -171,13 +147,12 @@ function MatchViewCtrl(
   }
 
   function recordMatch(match, username) {
-
+    $rootScope.$broadcast('show:loading');
     match.set('status', 'completed');
     match.save().then(function (match) {
-      $rootScope.$broadcast('show:loading');
+      $scope.match = match;
       Parse.Cloud.run('matchResults', {username: username, match: match.id}).then(function (results) {
         $rootScope.$broadcast('hide:loading');
-        $timeout(matchPlayed, 2000);
       });
     });
   }
