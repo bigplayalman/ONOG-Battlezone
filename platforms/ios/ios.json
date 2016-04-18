@@ -13,10 +13,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
                             "count": 1
                         },
@@ -87,9 +83,6 @@
         "com.phonegap.parsepushplugin": {
             "PACKAGE_NAME": "com.onog.app"
         },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.onog.app"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.onog.app"
         },
@@ -132,22 +125,6 @@
             "pluginId": "com.phonegap.parsepushplugin",
             "clobbers": [
                 "ParsePushPlugin"
-            ]
-        },
-        {
-            "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
-            "id": "cordova-plugin-console.console",
-            "pluginId": "cordova-plugin-console",
-            "clobbers": [
-                "console"
-            ]
-        },
-        {
-            "file": "plugins/cordova-plugin-console/www/logger.js",
-            "id": "cordova-plugin-console.logger",
-            "pluginId": "cordova-plugin-console",
-            "clobbers": [
-                "cordova.logger"
             ]
         },
         {
@@ -456,7 +433,6 @@
     ],
     "plugin_metadata": {
         "com.phonegap.parsepushplugin": "0.8.0",
-        "cordova-plugin-console": "1.0.2",
         "cordova-plugin-device": "1.1.1",
         "cordova-plugin-splashscreen": "3.2.1",
         "cordova-plugin-statusbar": "2.1.2",

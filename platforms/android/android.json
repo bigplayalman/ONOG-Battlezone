@@ -135,9 +135,6 @@
         "com.phonegap.parsepushplugin": {
             "PACKAGE_NAME": "com.onog.app"
         },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.onog.app"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.onog.app"
         },
@@ -476,7 +473,6 @@
     ],
     "plugin_metadata": {
         "com.phonegap.parsepushplugin": "0.8.0",
-        "cordova-plugin-console": "1.0.2",
         "cordova-plugin-device": "1.1.1",
         "cordova-plugin-splashscreen": "3.2.1",
         "cordova-plugin-statusbar": "2.1.2",
