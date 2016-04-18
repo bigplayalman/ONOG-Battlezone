@@ -59,15 +59,16 @@ function DashboardCtrl(
   };
 
   $scope.playerConfirm = function () {
-    if ($scope.player.player === 'player1') {
-      $scope.match.set('confirm1', true);
-    } else {
-      $scope.match.set('confirm2', true);
-    }
-    $scope.match.save().then(function (match) {
+    $scope.match.fetch().then(function (match) {
       $scope.match = match;
-      $scope.player.set('status', 'confirmed');
-      savePlayer();
+      switch ($scope.match.get('status')) {
+        case 'pending': 
+          confirmPlayer();
+          break;
+        case 'cancelled':
+          showCancelledMatch();
+          break;
+      }
     });
   }
   
@@ -143,7 +144,6 @@ function DashboardCtrl(
           matchMaking();
           break;
         case 'found':
-          checkConfirm();
           break;
         case 'confirmed':
           waitingForOpponent();
@@ -192,37 +192,27 @@ function DashboardCtrl(
       });
     }, 15000);
   }
-  
-  function checkConfirm() {
-    $timeout(function () {
-      if($scope.player.get('status') === 'found') {
-        $scope.player.set('status', 'failedToConfirm');
-        $scope.match.set('status', 'cancelled');
-        $scope.match.save().then(function (match) {
-          $scope.match = match;
-          savePlayer();
-        });
-      }
-    }, 30000);
+
+  function showCancelledMatch() {
+    $ionicPopup.alert({
+      title: 'Match Cancelled',
+      template: '<div class="text-center">You have failed to confirm</div>'
+    }).then(function(res) {
+      $scope.player.set('status', 'open');
+      savePlayer();
+    });
   }
 
-  function showFailPopup() {
-    var failPopup = $ionicPopup.show({
-      title: 'Matchmaking',
-      template: '<div class="text-center">You Failed to Confirm Match</div>',
-      buttons: [
-        {
-          text: '<b>Close</b>',
-          type: 'button-positive',
-          onTap: function(e) {
-            return true;
-          }
-        }
-      ]
-    });
-
-    failPopup.then(function (res) {
-
+  function confirmPlayer() {
+    if ($scope.player.player === 'player1') {
+      $scope.match.set('confirm1', true);
+    } else {
+      $scope.match.set('confirm2', true);
+    }
+    $scope.match.save().then(function (match) {
+      $scope.match = match;
+      $scope.player.set('status', 'confirmed');
+      savePlayer();
     });
   }
 
