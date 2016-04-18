@@ -2,7 +2,7 @@ angular.module('ONOG')
   .constant("moment", moment)
   .run(run);
 
-function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, locationServices, $ionicHistory) {
+function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, locationServices, $ionicHistory, $cordovaNetwork) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,6 +17,31 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    var type = $cordovaNetwork.getNetwork();
+
+    var isOnline = $cordovaNetwork.isOnline();
+
+    var isOffline = $cordovaNetwork.isOffline();
+    
+    console.log(isOffline);
+    // listen for Online event
+    $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+      var onlineState = networkState;
+    })
+
+    // listen for Offline event
+    $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+      var offlineState = networkState;
+      $ionicPopup.alert({
+          title: "Internet Disconnected",
+          content: "The internet is disconnected on your device."
+        })
+        .then(function(result) {
+          ionic.Platform.exitApp();
+        });
+      
+    })
+
 
     $rootScope.$on('show:loading', function() {
       $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-calm"></ion-spinner>', showBackdrop: true, animation: 'fade-in'});
@@ -25,6 +50,12 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
     $rootScope.$on('hide:loading', function() {
       $ionicLoading.hide();
     });
+
+    $ionicPlatform.on('resume', function(){
+      //rock on
+      $state.go('app.dashboard', {reload: true});
+    });
+
 
     if(window.ParsePushPlugin) {
       console.log('new version 1');
@@ -64,6 +95,10 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
         disableBack: true
       });
       $state.go('app.dashboard');
+    }, function (err) {
+      if(navigator && navigator.splashscreen) {
+        navigator.splashscreen.hide();
+      }
     });
 
   });

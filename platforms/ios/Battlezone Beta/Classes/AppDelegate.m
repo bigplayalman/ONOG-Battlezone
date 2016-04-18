@@ -99,7 +99,16 @@
         [application registerUserNotificationSettings:settings];
         [application registerForRemoteNotifications];
 
+
+
     return YES;
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+  if (currentInstallation.badge != 0) {
+    currentInstallation.badge = 0;
+    [currentInstallation saveEventually];
+  }
 }
 
 // this happens while we are running ( in the background, or from within our own app )
