@@ -12,11 +12,11 @@ function cameraServices () {
     destinationType: Camera.DestinationType.DATA_URL,
     sourceType: 0,
     encodingType: Camera.EncodingType.JPEG
-  }
+  };
   
   return {
     camera: camera
-  }
+  };
 
   // function getDataUri (url, callback) {
   //   var image = new Image();

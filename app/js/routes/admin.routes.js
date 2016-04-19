@@ -37,5 +37,5 @@ function AdminRoutes ($stateProvider) {
       cache: false,
       templateUrl: 'templates/admin/admin.matches.html',
       controller: 'AdminMatchesCtrl'
-    })
+    });
 }

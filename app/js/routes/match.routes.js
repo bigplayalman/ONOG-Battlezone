@@ -39,5 +39,5 @@ function MatchRoutes ($stateProvider) {
           return MatchServices.getMatch($stateParams.id);
         }
       }
-    })
+    });
 }

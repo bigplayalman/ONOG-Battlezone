@@ -18,7 +18,7 @@ function MatchReportCtrl(
   $scope.getPicture = function() {
     var options = cameraServices.camera;
     navigator.camera.getPicture(onSuccess,onFail,options);
-  }
+  };
   var onSuccess = function(imageData) {
     $scope.picture = 'data:image/png;base64,' + imageData;
     imgString = imageData;
@@ -48,6 +48,6 @@ function MatchReportCtrl(
       });
     });
 
-  }
+  };
 
-};
+}

@@ -25,9 +25,9 @@ function QueueServices() {
     {text: 'shaman', checked: false},
     {text: 'priest', checked: false},
     {text: 'rogue', checked: false}
-  ]
+  ];
   return {
     opponent: opponent,
     heroes: heroes
-  }
+  };
 }

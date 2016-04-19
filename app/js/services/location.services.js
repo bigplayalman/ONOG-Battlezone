@@ -2,17 +2,17 @@ angular.module('ONOG.Services')
 
   .service('locationServices', locationServices);
 
-function locationServices (Parse, $cordovaGeolocation, $q, $rootScope) {
+function locationServices (Parse, $cordovaGeolocation, $q) {
 
   var location = {coords: new Parse.GeoPoint()};
   return {
     location: location,
     getLocation: getLocation,
     setLocation: setLocation
-  }
+  };
   
   function setLocation (coords) {
-    location.coords = new Parse.GeoPoint({latitude: coords.latitude, longitude: coords.longitude})
+    location.coords = new Parse.GeoPoint({latitude: coords.latitude, longitude: coords.longitude});
   }
 
   function getLocation () {

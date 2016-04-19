@@ -4,7 +4,7 @@ angular.module('ONOG.Controllers')
   .controller('DashboardCtrl', DashboardCtrl);
 
 function DashboardCtrl(
-  $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope,
+  $scope, $state, $filter, $timeout, $interval, $ionicPopup, $rootScope, moment,
   Parse, tournament, MatchServices, QueueServices, LadderServices, locationServices
 ) {
   var promise = null;
@@ -14,14 +14,14 @@ function DashboardCtrl(
   $scope.end = {
     canPlay: true,
     time: parseFloat(moment().format('x'))
-  }
+  };
 
   $scope.location = locationServices.location;
   $scope.opponent = QueueServices.opponent;
   $scope.heroList = QueueServices.heroes;
   $scope.myOpponent = {name:'PAX Attendee'};
 
-  $scope.$on("$ionicView.enter", function(event) {
+  $scope.$on('$ionicView.enter', function(event) {
     if(navigator && navigator.splashscreen) {
       navigator.splashscreen.hide();
     }
@@ -70,7 +70,7 @@ function DashboardCtrl(
           break;
       }
     });
-  }
+  };
   
   $scope.stop = function() {
     $interval.cancel(promise);
@@ -78,7 +78,7 @@ function DashboardCtrl(
   
   $scope.showOpponents = function() {
     $scope.stop();
-    promise = $interval(function () {changeWord()}, 2000);
+    promise = $interval(function () {changeWord();}, 2000);
   };
 
   $scope.setToOpen = function() {
@@ -166,7 +166,7 @@ function DashboardCtrl(
     var now = moment();
     var time = $scope.match.get('activeDate');
     if(time) {
-      var fiveMinutes = moment(time).add(1, 'minutes');
+      var fiveMinutes = moment(time).add(5, 'minutes');
       $scope.end.time = parseFloat(fiveMinutes.format('x'));
       $scope.end.canPlay = now.isAfter(fiveMinutes, 'seconds');
     }
@@ -316,5 +316,5 @@ function DashboardCtrl(
 
   function changeWord () {
     $scope.myOpponent.name = $scope.opponent.list[Math.floor(Math.random()*$scope.opponent.list.length)];
-  };
+  }
 };

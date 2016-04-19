@@ -11,7 +11,7 @@ function MatchServices(Parse, Match, $q) {
     getLatestMatch: getLatestMatch,
     getMatch: getMatch,
     getPlayerMatches: getPlayerMatches,
-  }
+  };
 
   function getPlayerMatches(player, status) {
     var player1 = new Parse.Query(Match.Model);
@@ -28,11 +28,11 @@ function MatchServices(Parse, Match, $q) {
   }
 
   function getLatestMatch(player) {
-    var type = player.get('player')
+    var type = player.get('player');
     var query = new Parse.Query(Match.Model);
     query.include('winner');
     query.include('loser');
-    query.descending("createdAt");
+    query.descending('createdAt');
     query.limit(1);
     if(type === 'player1') {
       query.equalTo('player1', player);
@@ -46,11 +46,11 @@ function MatchServices(Parse, Match, $q) {
     var type = player.get('player');
     var query = new Parse.Query('Match');
     query.equalTo('status', 'active');
-    query.descending("createdAt");
+    query.descending('createdAt');
     if(type === 'player1') {
-      query.equalTo('player1', player)
+      query.equalTo('player1', player);
     } else {
-      query.equalTo('player2', player)
+      query.equalTo('player2', player);
     }
     query.equalTo('confirm1', true);
     query.equalTo('confirm2', true);
@@ -59,9 +59,9 @@ function MatchServices(Parse, Match, $q) {
     return query.find();
   }
   function getPendingMatch(player) {
-    var type = player.get('player')
+    var type = player.get('player');
     var query = new Parse.Query(Match.Model);
-    query.descending("createdAt");
+    query.descending('createdAt');
     query.limit(1);
     if(type === 'player1') {
       query.equalTo('player1', player);
@@ -89,5 +89,5 @@ function Match(Parse) {
 
   return {
     Model: Model
-  }
+  };
 }

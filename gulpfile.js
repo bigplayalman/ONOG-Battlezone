@@ -17,6 +17,9 @@ var clean = require('gulp-clean');
 var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var ngAnnotate = require('gulp-ng-annotate');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
+
 
 var paths = {
   sass: ['scss/**/*.scss'],
@@ -47,6 +50,11 @@ gulp.task('moment', function() {
   return gulp.src(paths.moment, {cwd: './node_modules/'})
     .pipe(gulp.dest("./www/lib/moment/"));
 });
+gulp.task('lint', function() {
+  return gulp.src(paths.scripts)
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
+});
 
 gulp.task('sass', function (done) {
   gulp.src('./scss/ionic.app.scss')
@@ -70,16 +78,14 @@ gulp.task('index', function () {
 
 gulp.task('scripts', function () {
 	return gulp.src(paths.scripts)
-    .pipe(plumber({
-      errorHandler: onError
-    }))
-		.pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())
+    
+		.pipe(concat("app.js"))
     .pipe(ngAnnotate({
       single_quotes: true
     }))
-		.pipe(concat("app.js"))
-    //.pipe(uglify())
     .pipe(sourcemaps.write())
+    .pipe(uglify({mangle: false}))
 		.pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));
 });

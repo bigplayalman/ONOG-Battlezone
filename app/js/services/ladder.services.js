@@ -2,7 +2,7 @@
 angular.module('ONOG.Services')
 
   .service('LadderServices', LadderServices)
-  .factory('Ladder', Ladder)
+  .factory('Ladder', Ladder);
 
 function LadderServices(Parse, Ladder) {
   return {
@@ -19,21 +19,21 @@ function LadderServices(Parse, Ladder) {
     query.notEqualTO('user', user);
     query.equalTo('status', 'queue');
     return query.find();
-  };
+  }
 
   function getPlayers(tourney) {
     var query = new Parse.Query(Ladder.Model);
     query.equalTo('tournament', tourney);
     query.descending('points', 'mmr');
     return query.find();
-  };
+  }
 
   function validatePlayer(tourney, battleTag) {
     var query = new Parse.Query(Ladder.Model);
     query.equalTo('tournament', tourney);
     query.equalTo('battleTag', battleTag);
     return query.find();
-  };
+  }
 
   function getPlayer(tourney, user) {
     var query = new Parse.Query(Ladder.Model);
@@ -53,7 +53,7 @@ function LadderServices(Parse, Ladder) {
     player.set('points', 0);
     return player.save();
   }
-};
+}
 
 function Ladder(Parse) {
   var Model = Parse.Object.extend('Ladder');
@@ -64,4 +64,4 @@ function Ladder(Parse) {
   return {
     Model: Model
   }
-};
+}

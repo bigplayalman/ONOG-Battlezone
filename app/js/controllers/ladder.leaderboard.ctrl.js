@@ -3,12 +3,12 @@ angular.module('ONOG.Controllers')
 
   .controller('LeaderBoardsCtrl', LeaderBoardsCtrl);
 
-function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $ionicPopup) {
+function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse) {
   $scope.user = Parse.User;
   getPlayers();
   $scope.doRefresh = function () {
     getPlayers();
-  }
+  };
   
   function getPlayers() {
     LadderServices.getPlayers(tournament.tournament).then(function (players) {
@@ -21,4 +21,4 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $i
       $scope.$broadcast('scroll.refreshComplete');
     });
   }
-};
+}

@@ -17,6 +17,5 @@ function AdminSettingsCtrl($scope, locationServices, newTournament, tournament) 
         alert('tournmanet location set');
       });
     });
-  }
-  
-};
+  };
+}

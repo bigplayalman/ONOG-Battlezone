@@ -11,9 +11,9 @@ function TournamentServices(Parse, $q, Tournament, Details, Ladder) {
     createTournament: createTournament,
     getLadder: getLadder,
     joinTournament: joinTournament
-  }
-  function joinTournament(tourney, player) {
-    var player = new Ladder.Model(player);
+  };
+  function joinTournament(tourney, joinPlayer) {
+    var player = new Ladder.Model(joinPlayer);
     player.set('tournament', tourney);
     player.set('user', Parse.User.current());
     player.set('username', Parse.User.current().username);
@@ -62,7 +62,7 @@ function Tournament(Parse) {
 
   return {
     Model: Model
-  }
+  };
 }
 function Details(Parse) {
   var Model = Parse.Object.extend('Details');
@@ -71,5 +71,5 @@ function Details(Parse) {
 
   return {
     Model: Model
-  }
+  };
 }

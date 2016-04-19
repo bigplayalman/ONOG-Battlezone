@@ -39,7 +39,7 @@ function MatchListCtrl(
       return;
     }
     $state.go('app.match.report', {id: match.id});
-  }
+  };
 
   function showReported() {
     $ionicPopup.alert({

@@ -21,23 +21,21 @@ function ResetPasswordCtrl
         ErrorPopup(error.message);
       }
     });
-  }
-
+  };
   
-
   function ErrorPopup (message) {
     return $ionicPopup.alert({
       title: 'Update Error',
       template: message
     });
-  };
+  }
 
-  function SuccessPopup (player) {
+  function SuccessPopup () {
     return $ionicPopup.alert({
       title: 'Password Reset',
       template: 'An Email has been sent to reset your password'
     }).then(function (res) {
       $state.go('app.dashboard');
     })
-  };
-};
+  }
+}

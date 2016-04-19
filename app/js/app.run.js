@@ -1,5 +1,5 @@
 angular.module('ONOG')
-  .constant("moment", moment)
+  .constant('moment', moment)
   .run(run);
 
 function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, locationServices, $ionicHistory, $cordovaNetwork) {
@@ -17,30 +17,23 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
-    var type = $cordovaNetwork.getNetwork();
-
-    var isOnline = $cordovaNetwork.isOnline();
-
-    var isOffline = $cordovaNetwork.isOffline();
     
-    console.log(isOffline);
     // listen for Online event
     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
       var onlineState = networkState;
-    })
+    });
 
     // listen for Offline event
     $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
       var offlineState = networkState;
       $ionicPopup.alert({
-          title: "Internet Disconnected",
-          content: "The internet is disconnected on your device."
+          title: 'Internet Disconnected',
+          content: 'The internet is disconnected on your device.'
         })
-        .then(function(result) {
+        .then(function() {
           ionic.Platform.exitApp();
         });
-      
-    })
+    });
 
 
     $rootScope.$on('show:loading', function() {
@@ -99,6 +92,7 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
       if(navigator && navigator.splashscreen) {
         navigator.splashscreen.hide();
       }
+      $state.go('app.dashboard');
     });
 
   });

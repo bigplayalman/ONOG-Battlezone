@@ -77,7 +77,5 @@ function routes ($stateProvider, $urlRouterProvider) {
           controller: 'ResetPasswordCtrl'
         }
       }
-    })
-
-
+    });
 }

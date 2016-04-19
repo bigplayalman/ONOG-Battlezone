@@ -43,7 +43,7 @@ function MatchViewCtrl(
   $scope.getPicture = function() {
     var options = cameraServices.camera;
     navigator.camera.getPicture(onSuccess,onFail,options);
-  }
+  };
   var onSuccess = function(imageData) {
     $scope.picture = 'data:image/png;base64,' + imageData;
     imgString = imageData;
@@ -51,7 +51,7 @@ function MatchViewCtrl(
   };
   var onFail = function(e) {
     console.log("On fail " + e);
-  }
+  };
 
   $scope.doRefresh = function() {
     getMatch(true);
@@ -69,10 +69,10 @@ function MatchViewCtrl(
               if(res) {
                 $scope.match.set('winner', $scope.player);
                 $scope.match.set('loser', $scope.opponent.user);
-                username = $scope.opponent.username
-                recordMatch($scope.match, username);
+                username = $scope.opponent.username;
+                recordMatch(username);
               }
-            })
+            });
             break;
           case 'loss':
             loseMatch().then(function(res) {
@@ -81,7 +81,7 @@ function MatchViewCtrl(
                 $scope.match.set('winner', $scope.opponent.user);
                 $scope.match.set('loser', $scope.player);
                 username = $scope.opponent.username;
-                recordMatch($scope.match, username);
+                recordMatch(username);
               }
             });
             break;
@@ -143,17 +143,27 @@ function MatchViewCtrl(
       if(refresh) {
         $scope.$broadcast('scroll.refreshComplete');
       }
-    })
+    });
   }
 
-  function recordMatch(match, username) {
+  function recordMatch(username) {
     $rootScope.$broadcast('show:loading');
-    match.set('status', 'completed');
-    match.save().then(function (match) {
+    $scope.match.set('status', 'completed');
+    $scope.match.save().then(function (match) {
       $scope.match = match;
-      Parse.Cloud.run('matchResults', {username: username, match: match.id}).then(function (results) {
-        $rootScope.$broadcast('hide:loading');
-      });
+      $timeout(function () {
+        Parse.Cloud.run('matchResults', {match: $scope.match.id, username: username})
+          .then(function () {
+            $scope.match.winner.fetch().then(function (winner) {
+              console.log(winner);
+              $scope.match.winner = winner;
+            })
+            $rootScope.$broadcast('hide:loading');
+          }, function(err) {
+          alert(err.message);
+          $rootScope.$broadcast('hide:loading');
+        });
+      }, 2000);
     });
   }
 
@@ -161,7 +171,7 @@ function MatchViewCtrl(
     $scope.opponent = {
       hero: null,
       battleTag: null
-    }
+    };
     if($scope.player.player === 'player1') {
       $scope.opponent.hero = $scope.match.hero2;
       $scope.opponent.username = $scope.match.username2;
@@ -175,4 +185,4 @@ function MatchViewCtrl(
       $scope.opponent.user = $scope.match.player1;
     }
   }
-};
+}
