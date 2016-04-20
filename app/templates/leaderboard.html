@@ -1,12 +1,11 @@
-<ion-view class="standingsView picture-bg">
-  <ion-nav-title>Leaderboard</ion-nav-title>
+<ion-view class="standingsView">
   <ion-content padding="true">
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
-    <ion-list>
-      <ion-item class="padding no-background light item-borderless">
+    <div class="list standings-list">
+      <ion-item class="">
         <div class="row">
           <div class="col-25 col-offset-50 text-right">
             Record
@@ -16,7 +15,7 @@
           </div>
         </div>
       </ion-item>
-      <ion-item class="padding item-clear item-borderless standings-body light" ng-repeat="player in players">
+      <ion-item class="" ng-repeat="player in players">
         <div class="row">
           <div class="col-50">
             {{player.rank}}. {{player.username}}
@@ -29,6 +28,6 @@
           </div>
         </div>
       </ion-item>
-    </ion-list>
+    </div>
   </ion-content>
 </ion-view>

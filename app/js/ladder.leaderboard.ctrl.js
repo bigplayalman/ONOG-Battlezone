@@ -1,11 +1,10 @@
+angular.module('ONOG')
+  .controller('LeaderBoardCtrl', LeaderBoardCtrl);
 
-angular.module('ONOG.Controllers')
-
-  .controller('LeaderBoardsCtrl', LeaderBoardsCtrl);
-
-function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $filter, $ionicPopup) {
-  $scope.user = Parse.User;
+function LeaderBoardCtrl($scope, LadderServices, tournament) {
+  
   getPlayers();
+  
   $scope.doRefresh = function () {
     getPlayers();
   }

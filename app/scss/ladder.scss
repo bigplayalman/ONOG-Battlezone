@@ -1,22 +1,12 @@
-.JoinLadderView {
-  .list {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  span.light {
-    font-size: 20px;
-  }
-}
+$orange: #be2329;
+
 .standingsView {
-  .item-clear{
-    &.standings-header {
-      background: rgba(51, 205, 98, 0.4);
-    }
-    &.standings-body:nth-child(even) {
-      background: rgba(255, 255, 255, 0.4);
-    }
-    &.standings-body:nth-child(odd) {
-      background: rgba(255, 255, 255, 0.5);
+  background: $orange;
+  .standings-list {
+    width: 390px;
+    margin: 0 auto;
+    .item {
+      background: rgba(255,255,255, .5);
     }
   }
 }
