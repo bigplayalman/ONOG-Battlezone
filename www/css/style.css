@@ -1,10 +1,50 @@
 
 .standingsView {
-  background: #be2329; }
+  background: #be2329;
+  background-image: url(../img/bg1.jpg), url(../img/bg2.jpg);
+  background-repeat: no-repeat, no-repeat;
+  background-position: bottom left, bottom right;
+  background-size: 33%, 33%, 100%, 100%;
+  font-family: "Open Sans", sans-serif; }
   .standingsView .standings-list {
-    width: 390px;
     margin: 0 auto; }
     .standingsView .standings-list .item {
-      background: rgba(255, 255, 255, 0.5); }
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 1.5em;
+      margin: 0 auto; }
+
+.top-container {
+  background: #be2329;
+  min-width: 320px;
+  max-width: 400px;
+  margin: 0 auto; }
+  @media (min-width: 700px) {
+    .top-container {
+      height: 100%; } }
+
+.bottom-container {
+  background: #be2329;
+  min-width: 320px;
+  max-width: 400px;
+  margin: 0 auto; }
+
+.buttons-holder {
+  background: #be2329;
+  margin: 40px auto; }
+
+.img-responsive {
+  width: 100%; }
+
+.logo {
+  width: 320px;
+  margin: 0 auto; }
+
+.text {
+  margin: 20px auto;
+  border-radius: 20px;
+  padding: 20px; }
+
+.no-background {
+  background: none; }
 
 /*# sourceMappingURL=style.css.map */

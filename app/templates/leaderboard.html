@@ -1,33 +1,71 @@
 <ion-view class="standingsView">
-  <ion-content padding="true">
+  <ion-content overflow-scroll="true" scroll="true">
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
-    <div class="list standings-list">
-      <ion-item class="">
+    <div class="top-container">
+      <div class="logo">
+        <img src="img/icon.png" class="img-responsive">
+        <img src="img/geico.png" class="img-responsive">
+      </div>
+      <h1 class="light text-center">BATTLEZONE BETA</h1>
+      <div class="item no-background text light item-text-wrap item-borderless">
+        Battlezone Beta is a mobile game ladder that allows you to win prizes whenever and wherever you are.
+        Gain points by playing against players near you for a chance to win gaming gear, meetups with the pros, and more.
+      </div>
+
+      <div class="buttons-holder">
+        <hr>
         <div class="row">
-          <div class="col-25 col-offset-50 text-right">
-            Record
-          </div>
-          <div class="col-25 text-right">
-            Points
+          <div class="col">
+            <ion-item class="no-background item-borderless">
+              <a class="button button-outline button-block button-light icon-right icon ion-social-apple-outline" disabled>
+                Get iOS App (Coming Soon)
+              </a>
+              <a class="button button-outline button-block button-light icon-right icon ion-social-android-outline" disabled>
+                Get Android App (Coming Soon)
+              </a>
+            </ion-item>
           </div>
         </div>
-      </ion-item>
-      <ion-item class="" ng-repeat="player in players">
-        <div class="row">
-          <div class="col-50">
-            {{player.rank}}. {{player.username}}
-          </div>
-          <div class="col-25 text-right">
-            {{player.wins}} - {{player.losses}}
-          </div>
-          <div class="col-25 text-right">
-            {{player.points}}
-          </div>
-        </div>
-      </ion-item>
+        <hr>
+      </div>
     </div>
+    <div class="bottom-container">
+      <h1 class="light text-center">CURRENT STANDINGS</h1>
+      <div class="list standings-list">
+
+        <ion-item>
+          <div class="row">
+            <div class="col-25 col-offset-50">
+              Record
+            </div>
+            <div class="col-25 text-right">
+              Points
+            </div>
+          </div>
+        </ion-item>
+        <ion-item ng-repeat="player in players">
+          <div class="row">
+            <div class="col-10">
+              {{player.rank}}
+            </div>
+            <div class="col-40">
+              {{player.username}}
+            </div>
+            <div class="col-25">
+              {{player.wins}} - {{player.losses}}
+            </div>
+            <div class="col-25 text-right">
+              {{player.points}}
+            </div>
+          </div>
+        </ion-item>
+      </div>
+    </div>
+
+
+
   </ion-content>
 </ion-view>

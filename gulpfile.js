@@ -36,16 +36,11 @@ var onError = function (err) {
   console.log(err.toString());
 };
 
-gulp.task('default', ['sass', 'clean-templates', 'scripts', 'styles', 'templates', 'parse', 'moment', 'lib', 'index']);
+gulp.task('default', ['sass', 'clean-templates', 'scripts', 'styles', 'templates', 'parse', 'lib', 'index']);
 
 gulp.task('parse', function() {
   return gulp.src(paths.parse, {cwd: './node_modules/'})
     .pipe(gulp.dest("./www/lib/parse/"));
-});
-
-gulp.task('moment', function() {
-  return gulp.src(paths.moment, {cwd: './node_modules/'})
-    .pipe(gulp.dest("./www/lib/moment/"));
 });
 
 gulp.task('sass', function (done) {
@@ -78,7 +73,7 @@ gulp.task('scripts', function () {
       single_quotes: true
     }))
 		.pipe(concat("app.js"))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(sourcemaps.write())
 		.pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));

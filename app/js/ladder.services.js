@@ -12,6 +12,7 @@ function LadderServices(Parse, Ladder) {
     var query = new Parse.Query(Ladder.Model);
     query.equalTo('tournament', tourney);
     query.descending('points', 'mmr');
+    query.limit(20);
     return query.find();
   };
 };

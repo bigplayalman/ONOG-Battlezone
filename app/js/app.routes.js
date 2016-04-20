@@ -3,11 +3,11 @@ angular.module('ONOG')
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
     .state('leaderboard', {
-      url: '/home',
+      url: '/',
       templateUrl: 'templates/leaderboard.html',
       controller: 'LeaderBoardCtrl',
       resolve: {
