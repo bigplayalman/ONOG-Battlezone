@@ -2,7 +2,10 @@ angular.module('ONOG')
   .constant('moment', moment)
   .run(run);
 
-function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, locationServices, $ionicHistory, $cordovaNetwork) {
+function run (
+  $ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup,
+  locationServices, $ionicHistory, $cordovaNetwork, $window
+) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,7 +20,7 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
-    
+
     // listen for Online event
     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
       var onlineState = networkState;
@@ -46,7 +49,7 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
 
     $ionicPlatform.on('resume', function(){
       //rock on
-      $state.go('app.dashboard', {reload: true});
+      //$state.go('app.dashboard', {reload: true});
     });
 
 
@@ -81,19 +84,19 @@ function run ($ionicPlatform, $state, $rootScope, $ionicLoading, $ionicPopup, lo
         }
       });
     }
-
-    locationServices.getLocation().then(function (location) {
-      locationServices.setLocation(location);
-      $ionicHistory.nextViewOptions({
-        disableBack: true
+    if(window.location.hash === '#/app/loading') {
+      locationServices.getLocation().then(function (location) {
+        locationServices.setLocation(location);
+        $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
+        $state.go('app.dashboard');
+      }, function (err) {
+        if(navigator && navigator.splashscreen) {
+          navigator.splashscreen.hide();
+        }
+        $state.go('app.dashboard');
       });
-      $state.go('app.dashboard');
-    }, function (err) {
-      if(navigator && navigator.splashscreen) {
-        navigator.splashscreen.hide();
-      }
-      $state.go('app.dashboard');
-    });
-
+    }
   });
 }

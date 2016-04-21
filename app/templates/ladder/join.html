@@ -1,17 +1,21 @@
 <ion-view class="JoinLadderView picture-bg">
   <ion-nav-title>Join and Win</ion-nav-title>
-  <ion-content padding="true">
+  <ion-content scroll="false">
     <ion-list>
+      <div class="row" style="height: 60vh">
+        <div class="col col-center">
+          <ion-item class="item-input item-input-clear">
+            <i class="icon ion-key placeholder-icon"></i>
+            <input type="text" ng-model="player.battleTag" class="input-large"
+                   placeholder="Enter BATTLETAG™: ItsOVER#9001" autocapitalize="off" autocorrect="off" autocomplete="off">
+          </ion-item>
+          <div class="padding">
+            <button class="full-width button-calm button" ng-click="registerPlayer()" ng-if="user">Register</button>
+          </div>
+        </div>
 
-      <ion-item class="item-input item-input-clear">
-        <i class="icon ion-key placeholder-icon"></i>
-        <input type="text" ng-model="player.battleTag" class="full-width"
-               placeholder="Enter BATTLETAG™: ItsOVER#9001" autocapitalize="off" autocorrect="off" autocomplete="off">
-      </ion-item>
-
-      <div class="padding">
-        <button class="full-width button-calm button" ng-click="registerPlayer()" ng-if="user">Register</button>
       </div>
+
 
     </ion-list>
   </ion-content>

@@ -1,6 +1,11 @@
 <ion-view class="AdminMatchesView picture-bg">
   <ion-nav-title>Matches</ion-nav-title>
   <ion-content padding="true">
-
+    <ion-list>
+      <ion-item ng-repeat="match in matches">
+        {{match.username1}} VS {{match.username2}}<br>
+        {{match.activeDate}}
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

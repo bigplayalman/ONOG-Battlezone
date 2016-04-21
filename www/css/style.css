@@ -73,7 +73,7 @@
   background-size: cover; }
 
 .picture-bg {
-  background: url("../img/bg.png") center black;
+  background: url("../img/bg.png") center #be2329;
   background-size: cover; }
 
 ion-popover-view.fit {

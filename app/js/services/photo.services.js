@@ -2,18 +2,20 @@ angular.module('ONOG.Services')
 
   .service('cameraServices', cameraServices);
 
-function cameraServices () {
-  
+function cameraServices ($window) {
+
   var camera = {
     quality: 90,
     targetWidth: 320,
     targetHeight: 500,
     allowEdit: true,
-    destinationType: Camera.DestinationType.DATA_URL,
     sourceType: 0,
-    encodingType: Camera.EncodingType.JPEG
-  };
-  
+  }
+  if($window.Camera) {
+    camera.destinationType = Camera.DestinationType.DATA_URL;
+    camera.encodingType = Camera.EncodingType.JPEG;
+  }
+
   return {
     camera: camera
   };

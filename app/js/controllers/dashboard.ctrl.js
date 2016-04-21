@@ -26,20 +26,22 @@ function DashboardCtrl(
       navigator.splashscreen.hide();
     }
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
-      $scope.player = players[0];
-      $scope.player.set('location', $scope.location.coords);
-      $scope.player.save().then(function (player) {
-        $scope.player = player;
-        MatchServices.getLatestMatch($scope.player).then(function (matches) {
-          if(matches.length) {
-            $scope.match = matches[0];
-            timer();
-          }
-          setNotifications();
-          status();
-          $scope.$broadcast('scroll.refreshComplete');
+      if(players.length) {
+        $scope.player = players[0];
+        $scope.player.set('location', $scope.location.coords);
+        $scope.player.save().then(function (player) {
+          $scope.player = player;
+          MatchServices.getLatestMatch($scope.player).then(function (matches) {
+            if(matches.length) {
+              $scope.match = matches[0];
+              timer();
+            }
+            setNotifications();
+            status();
+            $scope.$broadcast('scroll.refreshComplete');
+          });
         });
-      });
+      }
     });
   });
 

@@ -29,7 +29,7 @@ var paths = {
   templates: 'app/templates/**/*.html',
   images: 'app/img/**/*',
   parse: 'parse/dist/*.min.js',
-  moment: 'moment/min/moment.min.js',
+  moment: 'moment/min/*.min.js',
 
   //Destination folders
   destImages: './www/img/',
@@ -85,7 +85,7 @@ gulp.task('scripts', function () {
       single_quotes: true
     }))
     .pipe(sourcemaps.write())
-    .pipe(uglify({mangle: false}))
+    //.pipe(uglify({mangle: false}))
 		.pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));
 });

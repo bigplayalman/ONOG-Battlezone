@@ -41,8 +41,10 @@ function MatchViewCtrl(
   });
 
   $scope.getPicture = function() {
-    var options = cameraServices.camera;
-    navigator.camera.getPicture(onSuccess,onFail,options);
+    if(cameraServices.camera) {
+      var options = cameraServices.camera;
+      navigator.camera.getPicture(onSuccess,onFail,options);
+    }
   };
   var onSuccess = function(imageData) {
     $scope.picture = 'data:image/png;base64,' + imageData;
@@ -67,6 +69,10 @@ function MatchViewCtrl(
             winMatch().then(function(res) {
               console.log(res);
               if(res) {
+                if(imgString) {
+                  parseFile = new Parse.File("winning.png", {base64:imgString});
+                  $scope.match.set("winImage", parseFile);
+                }
                 $scope.match.set('winner', $scope.player);
                 $scope.match.set('loser', $scope.opponent.user);
                 username = $scope.opponent.username;

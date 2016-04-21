@@ -8,6 +8,7 @@ function MatchServices(Parse, Match, $q) {
   return {
     getConfirmedMatch: getConfirmedMatch,
     getPendingMatch: getPendingMatch,
+    getReportedMatches: getReportedMatches,
     getLatestMatch: getLatestMatch,
     getMatch: getMatch,
     getPlayerMatches: getPlayerMatches,
@@ -56,6 +57,12 @@ function MatchServices(Parse, Match, $q) {
     query.equalTo('confirm2', true);
     query.limit(1);
 
+    return query.find();
+  }
+  function getReportedMatches() {
+    var query = new Parse.Query('Match');
+    query.equalTo('status', 'reported');
+    query.descending('createdAt');
     return query.find();
   }
   function getPendingMatch(player) {

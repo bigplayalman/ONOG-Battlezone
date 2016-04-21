@@ -37,5 +37,12 @@ function AdminRoutes ($stateProvider) {
       cache: false,
       templateUrl: 'templates/admin/admin.matches.html',
       controller: 'AdminMatchesCtrl'
+    })
+    .state('app.admin.players', {
+      url: '/players',
+      cache: false,
+      templateUrl: 'templates/admin/admin.players.html',
+      controller: 'AdminPlayersCtrl'
     });
+  
 }
