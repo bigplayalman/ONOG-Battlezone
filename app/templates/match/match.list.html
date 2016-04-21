@@ -5,15 +5,21 @@
       <ion-item ng-if="!player">
         Join League to record your matches!
       </ion-item>
-      <ion-item ng-repeat="match in matches" ng-click="processMatch(match)">
+      <ion-item ng-repeat="match in matches" ng-click="processMatch(match)" class="item-text-wrap">
         <h2 ng-if="match.player1.id !== player.id">{{match.username1}} | {{match.status}}</h2>
         <h2 ng-if="match.player2.id !== player.id">{{match.username2}}</h2>
-        {{match.activeDate | date: 'MM/dd/yyyy HH:mm'}}
-        <span class="item-note">
+        <div>
+          Status: {{match.status}} | {{match.activeDate | date: 'MM/dd/yyyy HH:mm'}}
+        </div>
+        <div>
           Result:
-        <span class="assertive" ng-if="match.loser.id === player.id">Loss</span>
-        <span class="balanced" ng-if="match.winner.id === player.id">Win</span>
-        </span>
+          <span class="assertive" ng-if="match.loser.id === player.id">Loss</span>
+          <span class="balanced" ng-if="match.winner.id === player.id">Win</span>
+        </div>
+
+        <div ng-if="match.adminNote">
+          Admin Note: {{match.adminNote}}
+        </div>
       </ion-item>
       <ion-item ng-if="player && !matches.length" class="light item-clear">
         <strong>No Matches Available</strong>

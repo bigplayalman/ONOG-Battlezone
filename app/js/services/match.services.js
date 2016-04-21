@@ -12,6 +12,7 @@ function MatchServices(Parse, Match, $q) {
     getLatestMatch: getLatestMatch,
     getMatch: getMatch,
     getPlayerMatches: getPlayerMatches,
+    getMatchDetails: getMatchDetails
   };
 
   function getPlayerMatches(player, status) {
@@ -84,13 +85,20 @@ function MatchServices(Parse, Match, $q) {
     match.id = id;
     return match.fetch();
   }
+  function getMatchDetails(id) {
+    var query = new Parse.Query(Match.Model);
+    query.include('winner');
+    query.include('loser');
+    query.descending('createdAt');
+    return query.get(id);
+  }
 }
 
 function Match(Parse) {
   var Model = Parse.Object.extend('Match');
   var attributes = [
     'tournament', 'player1', 'player2', 'hero1', 'hero2', 'username1', 'username2', 'battleTag1', 'battleTag2', 'status', 'winner', 'loser',
-    'winImage', 'reportReason', 'reportImage', 'activeDate', 'user1', 'user2'
+    'winImage', 'reportReason', 'reportImage', 'activeDate', 'user1', 'user2', 'adminNote'
   ];
   Parse.defineAttributes(Model, attributes);
 

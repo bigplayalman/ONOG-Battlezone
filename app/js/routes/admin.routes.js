@@ -38,6 +38,17 @@ function AdminRoutes ($stateProvider) {
       templateUrl: 'templates/admin/admin.matches.html',
       controller: 'AdminMatchesCtrl'
     })
+    .state('app.admin.match', {
+      url: '/match/:id',
+      cache: false,
+      templateUrl: 'templates/admin/admin.match.html',
+      controller: 'AdminMatchCtrl',
+      resolve: {
+        match: function (MatchServices, $stateParams) {
+          return MatchServices.getMatchDetails($stateParams.id);
+        }
+      }
+    })
     .state('app.admin.players', {
       url: '/players',
       cache: false,

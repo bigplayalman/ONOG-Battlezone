@@ -1,0 +1,38 @@
+<ion-view class="AdminMatchesView picture-bg">
+  <ion-nav-title>Matches</ion-nav-title>
+  <ion-content padding="true">
+    <ion-list>
+      <ion-item>
+        {{match.username1}} VS {{match.username2}}<br>
+        {{showDate(match.activeDate)}}
+      </ion-item>
+      <ion-item class="item-divider">
+        Winner
+      </ion-item>
+      <ion-item>
+        {{match.winner.username}}
+      </ion-item>
+      <ion-item>
+        <img ng-src="{{match.winImage.url()}}" ng-if="match.winImage" class="responsive-img">
+      </ion-item>
+      <ion-item class="item-divider">
+        Loser
+      </ion-item>
+      <ion-item>
+        {{match.loser.username}}
+      </ion-item>
+      <ion-item>
+        {{match.reportReason}}
+      </ion-item>
+      <ion-item>
+        <img ng-src="{{match.reportImage.url()}}" ng-if="match.reportImage" class="responsive-img">
+      </ion-item>
+      <ion-item>
+        <button class="button button-positive button-block" ng-click="changeWinner()">Change Winner</button>
+      </ion-item>
+      <ion-item>
+        <button class="button button-assertive button-block" ng-click="keepWinner()">Keep Winner</button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
