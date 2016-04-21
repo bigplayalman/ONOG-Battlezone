@@ -1,10 +1,6 @@
 
 .standingsView {
   background: #be2329;
-  background-image: url(../img/bg1.jpg), url(../img/bg2.jpg);
-  background-repeat: no-repeat, no-repeat;
-  background-position: bottom left, bottom right;
-  background-size: 33%, 33%, 100%, 100%;
   font-family: "Open Sans", sans-serif; }
   .standingsView .standings-list {
     margin: 0 auto; }
