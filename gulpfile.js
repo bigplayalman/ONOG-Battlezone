@@ -85,7 +85,7 @@ gulp.task('scripts', function () {
       single_quotes: true
     }))
     .pipe(sourcemaps.write())
-    //.pipe(uglify({mangle: false}))
+    .pipe(uglify({mangle: false}))
 		.pipe(gulp.dest("./www/build/"))
 		.pipe(notify({ message: 'Scripts builded' }));
 });

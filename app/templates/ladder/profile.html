@@ -3,14 +3,18 @@
   <ion-content padding="true">
     <ion-list>
 
-      <ion-item class="item-input item-input-clear">
+      <ion-item class="item-input item-input-clear" ng-if="player">
         <input type="text" ng-model="player.battleTag" placeholder="Enter BATTLETAG™: ItsOVER#9001"
                autocapitalize="off" autocorrect="off" autocomplete="off">
       </ion-item>
 
       <div class="padding">
-        <button class="full-width button-calm button button-small" ng-click="registerPlayer()" ng-if="user">Update</button>
+        <button class="full-width button-calm button button-small" ng-click="registerPlayer()" ng-if="player">Update</button>
       </div>
+
+    <ion-item ng-if="!player" class="item-text-wrap">
+      Profile only has functionality for users that have joined the ladder.
+    </ion-item>
 
     </ion-list>
   </ion-content>

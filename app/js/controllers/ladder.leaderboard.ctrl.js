@@ -3,7 +3,7 @@ angular.module('ONOG.Controllers')
 
   .controller('LeaderBoardsCtrl', LeaderBoardsCtrl);
 
-function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse) {
+function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse, $rootScope) {
   $scope.user = Parse.User;
   getPlayers();
   $scope.doRefresh = function () {
@@ -11,6 +11,7 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse) {
   };
   
   function getPlayers() {
+    $rootScope.$broadcast('show:loading');
     LadderServices.getPlayers(tournament.tournament).then(function (players) {
       var rank = 1;
       angular.forEach(players, function (player) {
@@ -18,6 +19,7 @@ function LeaderBoardsCtrl($scope, LadderServices, tournament, Parse) {
         rank++;
       });
       $scope.players = players;
+      $rootScope.$broadcast('hide:loading');
       $scope.$broadcast('scroll.refreshComplete');
     });
   }

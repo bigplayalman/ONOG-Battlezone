@@ -25,8 +25,10 @@ function DashboardCtrl(
     if(navigator && navigator.splashscreen) {
       navigator.splashscreen.hide();
     }
+    $rootScope.$broadcast('show:loading');
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       if(players.length) {
+        
         $scope.player = players[0];
         $scope.player.set('location', $scope.location.coords);
         $scope.player.save().then(function (player) {
@@ -38,9 +40,13 @@ function DashboardCtrl(
             }
             setNotifications();
             status();
+            $rootScope.$broadcast('hide:loading');
             $scope.$broadcast('scroll.refreshComplete');
           });
         });
+      } else {
+        $rootScope.$broadcast('hide:loading');
+        $scope.$broadcast('scroll.refreshComplete');
       }
     });
   });
@@ -228,8 +234,8 @@ function DashboardCtrl(
 
   function waitingForOpponent () {
     Parse.Cloud.run('confirmMatch').then(function (num) {
-      checkOpponent(5000, false);
-      checkOpponent(20000, true);
+      checkOpponent(10000, false);
+      checkOpponent(50000, true);
     });
   }
 

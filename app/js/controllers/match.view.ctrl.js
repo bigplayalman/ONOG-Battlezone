@@ -20,9 +20,11 @@ function MatchViewCtrl(
   });
   
   $scope.$on("$ionicView.enter", function(event) {
+    $rootScope.$broadcast('show:loading');
     LadderServices.getPlayer($scope.tournament, $scope.user.current()).then(function (players) {
       $scope.player = players[0];
       MatchServices.getLatestMatch($scope.player).then(function (matches) {
+        $rootScope.$broadcast('hide:loading');
         $scope.match = matches[0];
         if($scope.match.get('status') === 'cancelled') {
           $scope.player.set('status', 'open');

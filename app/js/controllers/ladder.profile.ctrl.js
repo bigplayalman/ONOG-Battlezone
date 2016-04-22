@@ -4,7 +4,7 @@ angular.module('ONOG.Controllers')
   .controller('LadderProfileCtrl', LadderProfileCtrl);
 
 function LadderProfileCtrl(
-  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player
+  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player, $rootScope
 ) {
 
   $ionicHistory.nextViewOptions({
@@ -17,10 +17,16 @@ function LadderProfileCtrl(
   $scope.registerPlayer = function () {
     validateBattleTag().then(
       function (tag) {
+        $rootScope.$broadcast('show:loading');
         $scope.player.save().then(function () {
+          $rootScope.$broadcast('hide:loading');
           SuccessPopup(player).then(function(res) {
             $state.go('app.dashboard');
           });
+        },
+        function(err) {
+          alert(err.message);
+          $rootScope.$broadcast('hide:loading');
         });
       },
       function (error) {

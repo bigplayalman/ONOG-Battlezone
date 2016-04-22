@@ -21,6 +21,27 @@ function run (
       StatusBar.styleDefault();
     }
 
+    $ionicPlatform.registerBackButtonAction(function (e) {
+      if ($ionicHistory.backView()) {
+        $state.go($ionicHistory.backView().stateName);
+      } else {
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Confirm Exit',
+          template: "Are you sure you want to close Battlezone Beta?"
+        });
+        confirmPopup.then(function (close) {
+          if (close) {
+            // there is no back view, so close the app instead
+            ionic.Platform.exitApp();
+          } // otherwise do nothing
+          console.log("User canceled exit.");
+        });
+      }
+
+      e.preventDefault();
+      return false;
+    }, 101); // 1 more priority than back button
+
     // listen for Online event
     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
       var onlineState = networkState;

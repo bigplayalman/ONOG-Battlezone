@@ -4,7 +4,7 @@ angular.module('ONOG.Controllers')
   .controller('LadderJoinCtrl', LadderJoinCtrl);
 
 function LadderJoinCtrl(
-  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices
+  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, $rootScope
 ) {
   $ionicHistory.nextViewOptions({
     disableBack: true
@@ -18,12 +18,18 @@ function LadderJoinCtrl(
   $scope.registerPlayer = function () {
     validateBattleTag().then(
       function (tag) {
+        $rootScope.$broadcast('show:loading');
         $scope.player.username = $scope.user.username;
         $scope.player.status = 'open';
         LadderServices.joinTournament($scope.tournament, $scope.user, $scope.player).then(function (player) {
           SuccessPopup(player).then(function(res) {
+            $rootScope.$broadcast('hide:loading');
             $state.go('app.dashboard');
           });
+        },
+        function (err) {
+          alert(err.message);
+          $rootScope.$broadcast('show:loading');
         });
       },
       function (error) {

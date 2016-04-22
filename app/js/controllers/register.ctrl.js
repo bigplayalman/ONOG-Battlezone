@@ -3,20 +3,21 @@ angular.module('ONOG.Controllers')
 
   .controller('RegisterCtrl', RegisterCtrl);
 
-RegisterCtrl.$inject = ['$scope', '$state', 'Parse', '$ionicPopup'];
-function RegisterCtrl($scope, $state, Parse, $ionicPopup) {
+function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope) {
 
   $scope.user = {};
 
   $scope.RegisterUser = function (user) {
+    $rootScope.$broadcast('show:loading');
     var register = new Parse.User();
     register.set(user);
     register.signUp(null, {
       success: function(user) {
+        $rootScope.$broadcast('hide:loading');
         $state.go('app.dashboard');
       },
       error: function(user, error) {
-        // Show the error message somewhere and let the user try again.
+        $rootScope.$broadcast('show:loading');
         ErrorPopup(error.message);
       }
     });

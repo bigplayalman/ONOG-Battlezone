@@ -11,10 +11,11 @@ function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse, $timeout)
   });
 
   $scope.menu = function (link) {
-    $ionicHistory.nextViewOptions({
-      disableBack: true
-    });
+    
     if(link === 'login') {
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
       if(window.ParsePushPlugin) {
         ParsePushPlugin.unsubscribe($scope.user.current().username, function(msg) {
           console.log('unsubbed');
@@ -27,7 +28,6 @@ function MenuCtrl($scope, $ionicPopover, $state, $ionicHistory, Parse, $timeout)
           $state.go('app.' + link, {reload: true});
         });
       }, 1000);
-      
       
     } else {
       $state.go('app.' + link, {reload: true});
