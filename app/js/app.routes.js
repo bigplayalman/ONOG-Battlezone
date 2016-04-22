@@ -31,6 +31,14 @@ function routes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
+    .state('app.prizes', {
+      url: '/prizes',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/prizes.html'
+        }
+      }
+    })
     .state('app.loading', {
       url: '/loading',
       views: {
