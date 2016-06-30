@@ -1,0 +1,60 @@
+{
+  "autoPrefixerOptions": {
+    "browsers": ["last 2 versions", "> 5%", "Firefox ESR"]
+  },
+  "globs" : {
+    "all": "**",
+    "icons": "lib/ionic/fonts/*",
+    "js" : "components/**/*.js",
+    "assets": "assets/**",
+    "html": "components/**/*.html",
+    "sass": "scss/styles.scss",
+    "index": "index.html",
+    "cordova": "cordova.js"
+  },
+  "paths": {
+    "src": 			"./app/",
+    "dist": 		"./www/",
+    "build":		".",
+    "resources":	"./node_modules/"
+  },
+  "lib": {
+    "js": {
+      "parse": {
+        "dev": "parse/dist/parse-latest.js",
+        "test": "parse/dist/parse-latest.js",
+        "prod": "parse/dist/parse-latest.js"
+      },
+      "moment": {
+        "dev": "moment/min/moment.min.js",
+        "test": "moment/min/moment.min.js",
+        "prod": "moment/min/moment.min.js"
+      },
+      "ionic": {
+        "dev": "../app/lib/ionic/js/ionic.bundle.js",
+        "test": "../app/lib/ionic/js/ionic.bundle.min.js",
+        "prod": "../app/lib/ionic/js/ionic.bundle.min.js"
+      },
+      "ngCordova": {
+        "dev": "../app/lib/ngCordova/dist/ng-cordova.min.js",
+        "test": "../app/lib/ngCordova/dist/ng-cordova.min.js",
+        "prod": "../app/lib/ngCordova/dist/ng-cordova.min.js"
+      },
+      "angular-moment": {
+        "dev": "angular-moment/angular-moment.min.js",
+        "test": "angular-moment/angular-moment.min.js",
+        "prod": "angular-moment/angular-moment.min.js"
+      },
+      "angular-timer": {
+        "dev": "angular-timer/dist/angular-timer.min.js",
+        "test": "angular-timer/dist/angular-timer.min.js",
+        "prod": "angular-timer/dist/angular-timer.min.js"
+      },
+      "ng-parse": {
+        "dev": "angular-parse/angular-parse.js",
+        "test": "angular-parse/angular-parse.js",
+        "prod": "angular-parse/angular-parse.js"
+      }
+    }
+  }
+}

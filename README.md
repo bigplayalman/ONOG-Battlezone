@@ -1,2 +1,2 @@
-# onog-ionic
-onog running on ionic
+# BattleZone-ionic
+BattleZone running on ionic
