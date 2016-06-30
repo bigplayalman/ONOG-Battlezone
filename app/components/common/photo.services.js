@@ -1,4 +1,4 @@
-angular.module('BattleZone.Services')
+angular.module('BattleZone')
 
   .service('cameraServices', cameraServices);
 

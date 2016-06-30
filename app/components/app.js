@@ -4,8 +4,5 @@ angular.module('BattleZone', [
   'timer',
   'ngCordova',
   'ngAnimate',
-  'BattleZone.config',
-  'BattleZone.routes',
-  'BattleZone.Controllers',
-  'BattleZone.Services'
+  'BattleZone.templates'
 ]);

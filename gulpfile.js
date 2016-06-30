@@ -54,7 +54,7 @@ gulp.task('sass', function() {
 gulp.task('templates', function() {
   return gulp.src(config.globs.html, {cwd: config.paths.src})
     .pipe(templateCache({
-      module: 'app.templates',
+      module: 'BattleZone.templates',
       standalone: true
     }))
     .pipe(gulp.dest(config.paths.dist));

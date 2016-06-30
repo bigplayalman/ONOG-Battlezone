@@ -1,5 +1,5 @@
 
-angular.module('BattleZone.Services')
+angular.module('BattleZone')
 
   .service('LadderServices', LadderServices)
   .factory('Ladder', Ladder);

@@ -20,20 +20,25 @@
   },
   "lib": {
     "js": {
+      "ionic": {
+        "dev": "../app/lib/ionic/js/ionic.bundle.js",
+        "test": "../app/lib/ionic/js/ionic.bundle.min.js",
+        "prod": "../app/lib/ionic/js/ionic.bundle.min.js"
+      },
       "parse": {
-        "dev": "parse/dist/parse-latest.js",
-        "test": "parse/dist/parse-latest.js",
-        "prod": "parse/dist/parse-latest.js"
+        "dev": "parse/dist/parse-latest.min.js",
+        "test": "parse/dist/parse-latest.min.js",
+        "prod": "parse/dist/parse-latest.min.js"
+      },
+      "ng-parse": {
+        "dev": "angular-parse/angular-parse.js",
+        "test": "angular-parse/angular-parse.js",
+        "prod": "angular-parse/angular-parse.js"
       },
       "moment": {
         "dev": "moment/min/moment.min.js",
         "test": "moment/min/moment.min.js",
         "prod": "moment/min/moment.min.js"
-      },
-      "ionic": {
-        "dev": "../app/lib/ionic/js/ionic.bundle.js",
-        "test": "../app/lib/ionic/js/ionic.bundle.min.js",
-        "prod": "../app/lib/ionic/js/ionic.bundle.min.js"
       },
       "ngCordova": {
         "dev": "../app/lib/ngCordova/dist/ng-cordova.min.js",
@@ -49,11 +54,6 @@
         "dev": "angular-timer/dist/angular-timer.min.js",
         "test": "angular-timer/dist/angular-timer.min.js",
         "prod": "angular-timer/dist/angular-timer.min.js"
-      },
-      "ng-parse": {
-        "dev": "angular-parse/angular-parse.js",
-        "test": "angular-parse/angular-parse.js",
-        "prod": "angular-parse/angular-parse.js"
       }
     }
   }

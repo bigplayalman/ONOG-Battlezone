@@ -1,4 +1,4 @@
-angular.module('BattleZone.config', [])
+angular.module('BattleZone')
   .config(config);
 
 function config ($ionicConfigProvider, $compileProvider, ParseProvider) {

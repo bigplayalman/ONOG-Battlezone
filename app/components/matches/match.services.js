@@ -1,4 +1,4 @@
-angular.module('BattleZone.Services')
+angular.module('BattleZone')
 
   .service('MatchServices', MatchServices)
   .factory('Match', Match);

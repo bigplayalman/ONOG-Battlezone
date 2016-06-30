@@ -1,5 +1,5 @@
 
-angular.module('BattleZone.Controllers')
+angular.module('BattleZone')
 
   .controller('AdminMatchCtrl', AdminMatchCtrl);
 

@@ -1,5 +1,4 @@
-
-angular.module('BattleZone.Services')
+angular.module('BattleZone')
 
   .service('TournamentServices', TournamentServices)
   .factory('Tournament', Tournament)
