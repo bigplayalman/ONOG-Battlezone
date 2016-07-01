@@ -1,9 +1,7 @@
 $ionicons-font-path: "../assets/fonts" !default;
 @import "variables";
 @import "../lib/ionic/scss/ionic";
-@import "../components/common/common";
-@import "../components/dashboard/dashboard";
-@import "../components/ladder/ladder";
+@import "common";
+@import "../components/news/news";
 @import "../components/login/login";
-@import "../components/register/register";
 

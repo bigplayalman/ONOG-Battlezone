@@ -6,6 +6,6 @@
     "watch"
   ],
   "watchPatterns": [
-    "app/**/*"
+    "app/**"
   ]
 }

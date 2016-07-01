@@ -1,0 +1,13 @@
+<ion-view>
+  <ion-nav-title class="hide">Latest News</ion-nav-title>
+	<ion-content>
+    <div class="card list" ng-repeat="post in news">
+      <div class="item item-divider item-text-wrap" ng-bind-html="post.title.rendered | sanitize">
+      </div>
+      <div class="item item-text-wrap" ng-bind-html="post.excerpt.rendered | sanitize"></div>
+      <div class="item item-divider text-right">
+        More
+      </div>
+    </div>
+	</ion-content>
+</ion-view>

@@ -2,7 +2,7 @@ angular.module('BattleZone').config(routes);
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('/app/dashboard');
+  $urlRouterProvider.otherwise('/app/news');
 
   $stateProvider
     .state('app', {
@@ -12,18 +12,20 @@ function routes ($stateProvider, $urlRouterProvider) {
       controller: 'MenuCtrl',
     })
     
-    .state('app.dashboard', {
-      url: '/dashboard',
+    .state('news', {
+      url: '/news',
+      parent: 'app',
       views: {
         'content': {
-          templateUrl: 'dashboard/dashboard.html',
-          controller: 'DashboardCtrl'
+          templateUrl: 'news/news.html',
+          controller: 'NewsCtrl'
         }
       }
     })
     
-    .state('app.login', {
+    .state('login', {
       url: '/login',
+      parent: 'app',
       views: {
         'content': {
           templateUrl: 'login/login.html',
@@ -31,22 +33,4 @@ function routes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('app.register', {
-      url: '/register',
-      views: {
-        'content': {
-          templateUrl: 'register/register.html',
-          controller: 'RegisterCtrl'
-        }
-      }
-    })
-    .state('app.reset', {
-      url: '/password',
-      views: {
-        'content': {
-          templateUrl: 'settings/password.html',
-          controller: 'ResetPasswordCtrl'
-        }
-      }
-    });
 }

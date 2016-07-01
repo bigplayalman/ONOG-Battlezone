@@ -84,10 +84,12 @@ gulp.task('libs', function() {
     .pipe(gulp.dest(config.paths.dist));
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', function() {
+  runSequence('clean', 'libs', 'build');
+});
 
 gulp.task('build', function () {
-  runSequence('clean', 'libs', 'copy', 'sass', 'app', 'templates');
+  runSequence('copy', 'sass', 'app', 'templates');
 });
 
 gulp.task('watch', function() {
