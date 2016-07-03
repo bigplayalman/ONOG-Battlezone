@@ -10,12 +10,12 @@ function MenuCtrl($scope, $state) {
   $scope.menu = {
     items: [
       {
-        state: 'app.news',
+        state: 'latest',
         icon: 'ion-planet',
         name: 'News'
       },
       {
-        state: 'app.play',
+        state: 'play',
         icon: 'ion-ios-game-controller-b',
         name: 'Play'
       }

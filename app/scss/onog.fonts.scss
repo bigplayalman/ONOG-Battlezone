@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "onog";
-  src:url("../../assets/fonts/onog.eot");
-  src:url("../../assets/fonts/onog.eot?#iefix") format("embedded-opentype"),
-  url("../../assets/fonts/onog.woff") format("woff"),
-  url("../../assets/fonts/onog.ttf") format("truetype"),
-  url("../../assets/fonts/onog.svg#onog") format("svg");
+  src:url("../assets/fonts/onog.eot");
+  src:url("../assets/fonts/onog.eot?#iefix") format("embedded-opentype"),
+  url("../assets/fonts/onog.woff") format("woff"),
+  url("../assets/fonts/onog.ttf") format("truetype"),
+  url("../assets/fonts/onog.svg#onog") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -38,9 +38,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.onog-user:before {
-  content: "\61";
-}
 .onog-logout:before {
   content: "\62";
 }
@@ -67,4 +64,7 @@
 }
 .onog-back-square:before {
   content: "\6a";
+}
+.onog-user:before {
+  content: "\6b";
 }

@@ -1,14 +1,15 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
-    <ion-nav-bar align-title="center">
+    <ion-nav-bar align-title="center" class="bar-transparent bar-clear">
       <ion-nav-back-button>
       </ion-nav-back-button>
       <ion-nav-buttons side="left">
-        <button class="button button-icon ion-navicon" menu-toggle="left">
+        <button class="button button-icon ion-navicon button-light button-clear" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+
       <ion-nav-buttons side="right">
-        <button class="button button-icon onog onog-user" ng-click="popover.show($event)">
+        <button class="button button-icon onog onog-user button-light button-clear">
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -17,12 +18,12 @@
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
-    <ion-content>
+    <ion-content class="positive-bg">
       <ion-list>
         <ion-item
           menu-close
           ng-click="navigateTo(item.state)"
-          class="item-icon-left capitalize"
+          class="item-icon-left capitalize item-positive"
           ng-repeat="item in menu.items">
           <i class="icon {{item.icon}}"></i>
           {{item.name}}

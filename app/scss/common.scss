@@ -1,0 +1,42 @@
+.capitalize {
+  text-transform: uppercase;
+}
+.responsive-img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+.full-width {
+  width: 100%;
+}
+.no-background {
+  background: none;
+
+}
+.no-padding {
+  &.item {
+    padding: 0;
+  }
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+.no-corners {
+  border-radius: 0;
+}
+.no-border-top {
+  border-top: 0;
+}
+.button-icon {
+  &.onog {
+    &.onog-user {
+      &::before {
+        font-size: 25px !important;
+      }
+    }
+  }
+}
+
+
+

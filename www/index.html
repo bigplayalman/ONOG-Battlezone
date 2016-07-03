@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta
-    http-equiv="Content-Security-Policy"
-    content="default-src *; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'
-    http://localhost:* http://ec2-54-210-9-15.compute-1.amazonaws.com https://maps.googleapis.com">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src *; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com http://vgvn.onog.gg; script-src 'self' 'unsafe-inline' 'unsafe-eval'
+      http://localhost:* http://vgvn.onog.gg;">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-  <title>BattleZone</title>
-  <link rel="SHORTCUT ICON" href="assets/images/icon.png">
-  <link rel="apple-touch-icon" href="assets/images/icon.png"/>
-  <link href="css/styles.css" rel="stylesheet">
+    <title>BattleZone</title>
+    <link rel="SHORTCUT ICON" href="assets/images/icon.png">
+    <link rel="apple-touch-icon" href="assets/images/icon.png"/>
+    <link href="css/styles.css" rel="stylesheet">
 
-  <script src="cordova.js"></script>
+    <script src="cordova.js"></script>
 
-  <!-- your app's js -->
-  <script src="libs.js"></script>
-  <script src="app.js"></script>
-  <script src="templates.js"></script>
+    <!-- your app's js -->
+    <script src="libs.js"></script>
+    <script src="app.js"></script>
+    <script src="templates.js"></script>
 
-</head>
+  </head>
 
-<body ng-app="BattleZone" ng-cloak ng-strict-di>
-<ion-nav-view></ion-nav-view>
-</body>
+  <body ng-app="BattleZone" ng-cloak ng-strict-di class="positive-bg">
+    <ion-nav-view></ion-nav-view>
+  </body>
 </html>

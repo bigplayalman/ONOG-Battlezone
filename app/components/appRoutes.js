@@ -2,7 +2,7 @@ angular.module('BattleZone').config(routes);
 
 function routes ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('/app/news');
+  $urlRouterProvider.otherwise('/app/news/latest');
 
   $stateProvider
     .state('app', {
@@ -10,17 +10,6 @@ function routes ($stateProvider, $urlRouterProvider) {
       abstract: true,
       templateUrl: 'menu/menu.html',
       controller: 'MenuCtrl',
-    })
-    
-    .state('news', {
-      url: '/news',
-      parent: 'app',
-      views: {
-        'content': {
-          templateUrl: 'news/news.html',
-          controller: 'NewsCtrl'
-        }
-      }
     })
     
     .state('login', {

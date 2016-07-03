@@ -1,0 +1,9 @@
+<ion-view>
+  <ion-nav-title class="hide" ng-bind-html="post.title.rendered | sanitize"></ion-nav-title>
+	<ion-content>
+    <div class="list">
+      <div class="item item-divider item-text-wrap" ng-bind-html="post.title.rendered | sanitize"></div>
+      <div class="item item-text-wrap" ng-bind-html="post.content.rendered | sanitize"></div>
+    </div>
+	</ion-content>
+</ion-view>

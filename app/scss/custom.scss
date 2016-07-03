@@ -1,0 +1,7 @@
+.bar {
+  &.bar-clear {
+    &.bar-transparent {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
