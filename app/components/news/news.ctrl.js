@@ -1,11 +1,15 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
-function NewsCtrl($scope, NewsServices) {
+function NewsCtrl($scope, NewsServices, $ionicScrollDelegate) {
   NewsServices.getLatestNews().then(function (news) {
     $scope.feature = news[0];
     $scope.news = news;
     getImages();
   });
+
+  $scope.showNews = function () {
+    $ionicScrollDelegate.scrollBy(0, 500, true);
+  }
 
   function getImages() {
     angular.forEach($scope.news, function (post) {

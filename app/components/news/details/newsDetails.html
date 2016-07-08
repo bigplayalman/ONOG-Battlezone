@@ -1,7 +1,13 @@
 <ion-view>
   <ion-nav-title class="hide" ng-bind-html="post.title.rendered | sanitize"></ion-nav-title>
-	<ion-content>
+	<ion-content class="news-details no-header">
     <div class="list">
+      <div class="item item-borderless no-padding" ng-if="post.featured_media === 0">
+        <img src="../assets/images/default2.png" class="responsive-img">
+      </div>
+      <div class="item item-borderless no-padding" ng-if="post.imageFetched">
+        <img ng-src="{{post.featured_media}}" class="responsive-img">
+      </div>
       <div class="item item-divider item-text-wrap" ng-bind-html="post.title.rendered | sanitize"></div>
       <div class="item item-text-wrap" ng-bind-html="post.content.rendered | sanitize"></div>
     </div>

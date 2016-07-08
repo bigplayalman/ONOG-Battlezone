@@ -1,7 +1,13 @@
 .bar {
   &.bar-clear {
     &.bar-transparent {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.9);
+    }
+  }
+  &.bar-dark{
+    &.bar-footer {
+      background: $dark;
+      background-image: none !important;
     }
   }
 }
