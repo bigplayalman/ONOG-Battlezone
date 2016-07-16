@@ -11,7 +11,7 @@ function routes ($stateProvider, $urlRouterProvider) {
       templateUrl: 'menu/menu.html',
       controller: 'MenuCtrl',
     })
-    
+
     .state('login', {
       url: '/login',
       parent: 'app',
@@ -19,6 +19,16 @@ function routes ($stateProvider, $urlRouterProvider) {
         'content': {
           templateUrl: 'login/login.html',
           controller: 'LoginCtrl'
+        }
+      }
+    })
+    .state('register', {
+      url: '/register',
+      parent: 'app',
+      views: {
+        'content': {
+          templateUrl: 'login/register/register.html',
+          controller: 'RegisterCtrl'
         }
       }
     })

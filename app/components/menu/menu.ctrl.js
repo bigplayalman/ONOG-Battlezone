@@ -2,11 +2,12 @@ angular.module('BattleZone')
   .controller('MenuCtrl', MenuCtrl);
 
 function MenuCtrl($scope, $state) {
-  
+
   $scope.navigateTo = function(state) {
+
     $state.go(state);
   }
-  
+
   $scope.menu = {
     items: [
       {

@@ -10,8 +10,7 @@
   width: 100%;
 }
 .no-background {
-  background: none;
-
+  background: none !important;
 }
 .no-padding {
   &.item {

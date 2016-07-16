@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .controller('RegisterCtrl', RegisterCtrl);
 
-function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope) {
+function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope, $ionicHistory) {
 
   $scope.user = {};
 
@@ -14,7 +14,11 @@ function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope) {
     register.signUp(null, {
       success: function(user) {
         $rootScope.$broadcast('hide:loading');
-        $state.go('app.dashboard');
+        $ionicHistory.nextViewOptions({
+          disableBack: true,
+          historyRoot: true
+        });
+        $state.go('latest');
       },
       error: function(user, error) {
         $rootScope.$broadcast('show:loading');

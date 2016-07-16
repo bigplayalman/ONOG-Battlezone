@@ -10,10 +10,11 @@ function LoginCtrl($scope, $state, Parse, $ionicHistory) {
     Parse.User.logIn($scope.user.username, $scope.user.password, {
       success: function(user) {
         $ionicHistory.nextViewOptions({
-          disableBack: true
+          disableBack: true,
+          historyRoot: true
         });
-        
-        $state.go('app.dashboard');
+
+        $state.go('latest');
       },
       error: function (user, error) {
         $scope.warning = error.message;

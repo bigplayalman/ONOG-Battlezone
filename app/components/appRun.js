@@ -1,10 +1,10 @@
 angular.module('BattleZone')
   .run(run);
 
-function run ($ionicPlatform) {
-  
+function run ($ionicPlatform, $rootScope, $ionicLoading) {
+
   $ionicPlatform.ready(function() {
-    
+
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -15,9 +15,16 @@ function run ($ionicPlatform) {
       // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
     }
-    
+
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+  });
+  $rootScope.$on('loading:show', function() {
+    $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-calm"></ion-spinner>', showBackdrop: true, animation: 'fade-in'});
+  });
+
+  $rootScope.$on('loading:hide', function() {
+    $ionicLoading.hide();
   });
 }

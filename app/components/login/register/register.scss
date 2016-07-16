@@ -1,9 +1,9 @@
-.loginView{
+.RegisterView{
   background: $positive;
-  .login-container {
+  .register-content{
     max-width: 300px;
     padding-top: 50px;
-    margin: 0 auto;
+    margin: auto;
     .item {
       width: 100%;
       margin: auto;
@@ -21,6 +21,5 @@
         }
       }
     }
-
   }
 }
