@@ -1,7 +1,7 @@
 angular.module('BattleZone')
   .run(run);
 
-function run ($ionicPlatform, $rootScope, $ionicLoading) {
+function run ($ionicPlatform, $rootScope, $ionicLoading, userServices) {
 
   $ionicPlatform.ready(function() {
 
@@ -26,5 +26,13 @@ function run ($ionicPlatform, $rootScope, $ionicLoading) {
 
   $rootScope.$on('loading:hide', function() {
     $ionicLoading.hide();
+  });
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requireLogin = toState.data;
+    var name = toState.name;
+    if(requireLogin && requireLogin.data.requireLogin) {
+      userServices.isLoggedIn();
+    }
   });
 }

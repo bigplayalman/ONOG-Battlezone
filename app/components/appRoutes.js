@@ -15,6 +15,7 @@ function routes ($stateProvider, $urlRouterProvider) {
     .state('login', {
       url: '/login',
       parent: 'app',
+      cache: false,
       views: {
         'content': {
           templateUrl: 'login/login.html',
