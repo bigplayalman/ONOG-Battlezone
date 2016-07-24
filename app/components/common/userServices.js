@@ -5,6 +5,7 @@ angular.module('BattleZone')
 
 function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
   var user = {current: null};
+
   user.current = Parse.User.current();
 
   return {
