@@ -11,7 +11,7 @@ function MenuCtrl($scope, $state, userServices, menuConstants) {
 
   $scope.$watch('user', function (newVal, oldVal) {
     if($scope.user.current) {
-      if($scope.user.current.admin) {
+      if($scope.user.current.get('admin')) {
         $scope.menu = menuConstants().menu.admin;
       } else {
         $scope.menu = menuConstants().menu.authorized;

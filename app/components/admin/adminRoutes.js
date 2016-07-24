@@ -14,15 +14,21 @@ function adminRoutes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
+    .state('create', {
+      url: '/create',
+      parent: 'admin',
+      templateUrl: 'admin/create/create.html',
+      controller: 'createCtrl'
+    })
     .state('matches', {
       url: '/latest',
-      parent: 'news',
+      parent: 'admin',
       templateUrl: 'news/news.html',
       controller: 'NewsCtrl'
     })
     .state('players', {
       url: '/players',
-      parent: 'news',
+      parent: 'admin',
       templateUrl: 'news/details/newsDetails.html',
       controller: 'NewsDetailsCtrl'
     })

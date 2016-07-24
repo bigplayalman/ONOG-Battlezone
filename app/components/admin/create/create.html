@@ -1,0 +1,33 @@
+<ion-view class="createView positive-bg light">
+	<ion-content>
+    <form class="list" ng-submit="tournamentDetails()" >
+      <label class="item item-input">
+        <span class="input-label">Name</span>
+        <input type="text" ng-model="new.name">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Date</span>
+        <input type="text" ng-model="new.date">
+      </label>
+
+      <label class="item item-input item-select">
+        <span class="input-label">
+          Game
+        </span>
+        <select ng-options="game as game.name for game in tournament.games track by game.name" ng-model="new.game"></select>
+      </label>
+
+      <label class="item item-input item-select">
+        <span class="input-label">
+          Tournament Type
+        </span>
+        <select ng-options="type as type.name for type in tournament.types track by type.name" ng-model="new.type"></select>
+      </label>
+
+      <ion-item>
+        <button type="submit" class="button button-balanced" ng-disabled="validate(new)">Next</button>
+      </ion-item>
+    </form>
+	</ion-content>
+</ion-view>

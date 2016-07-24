@@ -1,12 +1,3 @@
-
-//var gutil         = require('gulp-util');
-
-//var bower         = require('bower');
-
-//var minifyCss     = require('gulp-minify-css');
-//var rename        = require('gulp-rename');
-//var sh            = require('shelljs');
-
 var gulp          = require('gulp');
 var del           = require('del');
 var concat        = require('gulp-concat');
@@ -18,6 +9,7 @@ var sourcemaps    = require('gulp-sourcemaps');
 var uglify        = require('gulp-uglify');
 var ngAnnotate    = require('gulp-ng-annotate');
 var runSequence   = require('run-sequence').use(gulp);
+var autoprefixer  = require('gulp-autoprefixer');
 
 
 var config = require('./gulpconfig.json');
@@ -48,6 +40,7 @@ gulp.task('copy', function() {
 gulp.task('sass', function() {
   return gulp.src(config.globs.sass, {cwd: config.paths.src})
     .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer())
     .pipe(gulp.dest(config.paths.dist + 'css'));
 });
 

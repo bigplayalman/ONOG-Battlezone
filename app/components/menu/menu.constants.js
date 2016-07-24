@@ -22,6 +22,11 @@ angular.module('BattleZone')
       icon: 'ion-ios-game-controller-b',
       name: 'Play'
     }
+    var create = {
+      state: 'create',
+      icon: 'ion-paintbrush',
+      name: 'Create Tournament'
+    }
 
     return {
       menu: {
@@ -33,7 +38,7 @@ angular.module('BattleZone')
           ]
         },
         admin: {
-          items: [news, logout]
+          items: [news, create, logout]
         },
         normal: {
           items: [

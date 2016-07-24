@@ -1,7 +1,13 @@
 {
   "name": "BattleZone",
-  "version": "0.0.2",
-  "description": "BattleZone is a matchmaking app for Hearthstone.",
+  "version": "0.0.3",
+  "repository": {
+    "git": {
+      "type": "git",
+      "url": "git+https://github.com/bigplayalman/ONOG-Battlezone.git"
+    }
+  },
+  "description": "BattleZone is a matchmaking app for gamers.",
   "license": "MIT",
   "dependencies": {
     "del": "^2.2.0",
