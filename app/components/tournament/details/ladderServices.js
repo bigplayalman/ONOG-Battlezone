@@ -14,6 +14,7 @@ function ladderServices(Parse) {
   function createLadder(tourney) {
     var ladder = new Parse.Object('ladder');
     ladder.set('tournament', tourney);
+    ladder.set('status', 'pending');
     return ladder.save();
   }
   function getLadder(id) {

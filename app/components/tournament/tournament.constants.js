@@ -26,12 +26,12 @@ angular.module('BattleZone')
         ],
         status: [
           {
-            id: 'active',
-            name: 'Active',
-          },
-          {
             id: 'pending',
             name: 'Pending',
+          },
+          {
+            id: 'active',
+            name: 'Active',
           },
           {
             id: 'completed',

@@ -6,6 +6,33 @@
   </ion-nav-buttons>
 	<ion-content>
     <ion-list>
+      <label class="item item-input item-select">
+        <span class="input-label">
+          Ladder Status
+        </span>
+        <select ng-model="ladder.status" ng-options="status.id as status.name for status in tournament.status"></select>
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">
+          Number of Days
+        </span>
+        <input type="number" ng-model="ladder.days">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">
+          Points per Win
+        </span>
+        <input type="number" ng-model="ladder.win">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">
+          Points per Match
+        </span>
+        <input type="number" ng-model="ladder.match">
+      </label>
 
     </ion-list>
 	</ion-content>
