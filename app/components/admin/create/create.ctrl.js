@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .controller('createCtrl', createCtrl);
 
-function createCtrl($scope, tournamentConstants) {
+function createCtrl($scope, $state, $ionicHistory, tournamentConstants, tournamentServices) {
   $scope.tournament = tournamentConstants().tournament;
   $scope.new = {
     name: null,
@@ -13,7 +13,16 @@ function createCtrl($scope, tournamentConstants) {
   };
 
   $scope.tournamentDetails = function () {
-    console.log($scope.new);
+    var tournament = {
+      name: $scope.new.name,
+      date: $scope.new.date,
+      game: $scope.new.game.id,
+      type: $scope.new.type.id
+    }
+    tournamentServices.createTournament(tournament).then(function (tourney) {
+      $ionicHistory.nextViewOptions({disableBack: true});
+      $state.go('tournament.details', {id: tourney.id});
+    });
   }
 
   $scope.validate = function (params) {
