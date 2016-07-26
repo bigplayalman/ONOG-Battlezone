@@ -1,6 +1,9 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
 function NewsCtrl($scope, NewsServices, $ionicScrollDelegate) {
+  $scope.feature = {
+    featured_media: 0
+  }
   NewsServices.getLatestNews().then(function (news) {
     $scope.feature = news[0];
     $scope.news = news;

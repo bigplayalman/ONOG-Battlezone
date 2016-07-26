@@ -1,9 +1,12 @@
 angular.module('BattleZone')
   .controller('MenuCtrl', MenuCtrl);
 
-function MenuCtrl($scope, $state, userServices, menuConstants) {
+function MenuCtrl($scope, $state, userServices, menuConstants, $ionicHistory) {
 
   $scope.navigateTo = function(state) {
+    if(state === 'latest') {
+      $ionicHistory.nextViewOptions({disableBack: true});
+    }
     $state.go(state);
   }
 
