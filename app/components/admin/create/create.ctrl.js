@@ -21,7 +21,8 @@ function createCtrl($scope, $state, $ionicHistory, tournamentConstants, tourname
     }
     tournamentServices.createTournament(tournament).then(function (tourney) {
       $ionicHistory.nextViewOptions({disableBack: true});
-      $state.go('tournament.details', {id: tourney.id});
+      var path = 'tournament.' + $scope.new.type.id;
+      $state.go(path, {id: tourney.id});
     });
   }
 

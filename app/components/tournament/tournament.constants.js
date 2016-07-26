@@ -23,6 +23,20 @@ angular.module('BattleZone')
             id: 'ladder',
             name: 'Ladder'
           }
+        ],
+        status: [
+          {
+            id: 'active',
+            name: 'Active',
+          },
+          {
+            id: 'pending',
+            name: 'Pending',
+          },
+          {
+            id: 'completed',
+            name: 'Completed'
+          }
         ]
       }
     }

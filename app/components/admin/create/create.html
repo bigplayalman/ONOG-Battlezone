@@ -1,4 +1,9 @@
 <ion-view class="createView positive-bg light">
+  <ion-nav-buttons side="secondary">
+    <button class="button button-outline button-light" ng-click="tournamentDetails()" ng-disabled="validate(new)">
+      Save
+    </button>
+  </ion-nav-buttons>
 	<ion-content>
     <form class="list" ng-submit="tournamentDetails()" >
       <label class="item item-input">
@@ -24,10 +29,6 @@
         </span>
         <select ng-options="type as type.name for type in tournament.types track by type.name" ng-model="new.type"></select>
       </label>
-
-      <ion-item>
-        <button type="submit" class="button button-balanced full-width" ng-disabled="validate(new)">Next</button>
-      </ion-item>
     </form>
 	</ion-content>
 </ion-view>

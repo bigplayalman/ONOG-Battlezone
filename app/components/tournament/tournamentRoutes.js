@@ -14,9 +14,9 @@ function tournamentRoutes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('tournament.details', {
-      url: '/:id/:details',
-      templateUrl: 'tournament/details/tournament-details.html',
-      controller: 'tournamentDetailsCtrl'
+    .state('tournament.ladder', {
+      url: '/ladder/:id/',
+      templateUrl: 'tournament/details/ladder-details.html',
+      controller: 'ladderDetailsCtrl'
     });
 }
