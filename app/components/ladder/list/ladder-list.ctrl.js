@@ -7,25 +7,21 @@ function ladderListCtrl($scope, $ionicListDelegate, ladderServices, userServices
   $scope.ladders = [];
 
   $scope.$on('$ionicView.enter', function(event, data){
-    // handle event
     $scope.user = userServices.user;
     if($scope.user.current) {
       $scope.listCanSwipe = $scope.user.current.get('admin');
     } else {
       $scope.listCanSwipe = false;
     }
+    ladderServices.getLadders().then(function (ladders) {
+      $scope.ladders = ladders;
+    });
   });
 
   $scope.$on('$ionicParentView.beforeLeave', function(event, data){
-    // handle event
-    console.log('triggered');
     $ionicListDelegate.closeOptionButtons();
   });
 
-
-  ladderServices.getLadders().then(function (ladders) {
-    $scope.ladders = ladders;
-  });
   $scope.getAttribute = function (model, name) {
     var objects = name.split('.');
     var display = null;

@@ -8,8 +8,9 @@
         </div>
         <div class="item item-play no-padding">
           <div class="button-bar">
-            <a class="button button-clear button-light">PLAY</a>
-            <a class="button button-positive">STANDINGS</a>
+            <button class="button button-clear button-light" ng-if="current.player.tournaments">PLAY</button>
+            <button class="button button-clear button-light" ng-if="!current.player.tournaments">JOIN</button>
+            <button class="button button-positive" ng-disabled="disableStandings">STANDINGS</button>
           </div>
         </div>
         <div class="item item-divider item-positive no-corners" ng-click="showNews()">

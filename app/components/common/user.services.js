@@ -32,7 +32,7 @@ function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
       });
       user.current = Parse.User.current();
       $state.go('latest');
-    }, function (error, message) {
+    }, function (error) {
       $ionicPopup.alert({
         title: 'Login Error',
         template: error.message

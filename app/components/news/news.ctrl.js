@@ -1,14 +1,25 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
-function NewsCtrl($scope, NewsServices, $ionicScrollDelegate) {
+function NewsCtrl($scope, NewsServices, $ionicScrollDelegate, playerServices) {
   $scope.feature = {
     featured_media: 0
   }
-  NewsServices.getLatestNews().then(function (news) {
-    $scope.feature = news[0];
-    $scope.news = news;
-    getImages();
+  $scope.disablePlay = false;
+  $scope.current = {
+    player: {}
+  };
+  $scope.disableStandings = false;
+
+  $scope.$on("$ionicView.enter", function(event, data){
+    NewsServices.getLatestNews().then(function (news) {
+      $scope.feature = news[0];
+      $scope.news = news;
+      getImages();
+    });
+    $scope.current.player = playerServices.getPlayer();
+
   });
+
 
   $scope.showNews = function () {
     $ionicScrollDelegate.scrollBy(0, 500, true);
