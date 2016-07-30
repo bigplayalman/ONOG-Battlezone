@@ -1,12 +1,15 @@
 <ion-view class="ladderView positive-bg light">
 
   <ion-content>
-    <div class="card list" ng-repeat="ladder in ladders">
-      <ion-item class="item-thumbnail-left" ui-sref="ladder.details({id:ladder.id})">
+    <ion-list can-swipe="listCanSwipe">
+      <ion-item class="item-thumbnail-left" ui-sref="ladder.standings({id:ladder.id})" ng-repeat="ladder in ladders">
         <img ng-src="{{getImage(ladder)}}">
         <h2>{{getAttribute(ladder, 'tournament.name')}}</h2>
         <div>{{getAttribute(ladder, 'status')}}</div>
+        <ion-option-button class="button-info" ui-sref="ladder.details({id:ladder.id})">
+          Details
+        </ion-option-button>
       </ion-item>
-    </div>
+    </ion-list>
   </ion-content>
 </ion-view>

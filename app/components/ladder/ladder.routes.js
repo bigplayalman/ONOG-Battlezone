@@ -21,11 +21,20 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
 
     })
     .state('ladder.details', {
-      url: '/:id/',
+      url: '/details/:id',
       views: {
         'ladder': {
           templateUrl: 'ladder/details/ladder-details.html',
           controller: 'ladderDetailsCtrl'
+        }
+      }
+    })
+    .state('ladder.standings', {
+      url: '/standings/:id',
+      views: {
+        'ladder': {
+          templateUrl: 'ladder/standings/ladder-standings.html',
+          controller: 'ladderStandingsCtrl'
         }
       }
     });

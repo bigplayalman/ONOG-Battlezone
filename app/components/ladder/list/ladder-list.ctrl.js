@@ -3,8 +3,26 @@ angular.module('BattleZone')
 
   .controller('ladderListCtrl', ladderListCtrl);
 
-function ladderListCtrl($scope, ladderServices) {
+function ladderListCtrl($scope, $ionicListDelegate, ladderServices, userServices) {
   $scope.ladders = [];
+
+  $scope.$on('$ionicView.enter', function(event, data){
+    // handle event
+    $scope.user = userServices.user;
+    if($scope.user.current) {
+      $scope.listCanSwipe = $scope.user.current.get('admin');
+    } else {
+      $scope.listCanSwipe = false;
+    }
+  });
+
+  $scope.$on('$ionicParentView.beforeLeave', function(event, data){
+    // handle event
+    console.log('triggered');
+    $ionicListDelegate.closeOptionButtons();
+  });
+
+
   ladderServices.getLadders().then(function (ladders) {
     $scope.ladders = ladders;
   });
@@ -22,4 +40,5 @@ function ladderListCtrl($scope, ladderServices) {
     var game = model.get('tournament').get('game');
     return 'assets/images/' + game + '.png';
   }
+
 };
