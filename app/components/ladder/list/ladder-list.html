@@ -1,6 +1,12 @@
 <ion-view class="ladderView positive-bg light">
 
   <ion-content>
-    ladder list
+    <div class="card list" ng-repeat="ladder in ladders">
+      <ion-item class="item-thumbnail-left" ui-sref="ladder.details({id:ladder.id})">
+        <img ng-src="{{getImage(ladder)}}">
+        <h2>{{getAttribute(ladder, 'tournament.name')}}</h2>
+        <div>{{getAttribute(ladder, 'status')}}</div>
+      </ion-item>
+    </div>
   </ion-content>
 </ion-view>

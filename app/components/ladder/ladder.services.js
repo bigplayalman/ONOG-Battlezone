@@ -8,7 +8,8 @@ function ladderServices(Parse) {
   return {
     createLadder: createLadder,
     getLadder: getLadder,
-    saveLadder: saveLadder
+    saveLadder: saveLadder,
+    getLadders: getLadders
   }
 
   function createLadder(tourney) {
@@ -26,6 +27,11 @@ function ladderServices(Parse) {
     var ladder = new Parse.Object('ladder');
     ladder.set(params);
     return ladder.save();
+  }
+  function getLadders() {
+    var ladders = new Parse.Query('ladder');
+    ladders.include('tournament');
+    return ladders.find();
   }
 
 }
