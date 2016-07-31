@@ -4,7 +4,7 @@ angular.module('BattleZone')
 
 function player(Parse, tournament) {
   var model = Parse.Object.extend('player');
-  var attributes = [tournament.model, 'win', 'loss', 'points', 'games'];
+  var attributes = [tournament.model, 'win', 'loss', 'points', 'games', 'user'];
   Parse.defineAttributes(model, attributes);
 
   return {

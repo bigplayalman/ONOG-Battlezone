@@ -5,7 +5,11 @@ angular.module('BattleZone')
 
 function tournamentJoinCtrl($scope, tournamentServices) {
   $scope.tournaments = {};
-  tournamentServices.getTournaments().then(function (tournaments) {
+  tournamentServices.getActiveTournaments().then(function (tournaments) {
     $scope.tournaments = tournaments;
   });
+
+  $scope.tournamentRegister = function () {
+
+  }
 };

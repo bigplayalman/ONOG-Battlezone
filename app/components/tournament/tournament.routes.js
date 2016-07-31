@@ -14,4 +14,12 @@ function tournamentRoutes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
+
+    .state('join', {
+      url: '/join',
+      parent: 'tournament',
+      templateUrl: 'tournament/join/tournament-join.html',
+      controller: 'tournamentJoinCtrl'
+    });
+
 }

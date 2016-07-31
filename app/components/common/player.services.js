@@ -17,9 +17,9 @@ function playerServices($http, Parse, $q, $ionicPopup, player) {
     if(!user) {
       defer.resolve([]);
     } else {
-      var player = new player.model();
-      player.equalTo('user', user);
-      player.find().then(function (tournaments) {
+      var currentPlayer = new Parse.Query(player.model);
+      currentPlayer.equalTo('user', user);
+      currentPlayer.find().then(function (tournaments) {
         defer.resolve(tournaments);
       },
       function (error) {

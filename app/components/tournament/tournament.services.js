@@ -15,7 +15,7 @@ function tournamentServices(Parse, $q, ladderServices, tournament) {
   function getActiveTournaments() {
     var tournaments = new Parse.Query(tournament.model);
     tournaments.equalTo('status', 'active');
-    return tournaments.fetch();
+    return tournaments.find();
   }
   function getTournament(id) {
     var current = new tournament.model();
