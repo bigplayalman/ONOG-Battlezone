@@ -14,7 +14,7 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
       url: '/list',
       views: {
         'ladder': {
-          templateUrl: 'ladder/list/ladder-list.html',
+          templateUrl: 'tournament/ladder/list/ladder-list.html',
           controller: 'ladderListCtrl'
         }
       }
@@ -24,7 +24,7 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
       url: '/details/:id',
       views: {
         'ladder': {
-          templateUrl: 'ladder/details/ladder-details.html',
+          templateUrl: 'tournament/ladder/details/ladder-details.html',
           controller: 'ladderDetailsCtrl'
         }
       }
@@ -33,7 +33,7 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
       url: '/standings/:id',
       views: {
         'ladder': {
-          templateUrl: 'ladder/standings/ladder-standings.html',
+          templateUrl: 'tournament/ladder/standings/ladder-standings.html',
           controller: 'ladderStandingsCtrl'
         }
       }

@@ -7,7 +7,7 @@ function ladderDetailsCtrl($scope, $stateParams, ladderServices, $ionicPopup, to
   $scope.ladder = {};
   $scope.tournament = tournamentConstants().tournament;
   ladderServices.getLadder($stateParams.id).then(function (ladder) {
-    $scope.ladder = ladder.toJSON();
+    $scope.ladder = ladder;
   });
 
   $scope.save = function () {

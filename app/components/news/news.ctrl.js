@@ -5,9 +5,9 @@ function NewsCtrl($scope, NewsServices, $ionicScrollDelegate, playerServices) {
     featured_media: 0
   }
   $scope.disablePlay = false;
-  $scope.current = {
-    player: {}
-  };
+
+  $scope.current = playerServices.current;
+
   $scope.disableStandings = false;
 
   $scope.$on("$ionicView.enter", function(event, data){
@@ -16,8 +16,11 @@ function NewsCtrl($scope, NewsServices, $ionicScrollDelegate, playerServices) {
       $scope.news = news;
       getImages();
     });
-    $scope.current.player = playerServices.getPlayer();
 
+    playerServices.fetchPlayer().then(function (tournaments) {
+      $scope.current.tournaments = tournaments;
+      console.log($scope.current);
+    });
   });
 
 

@@ -3,25 +3,33 @@ angular.module('BattleZone')
 
   .factory('tournamentServices', tournamentServices);
 
-function tournamentServices(Parse, $q, ladderServices) {
+function tournamentServices(Parse, $q, ladderServices, tournament) {
 
   return {
     getTournament: getTournament,
     createTournament: createTournament,
-    saveTournament: saveTournament
+    saveTournament: saveTournament,
+    getActiveTournaments: getActiveTournaments
+  }
+
+  function getActiveTournaments() {
+    var tournaments = new Parse.Query(tournament.model);
+    tournaments.equalTo('status', 'active');
+    return tournaments.fetch();
   }
   function getTournament(id) {
-    var tournament = new Parse.Object('tournament');
-    tournament.id = id;
-    return tournament.fetch();
+    var current = new tournament.model();
+    current.id = id;
+    return current.fetch();
   }
 
   function createTournament(params) {
     var defer = $q.defer();
 
-    var tournament = new Parse.Object('tournament');
-    tournament.set(params);
-    tournament.save().then(function (tourney) {
+    var newTourney = new tournament.model();
+    newTourney.set(params);
+    newTourney.set('status', 'pending');
+    newTourney.save().then(function (tourney) {
       switch(tourney.get('type')) {
         case 'ladder':
           ladderServices.createLadder(tourney).then(function (ladder) {
@@ -37,7 +45,7 @@ function tournamentServices(Parse, $q, ladderServices) {
   }
 
   function saveTournament(params) {
-    var tournament = new Parse.Object('tournament');
+    var tournament = new tournament.model();
     tournament.set(params);
     return tournament.save();
   }

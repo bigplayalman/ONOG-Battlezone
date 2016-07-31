@@ -3,26 +3,24 @@ angular.module('BattleZone')
 
   .factory('playerServices', playerServices);
 
-function playerServices($http, Parse, $q, $ionicPopup) {
+function playerServices($http, Parse, $q, $ionicPopup, player) {
   var current = {player: {}};
-
 
   return {
     current: current,
-    getPlayer: getPlayer
+    fetchPlayer: fetchPlayer
   }
 
-  function getPlayer() {
+  function fetchPlayer() {
     var defer = $q.defer();
     var user = Parse.User.current();
     if(!user) {
-      defer.resolve(current);
+      defer.resolve([]);
     } else {
-      var player = new Parse.Query('player');
+      var player = new player.model();
       player.equalTo('user', user);
       player.find().then(function (tournaments) {
-        current.player.tournaments = tournaments;
-        defer.resolve(current);
+        defer.resolve(tournaments);
       },
       function (error) {
         $ionicPopup.alert({
@@ -31,10 +29,7 @@ function playerServices($http, Parse, $q, $ionicPopup) {
         })
       });
     }
-
     return defer.promise;
-
-
   }
 
 }
