@@ -21,7 +21,7 @@
   "lib": {
     "js": {
       "ionic": {
-        "dev": "../app/lib/ionic/js/ionic.bundle.js",
+        "dev" : "../app/lib/ionic/js/ionic.bundle.min.js",
         "test": "../app/lib/ionic/js/ionic.bundle.min.js",
         "prod": "../app/lib/ionic/js/ionic.bundle.min.js"
       },

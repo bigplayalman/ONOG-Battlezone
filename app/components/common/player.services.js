@@ -8,7 +8,8 @@ function playerServices($http, Parse, $q, $ionicPopup, player) {
 
   return {
     current: current,
-    fetchPlayer: fetchPlayer
+    fetchPlayer: fetchPlayer,
+    registerPlayer: registerPlayer
   }
 
   function fetchPlayer() {
@@ -19,6 +20,7 @@ function playerServices($http, Parse, $q, $ionicPopup, player) {
     } else {
       var currentPlayer = new Parse.Query(player.model);
       currentPlayer.equalTo('user', user);
+      currentPlayer.include('tournament');
       currentPlayer.find().then(function (tournaments) {
         defer.resolve(tournaments);
       },
@@ -30,6 +32,15 @@ function playerServices($http, Parse, $q, $ionicPopup, player) {
       });
     }
     return defer.promise;
+  }
+
+  function registerPlayer(id, tournament) {
+    var user = Parse.User.current();
+    var newPlayer = new player.model();
+    newPlayer.set('user', user);
+    newPlayer.set('tournament', tournament);
+    newPlayer.set('battleNet', id);
+    return newPlayer.save();
   }
 
 }
