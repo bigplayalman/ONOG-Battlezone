@@ -1,0 +1,12 @@
+$ionicons-font-path: "../assets/fonts" !default;
+@import "variables";
+@import "custom";
+@import "common";
+@import "onog.fonts";
+@import "../lib/ionic/scss/ionic";
+@import "../app/views/news/news";
+@import "../app/views/login/login";
+@import "../app/views/tournament/tournament";
+@import "../app/views/tournament/ladder/ladder";
+@import "../app/views/register/register";
+

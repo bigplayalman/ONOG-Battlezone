@@ -5,15 +5,15 @@
   "globs" : {
     "all": "**",
     "icons": "lib/ionic/fonts/*",
-    "js" : "components/**/*.js",
+    "js" : "app/**/*.js",
     "assets": "assets/**",
-    "html": "components/**/*.html",
+    "html": "app/views/**/*.html",
     "sass": "scss/styles.scss",
-    "index": "index.html",
-    "cordova": "cordova.js"
+    "index": "app/index.html",
+    "cordova": "app/cordova.js"
   },
   "paths": {
-    "src": 			"./app/",
+    "src": 			"./src/",
     "dist": 		"./www/",
     "build":		".",
     "resources":	"./node_modules/"
@@ -21,9 +21,9 @@
   "lib": {
     "js": {
       "ionic": {
-        "dev" : "../app/lib/ionic/js/ionic.bundle.min.js",
-        "test": "../app/lib/ionic/js/ionic.bundle.min.js",
-        "prod": "../app/lib/ionic/js/ionic.bundle.min.js"
+        "dev" : "../src/lib/ionic/js/ionic.bundle.min.js",
+        "test": "../src/lib/ionic/js/ionic.bundle.min.js",
+        "prod": "../src/lib/ionic/js/ionic.bundle.min.js"
       },
       "parse": {
         "dev": "parse/dist/parse-latest.min.js",
@@ -41,9 +41,9 @@
         "prod": "moment/min/moment.min.js"
       },
       "ngCordova": {
-        "dev": "../app/lib/ngCordova/dist/ng-cordova.min.js",
-        "test": "../app/lib/ngCordova/dist/ng-cordova.min.js",
-        "prod": "../app/lib/ngCordova/dist/ng-cordova.min.js"
+        "dev": "../src/lib/ngCordova/dist/ng-cordova.min.js",
+        "test": "../src/lib/ngCordova/dist/ng-cordova.min.js",
+        "prod": "../src/lib/ngCordova/dist/ng-cordova.min.js"
       },
       "angular-moment": {
         "dev": "angular-moment/angular-moment.min.js",
