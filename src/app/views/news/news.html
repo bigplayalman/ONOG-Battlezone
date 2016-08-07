@@ -9,7 +9,7 @@
         <div class="item item-play no-padding">
           <div class="button-bar">
             <button class="button button-clear button-light" ng-if="current.player.tournaments">PLAY</button>
-            <button class="button button-clear button-light" ng-if="!current.player.tournaments && user.current" ui-sref="join">JOIN</button>
+            <button class="button button-clear button-light" ng-if="!current.player.tournaments && user.current" ui-sref="tournament.list">JOIN</button>
             <button class="button button-clear button-light" ui-sref="login" ng-if="!user.current">LOGIN</button>
             <button class="button button-positive" ng-disabled="disableStandings">STANDINGS</button>
           </div>

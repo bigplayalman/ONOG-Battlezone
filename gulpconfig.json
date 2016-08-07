@@ -7,7 +7,7 @@
     "icons": "lib/ionic/fonts/*",
     "js" : "app/**/*.js",
     "assets": "assets/**",
-    "html": "app/views/**/*.html",
+    "html": "app/**/*.html",
     "sass": "scss/styles.scss",
     "index": "app/index.html",
     "cordova": "app/cordova.js"

@@ -15,10 +15,9 @@ function tournamentRoutes ($stateProvider, $urlRouterProvider) {
       }
     })
 
-    .state('list', {
+    .state('tournament.list', {
       url: '/list',
-      parent: 'tournament',
-      templateUrl: 'tournament/list/tournament-list.html',
+      templateUrl: 'views/tournament/list/tournament-list.html',
       controller: 'tournamentListCtrl'
     });
 

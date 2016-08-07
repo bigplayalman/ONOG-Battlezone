@@ -8,7 +8,7 @@ function routes ($stateProvider, $urlRouterProvider) {
     .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: 'menu/menu.html',
+      templateUrl: 'views/menu/menu.html',
       controller: 'MenuCtrl',
     })
 
@@ -18,7 +18,7 @@ function routes ($stateProvider, $urlRouterProvider) {
       cache: false,
       views: {
         'content': {
-          templateUrl: 'login/login.html',
+          templateUrl: 'views/login/login.html',
           controller: 'LoginCtrl'
         }
       }
@@ -28,7 +28,7 @@ function routes ($stateProvider, $urlRouterProvider) {
       parent: 'app',
       views: {
         'content': {
-          templateUrl: 'register/register.html',
+          templateUrl: 'views/register/register.html',
           controller: 'RegisterCtrl'
         }
       }

@@ -86,7 +86,7 @@ gulp.task('build', function () {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(config.paths.src + 'components/**/*', ['build']);
+  gulp.watch(config.paths.src + '**/*', ['build']);
 });
 
 function getNodeModuleLibSources(env) {

@@ -4,13 +4,9 @@
       <ion-item class="item-thumbnail-left text-center" ng-repeat="tournament in tournaments">
         <img ng-src="{{'assets/images/' + tournament.game + '.png'}}">
         <h2 class="padding-bottom">{{tournament.name}}</h2>
-        <button
-          class="button button-positive full-width button-small"
-          ng-click="tournamentRegister(tournament)"
-          ng-if="showButton(tournament).param"
-        >
-          JOIN
-        </button>
+
+        <tournament-action></tournament-action>
+
       </ion-item>
     </ion-list>
 	</ion-content>

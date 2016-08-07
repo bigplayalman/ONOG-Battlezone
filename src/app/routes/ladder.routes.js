@@ -10,21 +10,11 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
       abstract: true,
       template: '<ion-nav-view name="ladder"></ion-nav-view>'
     })
-    .state('ladder.list', {
-      url: '/list',
-      views: {
-        'ladder': {
-          templateUrl: 'tournament/ladder/list/ladder-list.html',
-          controller: 'ladderListCtrl'
-        }
-      }
-
-    })
     .state('ladder.details', {
       url: '/details/:id',
       views: {
         'ladder': {
-          templateUrl: 'tournament/ladder/details/ladder-details.html',
+          templateUrl: 'views/tournament/ladder/details/ladder-details.html',
           controller: 'ladderDetailsCtrl'
         }
       }
@@ -33,7 +23,7 @@ function ladderRoutes ($stateProvider, $urlRouterProvider) {
       url: '/standings/:id',
       views: {
         'ladder': {
-          templateUrl: 'tournament/ladder/standings/ladder-standings.html',
+          templateUrl: 'views/tournament/ladder/standings/ladder-standings.html',
           controller: 'ladderStandingsCtrl'
         }
       }

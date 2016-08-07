@@ -17,13 +17,13 @@ function newsRoutes ($stateProvider, $urlRouterProvider) {
     .state('latest', {
       url: '/latest',
       parent: 'news',
-      templateUrl: 'news/news.html',
+      templateUrl: 'views/news/news.html',
       controller: 'NewsCtrl'
     })
     .state('details', {
       url: '/:id',
       parent: 'news',
-      templateUrl: 'news/details/newsDetails.html',
+      templateUrl: 'views/news/details/newsDetails.html',
       controller: 'NewsDetailsCtrl'
     })
 }

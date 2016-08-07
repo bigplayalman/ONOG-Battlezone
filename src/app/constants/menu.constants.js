@@ -27,10 +27,10 @@ angular.module('BattleZone')
       icon: 'ion-paintbrush',
       name: 'Create Tournament'
     }
-    var ladderList = {
-      state: 'ladder.list',
+    var tournaments = {
+      state: 'tournament.list',
       icon: 'ion-ios-list-outline',
-      name: 'Ladders'
+      name: 'Tournaments'
     }
 
     return {
@@ -39,16 +39,16 @@ angular.module('BattleZone')
           items: [
             news,
             play,
-            ladderList,
+            tournaments,
             logout
           ]
         },
         admin: {
-          items: [news, create, ladderList, logout]
+          items: [news, create, tournaments, logout]
         },
         normal: {
           items: [
-            news, ladderList, login
+            news, tournaments, login
           ]
         }
       }
