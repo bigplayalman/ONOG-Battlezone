@@ -5,7 +5,7 @@
         <img ng-src="{{'assets/images/' + tournament.game + '.png'}}">
         <h2 class="padding-bottom">{{tournament.name}}</h2>
 
-        <tournament-action></tournament-action>
+        <tournament-action tournament="tournament" players="players"></tournament-action>
 
       </ion-item>
     </ion-list>
