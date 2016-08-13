@@ -5,11 +5,13 @@ angular.module('BattleZone')
 
 function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
   var user = {current: null};
+  var state = {last: null};
 
   user.current = Parse.User.current();
 
   return {
     user: user,
+    state: state,
     isLoggedIn: isLoggedIn,
     logIn: logIn,
     logOut: logOut,
@@ -25,13 +27,13 @@ function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
     }
   }
   function logIn(params) {
-    Parse.User.logIn(params.username, params.password).then(function () {
+    return Parse.User.logIn(params.username, params.password).then(function (loggedIn) {
       $ionicHistory.nextViewOptions({
         disableBack: true,
         historyRoot: true
       });
       user.current = Parse.User.current();
-      $state.go('latest');
+      return loggedIn;
     }, function (error) {
       $ionicPopup.alert({
         title: 'Login Error',

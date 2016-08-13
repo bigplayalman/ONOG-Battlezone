@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .controller('RegisterCtrl', RegisterCtrl);
 
-function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope, $ionicHistory) {
+function RegisterCtrl($scope, $state, Parse, $ionicPopup, $rootScope, $ionicHistory, userServices) {
 
   $scope.user = {};
 

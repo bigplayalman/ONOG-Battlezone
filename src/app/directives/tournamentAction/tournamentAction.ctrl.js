@@ -3,17 +3,14 @@ angular.module('BattleZone')
 
   .controller('tournamentActionCtrl', tournamentActionCtrl);
 
-function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices) {
+function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices, userServices) {
   $scope.options = {
-    text: 'LOGIN',
+    text: 'JOIN',
     class: 'button-positive',
-    action: 'login'
+    action: 'join'
   }
 
   if(Parse.User.current()) {
-
-    $scope.options.text = 'JOIN';
-    $scope.options.action = 'join';
 
     angular.forEach($scope.players, function(player) {
       if(tournament.id === player.get('tournament').id) {
@@ -25,20 +22,34 @@ function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices
 
   $scope.process = function(action) {
     switch (action) {
-      case 'login': $state.go('login'); break;
-      case 'play': $state.go('play', {id: $scope.tournament.id}); break;
+      case 'play': tournamentPlay(); break;
       case 'join': tournamentRegister(); break;
     }
   }
 
+  function tournamentPlay () {
+    $state.go('play', {id: $scope.tournament.id});
+  }
+
   function tournamentRegister () {
+    var user = Parse.User.current();
+
+    if(user) {
+      registerPlayer();
+    } else {
+      userServices.state.last = $state.current.name;
+      $state.go('login');
+    }
+  }
+
+  function registerPlayer() {
     registerPopup().then(function (input) {
       playerServices.registerPlayer(input, $scope.tournament).then(function (player) {
         $ionicPopup.alert({
           title: 'Player Registered'
         }).then(function () {
           tournamentDetails();
-        })
+        });
       });
     });
   }
