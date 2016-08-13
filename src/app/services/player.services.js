@@ -3,13 +3,24 @@ angular.module('BattleZone')
 
   .factory('playerServices', playerServices);
 
-function playerServices($http, Parse, $q, $ionicPopup, player) {
+function playerServices($http, Parse, $q, $ionicPopup, player, tournament) {
   var current = {player: {}};
 
   return {
     current: current,
     fetchPlayer: fetchPlayer,
-    registerPlayer: registerPlayer
+    registerPlayer: registerPlayer,
+    getPlayers: getPlayers
+  }
+
+  function getPlayers(id) {
+    var players = new Parse.Query(player.model);
+    var tourney = new Parse.Object.extend(tournament.model);
+    tourney.id = id;
+    players.equalTo('tournament', tourney);
+    players.include('user');
+    players.descending('points');
+    return players.find();
   }
 
   function fetchPlayer() {
@@ -34,12 +45,12 @@ function playerServices($http, Parse, $q, $ionicPopup, player) {
     return defer.promise;
   }
 
-  function registerPlayer(id, tournament) {
+  function registerPlayer(params, tournament) {
     var user = Parse.User.current();
     var newPlayer = new player.model();
     newPlayer.set('user', user);
     newPlayer.set('tournament', tournament);
-    newPlayer.set('battleNet', id);
+    newPlayer.set(params);
     return newPlayer.save();
   }
 

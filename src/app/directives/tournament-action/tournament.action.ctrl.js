@@ -5,15 +5,18 @@ angular.module('BattleZone')
 
 function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices, userServices) {
   $scope.options = {
-    text: 'JOIN',
-    class: 'button-positive',
+    text: 'LOGIN',
+    class: 'button-positive button-small full-width',
     action: 'join'
+  }
+  $scope.input = {
+    battleNetId: null
   }
 
   if(Parse.User.current()) {
-
+    $scope.options.text = 'JOIN';
     angular.forEach($scope.players, function(player) {
-      if(tournament.id === player.get('tournament').id) {
+      if($scope.tournament.id === player.get('tournament').id) {
         $scope.options.text = 'PLAY';
         $scope.options.action = 'play';
       }
@@ -28,7 +31,7 @@ function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices
   }
 
   function tournamentPlay () {
-    $state.go('play', {id: $scope.tournament.id});
+    $state.go('tournament.play', {id: $scope.tournament.id});
   }
 
   function tournamentRegister () {
@@ -44,25 +47,28 @@ function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices
 
   function registerPlayer() {
     registerPopup().then(function (input) {
-      playerServices.registerPlayer(input, $scope.tournament).then(function (player) {
-        $ionicPopup.alert({
-          title: 'Player Registered'
-        }).then(function () {
-          tournamentDetails();
+      if(input) {
+        playerServices.registerPlayer(input, $scope.tournament).then(function (player) {
+          $ionicPopup.alert({
+            title: 'Player Registered'
+          }).then(function () {
+            $scope.input.id = null;
+            tournamentDetails();
+          });
         });
-      });
+      }
     });
   }
 
   function tournamentDetails() {
     switch($scope.tournament.type) {
-      case 'ladder': $state.go('standings', {id: $scope.tournament.id}); break;
+      case 'ladder': $state.go('tournament.ladder', {id: $scope.tournament.id}); break;
     }
   }
 
   function registerPopup() {
     return $ionicPopup.show({
-      templateUrl: 'directives/tournamentAction/register-popup.html',
+      templateUrl: 'directives/tournament-action/register.popup.html',
       title: 'Please enter your in-game id',
       scope: $scope,
       buttons: [
@@ -73,7 +79,11 @@ function tournamentActionCtrl($scope, $state, Parse, $ionicPopup, playerServices
           text: 'Submit',
           type: 'button-positive',
           onTap: function() {
-            return $scope.input.id;
+            var player = $scope.input;
+            switch($scope.tournament.type) {
+              case 'ladder': player.points = 0; player.wins = 0; player.losses = 0; break;
+            }
+            return player;
           }
         }
       ]

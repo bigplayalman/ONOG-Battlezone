@@ -17,8 +17,22 @@ function tournamentRoutes ($stateProvider, $urlRouterProvider) {
 
     .state('tournament.list', {
       url: '/list',
-      templateUrl: 'views/tournament/list/tournament-list.html',
-      controller: 'tournamentListCtrl'
+      templateUrl: 'views/tournament/list/tournament.list.html',
+      controller: 'tournamentListCtrl',
+      cache: false
+    })
+
+    .state('tournament.ladder', {
+      url: '/ladder/:id',
+      templateUrl: 'views/tournament/ladder/ladder.html',
+      controller: 'ladderCtrl',
+      cache: false
+    })
+    .state('tournament.play', {
+      url: '/play/:id',
+      templateUrl: 'views/tournament/play/play.html',
+      controller: 'playCtrl',
+      cache: false
     });
 
 }

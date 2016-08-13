@@ -7,9 +7,6 @@ function tournamentListCtrl($scope, $state, tournamentServices, $ionicPopup, pla
 
   $scope.tournaments = {};
   $scope.players = [];
-  $scope.input = {
-    id: null
-  }
 
   getActive();
 

@@ -10,11 +10,7 @@ function LoginCtrl($scope, $state, $ionicHistory, userServices) {
   $scope.loginUser = function () {
     userServices.logIn($scope.user).then(function (user) {
       if(user) {
-        if(userServices.state.last) {
-          $state.go(userServices.state.last);
-        } else {
-          $state.go('latest');
-        }
+        userServices.state.last ? $state.go(userServices.state.last) : $state.go('latest');
       }
     });
   };

@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .factory('userServices', userServices);
 
-function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
+function userServices($http, Parse, $state, $ionicHistory, $ionicPopup, $rootScope) {
   var user = {current: null};
   var state = {last: null};
 
@@ -15,7 +15,18 @@ function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
     isLoggedIn: isLoggedIn,
     logIn: logIn,
     logOut: logOut,
-    assignUser: assignUser
+    assignUser: assignUser,
+    registerUser: registerUser
+  }
+
+  function registerUser (user) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true,
+      historyRoot: true
+    });
+    var register = new Parse.User();
+    register.set(user);
+    return register.signUp();
   }
 
   function isLoggedIn() {
@@ -49,6 +60,13 @@ function userServices($http, Parse, $state, $ionicHistory, $ionicPopup) {
 
   function assignUser() {
     user.current = Parse.User.current();
+  }
+
+  function ErrorPopup (message) {
+    return $ionicPopup.alert({
+      title: 'Registration Error',
+      template: message
+    });
   }
 
 }

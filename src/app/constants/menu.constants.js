@@ -23,7 +23,7 @@ angular.module('BattleZone')
       name: 'Play'
     };
     var create = {
-      state: 'create',
+      state: 'admin.create',
       icon: 'ion-paintbrush',
       name: 'Create Tournament'
     }

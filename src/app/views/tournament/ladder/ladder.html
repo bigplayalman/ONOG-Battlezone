@@ -1,0 +1,17 @@
+<ion-view class="tournamentView positive-bg light">
+	<ion-content>
+    <ion-list>
+      <ion-item class="item-divider">
+        # |
+        <strong>Name</strong>
+        <span class="item-note">
+          Points
+        </span>
+      </ion-item>
+      <ion-item ng-repeat="player in players">
+        {{$index + 1}} | {{player.user.username}}
+        <span class="item-note">{{player.points}}</span>
+      </ion-item>
+    </ion-list>
+	</ion-content>
+</ion-view>

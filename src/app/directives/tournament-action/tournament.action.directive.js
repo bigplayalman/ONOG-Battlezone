@@ -9,6 +9,6 @@ function tournamentAction() {
       tournament: '=tournament',
       players: '=players'
     },
-    templateUrl: 'directives/tournamentAction/tournamentAction.html'
+    templateUrl: 'directives/tournament-action/tournament.action.html'
   };
 }

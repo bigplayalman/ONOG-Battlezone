@@ -14,9 +14,8 @@ function adminRoutes ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('create', {
+    .state('admin.create', {
       url: '/create',
-      parent: 'admin',
       templateUrl: 'views/admin/create/create.html',
       controller: 'createCtrl'
     })

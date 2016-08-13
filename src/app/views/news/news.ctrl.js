@@ -1,11 +1,11 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
-function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServices, userServices) {
+function NewsCtrl($scope, NewsServices, $ionicScrollDelegate, playerServices, userServices) {
   $scope.feature = {
     featured_media: 0
   }
   $scope.disablePlay = false;
-  userServices.state.last = $state.current.name;
+  userServices.state.last = null;
 
   $scope.current = playerServices.current;
 
