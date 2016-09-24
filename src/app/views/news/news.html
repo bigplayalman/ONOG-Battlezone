@@ -1,24 +1,22 @@
 <ion-view>
-  <ion-content class="news-container no-header has-footer">
-    <div class="card card-feature news-image" ng-class="{'default': feature.featured_media === 0}">
-      <section class="bottom-content">
-        <div class="item item-feature item-icon-right light" ui-sref="details({id: feature.id})">
-          <div ng-bind-html="feature.title.rendered | sanitize"></div>
-          <i class="icon ion-arrow-right-b"></i>
-        </div>
-        <div class="item item-play no-padding">
-          <div class="button-bar">
-            <button class="button button-clear button-light" ng-if="current.player.tournaments">PLAY</button>
-            <button class="button button-clear button-light" ng-if="!current.player.tournaments && user.current" ui-sref="tournament.list">JOIN</button>
-            <button class="button button-clear button-light" ui-sref="login" ng-if="!user.current">LOGIN</button>
-            <button class="button button-positive" ng-disabled="disableStandings">STANDINGS</button>
-          </div>
-        </div>
-        <div class="item item-divider item-positive no-corners" ng-click="showNews()">
-          <i class="ion-android-arrow-dropdown-circle calm"></i>
-          NEWS
-        </div>
-      </section>
+  <ion-content class="news-container has-footer">
+    <div class="card card-feature news-image" ui-sref="details({id: feature.id})">
+      <div class="news-image default" ng-if="feature.featured_media === 0"></div>
+      <div class="news-image" back-img="{{feature.featured_media}}" ng-if="feature.imageFetched"></div>
+      <div class="item item-divider item-text-wrap item-positive no-corners" ng-bind-html="feature.title.rendered | sanitize"></div>
+    </div>
+
+    <div class="item item-play no-padding">
+      <div class="button-bar">
+        <button class="button button-clear button-light" ng-if="current.player.tournaments">PLAY</button>
+        <button class="button button-clear button-light" ng-if="!current.player.tournaments && user.current" ui-sref="tournament.list">JOIN</button>
+        <button class="button button-clear button-light" ui-sref="login" ng-if="!user.current">LOGIN</button>
+        <button class="button button-positive" ng-disabled="disableStandings">STANDINGS</button>
+      </div>
+      <div class="item item-divider item-positive no-corners" ng-click="showNews()">
+        <i class="ion-android-arrow-dropdown-circle calm"></i>
+        NEWS
+      </div>
     </div>
     <div class="card card-news" ng-repeat="post in news" ng-if="$index !== 0">
       <div class="news-image default" ng-if="post.featured_media === 0"></div>
