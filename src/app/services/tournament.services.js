@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .factory('tournamentServices', tournamentServices);
 
-function tournamentServices(Parse, $q, ladderServices, tournament) {
+function tournamentServices(Parse, $q, ladderServices, tournamentParse) {
 
   return {
     getTournament: getTournament,
@@ -13,12 +13,12 @@ function tournamentServices(Parse, $q, ladderServices, tournament) {
   }
 
   function getActiveTournaments() {
-    var tournaments = new Parse.Query(tournament.model);
+    var tournaments = new Parse.Query(tournamentParse.model);
     tournaments.equalTo('status', 'active');
     return tournaments.find();
   }
   function getTournament(id) {
-    var current = new tournament.model();
+    var current = new tournamentParse.model();
     current.id = id;
     return current.fetch();
   }
@@ -26,7 +26,7 @@ function tournamentServices(Parse, $q, ladderServices, tournament) {
   function createTournament(params) {
     var defer = $q.defer();
 
-    var newTourney = new tournament.model();
+    var newTourney = new tournamentParse.model();
     newTourney.set(params);
     newTourney.set('status', 'pending');
     newTourney.save().then(function (tourney) {
@@ -45,7 +45,7 @@ function tournamentServices(Parse, $q, ladderServices, tournament) {
   }
 
   function saveTournament(params) {
-    var tournament = new tournament.model();
+    var tournament = new tournamentParse.model();
     tournament.set(params);
     return tournament.save();
   }

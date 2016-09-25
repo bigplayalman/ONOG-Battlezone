@@ -1,10 +1,10 @@
-angular.module('BattleZone')
+angular.module('BattleZone.Parse')
 
   .factory('ladder', ladder)
 
-function ladder(Parse) {
+function ladder(Parse, tournamentParse) {
   var model = Parse.Object.extend('ladder');
-  var attributes = ['tournament', 'win', 'days', 'match'];
+  var attributes = [tournamentParse.model, 'win', 'days', 'match'];
   Parse.defineAttributes(model, attributes);
 
   return {

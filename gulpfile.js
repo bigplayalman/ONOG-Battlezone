@@ -5,6 +5,7 @@ var sass          = require('gulp-sass');
 var merge         = require('merge-stream');
 var templateCache = require('gulp-angular-templatecache');
 var plumber       = require('gulp-plumber');
+var iife = require("gulp-iife");
 var sourcemaps    = require('gulp-sourcemaps');
 var uglify        = require('gulp-uglify');
 var ngAnnotate    = require('gulp-ng-annotate');
@@ -55,6 +56,7 @@ gulp.task('templates', function() {
 
 gulp.task('app', function() {
   return gulp.src(config.globs.js, {cwd: config.paths.src})
+    .pipe(iife())
     .pipe(plumber({
       errorHandler: onError
     }))

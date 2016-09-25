@@ -1,8 +1,8 @@
-angular.module('BattleZone')
+angular.module('BattleZone.Parse')
 
-  .factory('tournament', tournament)
+  .factory('tournamentParse', tournamentParse);
 
-function tournament(Parse) {
+function tournamentParse(Parse) {
   var model = Parse.Object.extend('tournament');
   var attributes = ['status', 'date', 'type', 'game', 'name'];
   Parse.defineAttributes(model, attributes);

@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .factory('playerServices', playerServices);
 
-function playerServices($http, Parse, $q, $ionicPopup, player, tournament) {
+function playerServices($http, Parse, $q, $ionicPopup, player, tournamentParse) {
   var current = {player: {}};
 
   return {
@@ -15,7 +15,7 @@ function playerServices($http, Parse, $q, $ionicPopup, player, tournament) {
 
   function getPlayers(id) {
     var players = new Parse.Query(player.model);
-    var tourney = new Parse.Object.extend(tournament.model);
+    var tourney = new Parse.Object.extend(tournamentParse.model);
     tourney.id = id;
     players.equalTo('tournament', tourney);
     players.include('user');

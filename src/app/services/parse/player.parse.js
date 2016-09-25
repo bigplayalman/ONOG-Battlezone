@@ -1,10 +1,10 @@
-angular.module('BattleZone')
+angular.module('BattleZone.Parse')
 
   .factory('player', player)
 
-function player(Parse, tournament) {
+function player(Parse, tournamentParse) {
   var model = Parse.Object.extend('player');
-  var attributes = [tournament.model, 'win', 'loss', 'points', 'games', 'user'];
+  var attributes = [tournamentParse.model, 'win', 'loss', 'points', 'games', 'user'];
   Parse.defineAttributes(model, attributes);
 
   return {
