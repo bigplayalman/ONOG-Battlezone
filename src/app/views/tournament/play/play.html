@@ -1,5 +1,31 @@
 <ion-view class="tournamentView positive-bg light">
   <ion-content>
-    play
+
+    <ion-list ng-if="match.opponent">
+      <ion-item >
+        Current Opponent: {{match.opponent.battleNetId}}
+      </ion-item>
+      <ion-item ng-if="!match.result">
+
+        <div class="button-bar">
+          <a class="button button-positive" ng-click="recordMatch(true)">Win</a>
+          <a class="button button-assertive" ng-click="recordMatch(false)">Loss</a>
+        </div>
+
+      </ion-item>
+      <ion-item ng-if="match.result">
+        Result: {{match.result}}
+      </ion-item>
+    </ion-list>
+
+    <ion-list ng-if="match && !match.opponent">
+      <ion-item>
+        Searching for Opponent
+      </ion-item>
+      <ion-item>
+        <button class="button button-positive button-block" ng-click="cancelMatch()">Cancel</button>
+      </ion-item>
+    </ion-list>
+
   </ion-content>
 </ion-view>

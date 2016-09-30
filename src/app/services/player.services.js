@@ -4,7 +4,7 @@ angular.module('BattleZone')
   .factory('playerServices', playerServices);
 
 function playerServices($http, Parse, $q, $ionicPopup, player, tournamentParse) {
-  var current = {player: {}};
+  var current = {player: null};
 
   return {
     current: current,
@@ -33,6 +33,7 @@ function playerServices($http, Parse, $q, $ionicPopup, player, tournamentParse) 
       currentPlayer.equalTo('user', user);
       currentPlayer.include('tournament');
       currentPlayer.find().then(function (tournaments) {
+        current.player = tournaments[0];
         defer.resolve(tournaments);
       },
       function (error) {

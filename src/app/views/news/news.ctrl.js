@@ -22,6 +22,7 @@ function NewsCtrl($scope, NewsServices, $ionicScrollDelegate, playerServices, us
 
     playerServices.fetchPlayer().then(function (tournaments) {
       $scope.current.tournaments = tournaments;
+      console.log($scope.current);
     });
   });
 
