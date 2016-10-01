@@ -298,6 +298,13 @@ module.exports = [
         "clobbers": [
             "Connection"
         ]
+    },
+    {
+        "file": "plugins/com.verso.cordova.clipboard/www/clipboard.js",
+        "id": "com.verso.cordova.clipboard.Clipboard",
+        "clobbers": [
+            "cordova.plugins.clipboard"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -314,7 +321,8 @@ module.exports.metadata =
     "com.raananw.imageResizerTT": "0.1.3",
     "cordova-plugin-camera": "2.1.1",
     "cordova-plugin-geolocation": "2.1.0",
-    "cordova-plugin-network-information": "1.2.0"
-}
+    "cordova-plugin-network-information": "1.2.0",
+    "com.verso.cordova.clipboard": "0.1.0"
+};
 // BOTTOM OF METADATA
 });

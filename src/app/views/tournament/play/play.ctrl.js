@@ -3,7 +3,7 @@ angular.module('BattleZone')
   .controller('playCtrl', playCtrl);
 
 function playCtrl(
-  $scope, $state, $stateParams, $ionicPopup, $timeout,
+  $scope, $state, $stateParams, $ionicPopup, $timeout, $cordovaClipboard, $ionicPopover,
   tournamentServices, matchServices, playerServices, userServices
 ) {
   $scope.id = $stateParams.id;
@@ -31,6 +31,12 @@ function playCtrl(
           title: 'An error has occured'
         });
       }
+    });
+  }
+
+  $scope.copyId = function () {
+    $cordovaClipboard.copy($scope.match.opponent.battleNetId).then(function () {
+      $ionicPopup.alert({title:'ID Copied'});
     });
   }
 

@@ -2,9 +2,18 @@
   <ion-content>
 
     <ion-list ng-if="match.opponent">
-      <ion-item >
-        Current Opponent: {{match.opponent.battleNetId}}
+      <ion-item class="item-divider text-center">
+        Your Opponent:
       </ion-item>
+
+      <ion-item class="item-text-wrap">
+        <h1 class="text-center">{{match.opponent.battleNetId}}</h1>
+      </ion-item>
+
+      <ion-item>
+        <button class="button button-positive button-block" ng-click="copyId()">Copy ID</button>
+      </ion-item>
+
       <ion-item ng-if="!match.result">
 
         <div class="button-bar">

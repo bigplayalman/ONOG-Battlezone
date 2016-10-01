@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.BattleZone.app" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.onog.app" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Battlezone</name>
   <description>
-    Battlezone is a matchmaking app for PAX Bound players to play each other in a friendly
+    Battlezone is a matchmaking app for players to play each other in a friendly
     game of hearthstone and earn points to win big prizes.
     </description>
-  <author email="almas@oomzie.com" href="http://oomzie.com/">
+  <author email="almas@onog.gg" href="http://onog.gg/">
     Almas Barzhaxynov
     </author>
   <content src="index.html"/>
