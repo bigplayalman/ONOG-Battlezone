@@ -1,0 +1,20 @@
+<ion-view class="tournamentView positive-bg light">
+  <ion-content>
+
+    <ion-list>
+      <ion-item ng-if="result" class="item-text-wrap">
+        All Victory must be submitted with a clear game winning screenshot. Failure to submit a proper report so will result in a loss.
+      </ion-item>
+      <ion-item ng-if="result">
+        <button class="button-balanced button button-block" ng-click="addScreenshot()">Add Victory Shot</button>
+      </ion-item>
+      <ion-item ng-if="!result">
+        <button class="button-assertive button button-block" ui-sref="match.report({id: id})">Report Match</button>
+      </ion-item>
+      <ion-item>
+        <button class="button-positive button button-block">Submit Match</button>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+</ion-view>

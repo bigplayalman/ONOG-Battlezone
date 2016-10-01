@@ -19,19 +19,7 @@ function playCtrl(
   }
 
   $scope.recordMatch = function (result) {
-    $scope.match.fetch().then(function (match) {
-      $scope.match = match;
-      if(!$scope.match.get('result')) {
-        matchServices.recordMatch(result, $scope.match).then(function (match) {
-          $scope.match = match;
-        });
-      } else {
-        $ionicPopup.alert({
-          template: 'Match Results Already Entered',
-          title: 'An error has occured'
-        });
-      }
-    });
+    $state.go('match.result', {id: $scope.match.id, result: result});
   }
 
   $scope.copyId = function () {

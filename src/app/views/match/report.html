@@ -1,0 +1,23 @@
+<ion-view class="tournamentView positive-bg light">
+  <ion-content>
+
+    <ion-list>
+      <ion-item class="item-text-wrap">
+        Please provide reason and a screenshot (if possible). Ambiguous reports will be marked void. Reports cannot be resubmitted.
+      </ion-item>
+
+      <ion-item class="item-input">
+        <textarea placeholder="Please enter reason" ng-model="report.reason"></textarea>
+      </ion-item>
+
+      <ion-item>
+        <button class="button-balanced button button-block" ng-click="addScreenshot()">Add Screenshot</button>
+      </ion-item>
+
+      <ion-item>
+        <button class="button-assertive button button-block" ng-click="submitReport()">Report Match</button>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+</ion-view>
