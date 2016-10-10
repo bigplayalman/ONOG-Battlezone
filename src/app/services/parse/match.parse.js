@@ -4,7 +4,7 @@ angular.module('BattleZone.Parse')
 
 function matchParse(Parse, tournamentParse) {
   var model = Parse.Object.extend('match');
-  var attributes = ['status', tournamentParse.model, 'player', 'opponent', 'result'];
+  var attributes = ['status', tournamentParse.model, 'player', 'opponent', 'result', 'image'];
   Parse.defineAttributes(model, attributes);
 
   return {

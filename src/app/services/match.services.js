@@ -3,13 +3,13 @@ angular.module('BattleZone')
 
   .factory('matchServices', matchServices);
 
-function matchServices(Parse, matchParse, tournamentParse) {
+function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
 
   return {
     getLatestMatch: getLatestMatch,
     createMatch: createMatch,
     findOpponent: findOpponent,
-    recordMatch: recordMatch
+    recordMatch: recordMatch,
   }
 
   function getLatestMatch(id, player) {
@@ -35,7 +35,23 @@ function matchServices(Parse, matchParse, tournamentParse) {
   }
 
   function recordMatch(result, match) {
-    return Parse.Cloud.run('recordResult', {match: match.id, opponentMatch: match.get('opponentMatch').id, player: match.get('player').id, opponent: match.get('opponent').id, result: result});
+    var wins = 0;
+    var ladder = new Parse.Query(ladderParse.model);
+    ladder.equalTo('tournament', match.get('tournament'));
+
+    var resultObj = {
+      wins: wins,
+      match: match.id,
+      opponentMatch: match.get('opponentMatch').id,
+      player: match.get('player').id,
+      opponent: match.get('opponent').id,
+      result: result
+    };
+
+    return ladder.find().then(function (response) {
+      resultObj.wins = response[0].win;
+      return  Parse.Cloud.run('recordResult', resultObj);
+    });
   }
 
   function findOpponent (match) {

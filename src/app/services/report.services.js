@@ -17,7 +17,8 @@ function reportServices(Parse, reportParse, matchParse) {
     report.set('match', match);
     report.set('reason', reportData.reason);
     report.set('screenshot', parseFile);
-    return report.save();
+    match.set('status', 'reported');
+    return Parse.Object.saveAll([match, report]);
   }
 
 }

@@ -1,18 +1,36 @@
 <ion-view class="tournamentView positive-bg light">
   <ion-content>
 
-    <ion-list>
-      <ion-item ng-if="result" class="item-text-wrap">
+    <ion-list ng-if="result && match.status == 'active'">
+      <ion-item class="item-text-wrap">
         All Victory must be submitted with a clear game winning screenshot. Failure to submit a proper report so will result in a loss.
       </ion-item>
-      <ion-item ng-if="result">
+      <ion-item>
         <button class="button-balanced button button-block" ng-click="addScreenshot()">Add Victory Shot</button>
       </ion-item>
-      <ion-item ng-if="!result">
-        <button class="button-assertive button button-block" ui-sref="match.report({id: id})">Report Match</button>
+      <ion-item>
+        <a class="button-positive button button-block" ng-click="submitWin()" ng-disabled="!match.image">Submit Match</a>
+      </ion-item>
+
+      <ion-item ng-if="image">
+        <img ng-src="data:image/png;base64,{{image}}" class="responsive-img">
+      </ion-item>
+    </ion-list>
+
+    <ion-list ng-if="!result || match.status == 'finished'">
+      <ion-item class="item-text-wrap">
+        <h3>
+          This match has been recorded as a <strong>{{match.result}}</strong>.
+        </h3>
+        If you feel the result is not accurate, follow directions to complete a match report.
+        An admin will process the report as soon as possible.
       </ion-item>
       <ion-item>
-        <button class="button-positive button button-block">Submit Match</button>
+        <button class="button-assertive button button-block" ui-sref="match.report({id: id})">Report Match</button>
+      </ion-item>
+
+      <ion-item>
+        <button class="button-positive button button-block" ui-sref="latest">Back to Home</button>
       </ion-item>
     </ion-list>
 

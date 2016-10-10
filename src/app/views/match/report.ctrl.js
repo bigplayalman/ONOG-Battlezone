@@ -35,6 +35,7 @@ function matchReportCtrl($scope, $state, $stateParams, reportServices, cameraSer
         $ionicPopup.alert({
           template: 'Match Report has been submitted'
         });
+        $state.go('latest');
       });
     }
   }

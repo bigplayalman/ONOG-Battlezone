@@ -11,7 +11,7 @@
         <button class="button button-clear button-light" ng-if="user.current && current.player.tournaments" ng-click="playTournaments()">PLAY</button>
         <button class="button button-clear button-light" ng-if="user.current && !current.player.tournaments" ui-sref="tournament.list">JOIN</button>
         <button class="button button-clear button-light" ui-sref="login" ng-if="!user.current">LOGIN</button>
-        <button class="button button-positive" ng-disabled="disableStandings">STANDINGS</button>
+        <a class="button button-positive" ng-disabled="disableStandings" ng-click="showStandings()">STANDINGS</a>
       </div>
       <div class="item item-divider item-positive no-corners" ng-click="showNews()">
         <i class="ion-android-arrow-dropdown-circle calm"></i>

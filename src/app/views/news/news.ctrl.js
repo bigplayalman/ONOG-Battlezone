@@ -1,13 +1,13 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
-function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServices, userServices) {
+function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServices, userServices, tournamentServices) {
   $scope.feature = {
     featured_media: 0
   }
   $scope.disablePlay = false;
   userServices.state.last = null;
-
   $scope.current = playerServices.current;
+  $scope.tournaments = tournamentServices.getActiveTournaments();
 
   $scope.disableStandings = false;
 
@@ -25,6 +25,12 @@ function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServ
 
     });
   });
+
+  $scope.showStandings = function () {
+    $scope.tournaments.then(function (response) {
+      $state.go('tournament.ladder', {id: response[0].id});
+    });
+  }
 
   $scope.playTournaments = function () {
     if($scope.current.player.tournaments.length == 1) {

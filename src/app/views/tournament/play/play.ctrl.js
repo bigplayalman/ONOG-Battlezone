@@ -31,7 +31,7 @@ function playCtrl(
   $scope.cancelMatch = function () {
     $scope.match.set('status', 'cancelled');
     $scope.match.save().then(function () {
-      $state.go('tournament.list');
+      $state.go('latest');
     });
   }
 
