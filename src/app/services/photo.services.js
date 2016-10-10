@@ -6,8 +6,8 @@ function cameraServices ($window) {
 
   var camera = {
     quality: 90,
-    targetWidth: 320,
-    targetHeight: 500,
+    targetWidth: 1200,
+    targetHeight: 800,
     allowEdit: true,
     sourceType: 0,
   }

@@ -17,6 +17,10 @@
       <ion-item>
         <button class="button-assertive button button-block" ng-click="submitReport()">Report Match</button>
       </ion-item>
+
+      <ion-item ng-if="report.screenshot">
+        <img ng-src="data:image/png;base64,{{report.screenshot}}" class="responsive-img">
+      </ion-item>
     </ion-list>
 
   </ion-content>
