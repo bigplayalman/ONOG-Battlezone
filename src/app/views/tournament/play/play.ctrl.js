@@ -3,7 +3,7 @@ angular.module('BattleZone')
   .controller('playCtrl', playCtrl);
 
 function playCtrl(
-  $scope, $state, $stateParams, $ionicPopup, $timeout, $cordovaClipboard, $ionicPopover,
+  $scope, $state, $stateParams, $ionicPopup, $timeout, $cordovaClipboard,
   tournamentServices, matchServices, playerServices, userServices
 ) {
   $scope.id = $stateParams.id;
@@ -33,6 +33,14 @@ function playCtrl(
     $scope.match.save().then(function () {
       $state.go('latest');
     });
+  }
+
+  $scope.noShow = function () {
+    if(moment().isAfter(moment($scope.match.get('createdAt')).add(5, 'minutes'))) {
+      $state.go('match.noShow', {id: $scope.match.id});
+    } else {
+      $ionicPopup.alert({title:'Please wait 5 minutes before reporting no show.'});
+    }
   }
 
   function getLatestMatch() {

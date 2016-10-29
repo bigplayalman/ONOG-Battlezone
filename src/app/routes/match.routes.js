@@ -27,5 +27,11 @@ function matchRoutes ($stateProvider, $urlRouterProvider) {
       controller: 'matchReportCtrl',
       cache: false
     })
+    .state('match.noShow', {
+      url: '/noshow/:id',
+      templateUrl: 'views/match/noshow.html',
+      controller: 'matchNoShowCtrl',
+      cache: false
+    })
 
 }

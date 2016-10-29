@@ -22,10 +22,18 @@
         </div>
 
       </ion-item>
+
+      <ion-item ng-if="!match.result" class="item-text-wrap">
+        If a player does not add you within 5 minutes, you can report a no show. Please submit screenshot of the player added to your friend's list.
+        <a class="button button-positive button-block" ng-click="noShow()">Report No Show</a>
+      </ion-item>
+
       <ion-item ng-if="match.result">
         Result: {{match.result}}
       </ion-item>
     </ion-list>
+
+
 
     <ion-list ng-if="match && !match.opponent">
       <ion-item>
