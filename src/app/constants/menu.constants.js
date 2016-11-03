@@ -22,10 +22,10 @@ angular.module('BattleZone')
       icon: 'ion-ios-game-controller-b',
       name: 'Play'
     };
-    var create = {
-      state: 'admin.create',
-      icon: 'ion-paintbrush',
-      name: 'Create Tournament'
+    var settings = {
+      state: 'admin.settings',
+      icon: 'ion-gear-a',
+      name: 'Settings'
     }
     var tournaments = {
       state: 'tournament.list',
@@ -44,7 +44,7 @@ angular.module('BattleZone')
           ]
         },
         admin: {
-          items: [news, create, tournaments, logout]
+          items: [news, settings, tournaments, logout]
         },
         normal: {
           items: [

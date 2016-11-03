@@ -1,48 +1,41 @@
 angular.module('BattleZone').controller('NewsCtrl', NewsCtrl);
 
-function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServices, userServices, tournamentServices) {
+function NewsCtrl($scope, $state, NewsServices, $ionicScrollDelegate, playerServices, userServices, tournamentServices, $ionicPopup) {
   $scope.feature = {
     featured_media: 0
   }
   $scope.disablePlay = false;
   userServices.state.last = null;
-  $scope.current = playerServices.current;
-  $scope.tournaments = tournamentServices.getActiveTournaments();
 
   $scope.disableStandings = false;
 
-  $scope.$on("$ionicView.enter", function(event, data){
-    NewsServices.getLatestNews().then(function (news) {
-      $scope.feature = news[0];
-      $scope.news = news;
-      getImages();
-    });
-
-    $scope.user = userServices.user;
-
-    playerServices.fetchPlayer().then(function (tournaments) {
-      $scope.current.player.tournaments = tournaments;
-
-    });
+  NewsServices.getLatestNews().then(function (news) {
+    $scope.feature = news[0];
+    $scope.news = news;
+    getImages();
   });
 
-  $scope.showStandings = function () {
-    $scope.tournaments.then(function (response) {
-      $state.go('tournament.ladder', {id: response[0].id});
-    });
-  }
-
-  $scope.playTournaments = function () {
-    if($scope.current.player.tournaments.length == 1) {
-      $state.go('tournament.play', {id: $scope.current.player.tournaments[0].tournament.id});
-    } else {
-      $state.go('tournament.list');
-    }
-  }
+  $scope.user = userServices.user;
 
 
-  $scope.showNews = function () {
+  $scope.showNews = function() {
     $ionicScrollDelegate.scrollBy(0, 500, true);
+  }
+
+  function loginPopup() {
+    return $ionicPopup.show({
+      title: 'Please Login to Play',
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: '<b>Login</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            $state.go('login');
+          }
+        }
+      ]
+    });
   }
 
   function getImages() {

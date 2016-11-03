@@ -10,6 +10,16 @@ function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
     createMatch: createMatch,
     findOpponent: findOpponent,
     recordMatch: recordMatch,
+    fetchLatestMatch: fetchLatestMatch
+  }
+
+  function fetchLatestMatch (player) {
+    var matches = new Parse.Query(matchParse.model);
+    var tournament = new tournamentParse.model();
+    tournament.id = player.tournament.id;
+    matches.equalTo('player', player);
+    matches.equalTo('tournament', tournament);
+    return matches.find();
   }
 
   function getLatestMatch(id, player) {

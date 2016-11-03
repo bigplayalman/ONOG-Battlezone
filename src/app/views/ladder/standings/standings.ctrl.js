@@ -1,9 +1,9 @@
 
 angular.module('BattleZone')
 
-  .controller('ladderCtrl', ladderCtrl);
+  .controller('ladderStandingsCtrl', ladderStandingsCtrl);
 
-function ladderCtrl($scope, $stateParams, playerServices) {
+function ladderStandingsCtrl($scope, $stateParams, playerServices) {
   $scope.players = {};
   playerServices.getPlayers($stateParams.id).then(function (players) {
     $scope.players = players;

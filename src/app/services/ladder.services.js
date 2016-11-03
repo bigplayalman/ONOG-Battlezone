@@ -3,42 +3,72 @@ angular.module('BattleZone')
 
   .factory('ladderServices', ladderServices);
 
-function ladderServices(Parse, ladderParse, player) {
+function ladderServices(Parse, ladderParse, settingsParse) {
 
   return {
-    createLadder: createLadder,
-    getLadder: getLadder,
-    saveLadder: saveLadder,
-    getLadders: getLadders,
-    getStandings: getStandings
+    getActiveLadder: getActiveLadder,
+    getCurrentLadder: getCurrentLadder,
+    getLadderSettings: getLadderSettings,
+    createNewLadder: createNewLadder,
+    createSettings: createSettings,
+    getLadderStatus: getLadderStatus
   }
 
-  function createLadder(tourney) {
-    var newLadder = new ladderParse.model();
-    newLadder.set('tournament', tourney);
-    return newLadder.save();
+  function getActiveLadder() {
+    var query = new Parse.Query(ladderParse.model);
+    query.equalTo('active', true);
+    return query.find().then(function (ladders){
+      if(ladders.length) {
+        return ladders[0];
+      } else {
+        return null;
+      }
+    })
   }
-  function getLadder(id) {
-    var current = new Parse.Query(ladderParse.model);
-    current.include('tournament');
-    return current.get(id);
+
+  function getCurrentLadder() {
+    var query = new Parse.Query(ladderParse.model);
+    return query.find().then(function (ladders){
+      if(ladders.length) {
+        return ladders[0];
+      } else {
+        return null;
+      }
+    })
   }
-  function saveLadder(params) {
-    var saveLadder = new ladderParse.model();
-    saveLadder.set(params);
-    return saveLadder.save();
+
+  function createNewLadder() {
+    var ladder = new ladderParse.model();
+    ladder.set('active', true);
+    ladder.set('players', 0);
+    return ladder.save();
   }
-  function getLadders() {
-    var ladders = new Parse.Query(ladderParse.model);
-    ladders.include('tournament');
-    return ladders.find();
+
+  function getLadderStatus() {
+    var query = new Parse.Query(settingsParse.model);
+    return query.find().then(function (settings) {
+      if (settings.length) {
+        return settings[0].disabled;
+      }
+    });
   }
-  function getStandings(id) {
-    var players = new Parse.Query(player.model);
-    var current = new Parse.Object(ladderParse.model);
-    current.id = id;
-    players.equalTo('ladder', current);
-    return players.find();
+
+  function getLadderSettings() {
+    var query = new Parse.Query(settingsParse.model);
+    return query.find().then(function (settings) {
+      if(settings.length) {
+        return settings[0];
+      } else {
+        return createSettings();
+      }
+    });
+  }
+
+  function createSettings() {
+    var settings = new settingsParse.model();
+    settings.set('disabled', false);
+    settings.set('points', 20);
+    return settings.save();
   }
 
 }

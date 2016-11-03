@@ -1,0 +1,30 @@
+<ion-view class="createView positive-bg light">
+  <ion-nav-buttons side="secondary">
+    <button class="button button-outline button-light" ng-click="saveSettings()">
+      Save
+    </button>
+  </ion-nav-buttons>
+	<ion-content>
+    <ion-list>
+      <ion-toggle ng-model="settings.disabled" toggle-class="toggle-calm">Disable Ladder</ion-toggle>
+      <label class="item item-input">
+        <span class="input-label">Ladder Win Points</span>
+        <input ng-model="settings.pointsWin" type="number">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Ladder Loss Points</span>
+        <input ng-model="settings.pointsLoss" type="number">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Ladder Message</span>
+        <textarea ng-model="settings.message"></textarea>
+      </label>
+      <ion-toggle ng-model="settings.messageShow" toggle-class="toggle-calm">Show Message</ion-toggle>
+      <ion-item>
+        <button class="button button-positive full-width" ng-click="endLadder()" ng-if="ladder.active">End Ladder</button>
+        <button class="button button-positive full-width" ng-click="startLadder()" ng-if="!ladder.active">Start Ladder</button>
+      </ion-item>
+
+    </ion-list>
+	</ion-content>
+</ion-view>

@@ -18,7 +18,8 @@ function newsRoutes ($stateProvider, $urlRouterProvider) {
       url: '/latest',
       parent: 'news',
       templateUrl: 'views/news/news.html',
-      controller: 'NewsCtrl'
+      controller: 'NewsCtrl',
+      cache: false
     })
     .state('details', {
       url: '/:id',
