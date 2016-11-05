@@ -3,7 +3,7 @@ angular.module('BattleZone')
 
   .factory('matchServices', matchServices);
 
-function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
+function matchServices(Parse, matchParse, tournamentParse, ladderParse, playerParse) {
 
   return {
     getLatestMatch: getLatestMatch,
@@ -13,31 +13,40 @@ function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
     fetchLatestMatch: fetchLatestMatch
   }
 
-  function fetchLatestMatch (player) {
+  function fetchLatestMatch (player, ladder) {
     var matches = new Parse.Query(matchParse.model);
-    var tournament = new tournamentParse.model();
-    tournament.id = player.tournament.id;
+
     matches.equalTo('player', player);
-    matches.equalTo('tournament', tournament);
-    return matches.find();
+    matches.equalTo('ladder', ladder);
+    return matches.find().then(function (matches) {
+      if(matches.length) {
+        return matches[0];
+      } else {
+        return {};
+      }
+    });
   }
 
-  function getLatestMatch(id, player) {
+  function getLatestMatch(ladder, player) {
+    var parseP = new playerParse.model();
+    parseP.id = player.id;
     var matches = new Parse.Query(matchParse.model);
-    var tournament = new tournamentParse.model();
-    tournament.id = id;
     matches.equalTo('status', 'active');
-    matches.equalTo('player', player);
+    matches.equalTo('player', parseP);
     matches.include('opponent');
-    matches.equalTo('tournament', tournament);
-    return matches.find();
+    matches.equalTo('ladder', ladder);
+    return matches.find().then(function(matches) {
+      if(matches.length) {
+        return matches[0];
+      } else {
+        return null;
+      }
+    });
   }
 
-  function createMatch(id, player) {
-    var tournament = new tournamentParse.model();
-    tournament.id = id;
+  function createMatch(ladder, player) {
     var match = new matchParse.model();
-    match.set('tournament', tournament);
+    match.set('ladder', ladder);
     match.set('player', player);
     match.set('opponent', null);
     match.set('status', 'active');
@@ -46,11 +55,8 @@ function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
 
   function recordMatch(result, match) {
     var wins = 0;
-    var ladder = new Parse.Query(ladderParse.model);
-    ladder.equalTo('tournament', match.get('tournament'));
 
     var resultObj = {
-      wins: wins,
       match: match.id,
       opponentMatch: match.get('opponentMatch').id,
       player: match.get('player').id,
@@ -58,14 +64,11 @@ function matchServices(Parse, matchParse, tournamentParse, ladderParse) {
       result: result
     };
 
-    return ladder.find().then(function (response) {
-      resultObj.wins = response[0].win;
-      return  Parse.Cloud.run('recordResult', resultObj);
-    });
+    return  Parse.Cloud.run('recordResult', resultObj);
   }
 
-  function findOpponent (match) {
-    return Parse.Cloud.run('findOpponent', {match: match.id, tournament: match.get('tournament').id, player: match.get('player').id});
+  function findOpponent (match, ladder) {
+    return Parse.Cloud.run('findOpponent', {match: match.id, ladder: ladder.id, player: match.get('player').id});
   }
 
 }

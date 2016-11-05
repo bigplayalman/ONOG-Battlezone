@@ -4,19 +4,27 @@ angular.module('BattleZone')
 
 function playCtrl(
   $scope, $state, $stateParams, $ionicPopup, $timeout, $cordovaClipboard,
-  tournamentServices, matchServices, playerServices, userServices
+  tournamentServices, matchServices, playerServices, userServices, ladderParse
 ) {
-  $scope.id = $stateParams.id;
-  $scope.current = playerServices.current;
-  $scope.user = userServices.user;
 
-  if(!$scope.current.player) {
-    playerServices.fetchPlayer().then(function () {
+  $scope.ladder = new ladderParse.model();
+  $scope.ladder.id = $stateParams.id;
+  $scope.current = playerServices.current;
+  $scope.ladder.fetch().then(function (ladder) {
+    $scope.ladder = ladder;
+    $scope.user = userServices.user;
+
+    if(!$scope.current.player.id) {
+      playerServices.fetchPlayer($scope.user.current, $scope.ladder).then(function (player) {
+        $scope.current.player = player;
+        getLatestMatch();
+      });
+    } else {
       getLatestMatch();
-    });
-  } else {
-    getLatestMatch();
-  }
+    }
+  });
+
+
 
   $scope.recordMatch = function (result) {
     $state.go('match.result', {id: $scope.match.id, result: result});
@@ -44,17 +52,15 @@ function playCtrl(
   }
 
   function getLatestMatch() {
-    matchServices.getLatestMatch($scope.id, $scope.current.player).then(function (matches) {
-      if(matches.length) {
-        $scope.match = matches[0];
-        console.log('match found', $scope.match);
+    matchServices.getLatestMatch($scope.ladder, $scope.current.player).then(function (match) {
+      if(match) {
+        $scope.match = match;
         if(!$scope.match.opponent) {
           findOpponent();
         }
       } else {
-        matchServices.createMatch($scope.id, $scope.current.player).then(function (match) {
+        matchServices.createMatch($scope.ladder, $scope.current.player).then(function (match) {
           $scope.match = match;
-          console.log('new match', $scope.match);
           findOpponent();
         });
       }
@@ -62,15 +68,10 @@ function playCtrl(
   }
 
   function findOpponent() {
-    if($scope.user.current) {
-      matchServices.findOpponent($scope.match).then(function (found) {
-        console.log(found);
-        if(found) {
-
-        } else {
-          $timeout(findOpponent, 15000);
-        }
-      });
-    }
+    matchServices.findOpponent($scope.match, $scope.ladder).then(function (found) {
+      if(!found) {
+        $timeout(findOpponent, 15000);
+      }
+    });
   }
 };

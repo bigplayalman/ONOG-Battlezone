@@ -11,7 +11,14 @@ function ladderServices(Parse, ladderParse, settingsParse) {
     getLadderSettings: getLadderSettings,
     createNewLadder: createNewLadder,
     createSettings: createSettings,
-    getLadderStatus: getLadderStatus
+    getLadderStatus: getLadderStatus,
+    getLadder: getLadder
+  }
+
+  function getLadder(id) {
+    var ladder = new ladderParse.model();
+    ladder.id = id;
+    return ladder.fetch();
   }
 
   function getActiveLadder() {

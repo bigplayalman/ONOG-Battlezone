@@ -16,15 +16,15 @@ function tournamentRoutes ($stateProvider, $urlRouterProvider) {
     })
 
     .state('ladder.standings', {
-      url: '/standings',
+      url: '/standings/:id',
       templateUrl: 'views/ladder/standings/standings.html',
       controller: 'ladderStandingsCtrl',
       cache: false
     })
     .state('ladder.play', {
-      url: '/play',
+      url: '/play/:id',
       templateUrl: 'views/ladder/play/play.html',
-      controller: 'playLadderCtrl',
+      controller: 'playCtrl',
       cache: false
     });
 

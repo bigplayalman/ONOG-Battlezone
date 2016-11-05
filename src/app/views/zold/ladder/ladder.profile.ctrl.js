@@ -4,7 +4,7 @@ angular.module('BattleZone')
   .controller('LadderProfileCtrl', LadderProfileCtrl);
 
 function LadderProfileCtrl(
-  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, player, $rootScope
+  $scope, $filter, $ionicPopup, $state, $ionicHistory, $q, Parse,  tournament, LadderServices, playerParse, $rootScope
 ) {
 
   $ionicHistory.nextViewOptions({

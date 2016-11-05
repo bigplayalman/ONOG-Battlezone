@@ -38,9 +38,9 @@ function tournamentActionCtrl($scope, $state, $ionicPopup, ladderServices, playe
               $scope.player = player;
               $scope.options.text = 'PLAY';
               $scope.options.action = 'play';
-              matchServices.fetchLatestMatch(player).then(function (matches) {
-                if (matches.length && matches[0].status == 'active') {
-                  $scope.match = matches[0];
+              matchServices.fetchLatestMatch(player, ladder).then(function (match) {
+                if (match.status == 'active') {
+                  $scope.match = match;
                   $scope.options.text = 'Match Details';
                   $scope.options.action = 'match';
                 }
@@ -57,7 +57,7 @@ function tournamentActionCtrl($scope, $state, $ionicPopup, ladderServices, playe
 
   $scope.process = function(action) {
     switch (action) {
-      case 'play': $state.go('ladder.play'); break;
+      case 'play': $state.go('ladder.play', {id: $scope.ladder.id}); break;
       case 'login': $state.go('login'); break;
       case 'join': register(); break;
       case 'match': $state.go('match.details', {id: $scope.match.id}); break;

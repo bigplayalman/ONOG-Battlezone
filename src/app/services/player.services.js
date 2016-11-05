@@ -3,8 +3,8 @@ angular.module('BattleZone')
 
   .factory('playerServices', playerServices);
 
-function playerServices($http, Parse, $q, $ionicPopup, player, ladderServices) {
-  var current = {player: new player.model()};
+function playerServices($http, Parse, $q, $ionicPopup, playerParse, ladderServices) {
+  var current = {player: new playerParse.model()};
 
   return {
     current: current,
@@ -14,18 +14,16 @@ function playerServices($http, Parse, $q, $ionicPopup, player, ladderServices) {
     validateTag: validateTag
   }
 
-  function getPlayers(id) {
-    var players = new Parse.Query(player.model);
-    var tourney = new Parse.Object.extend(tournamentParse.model);
-    tourney.id = id;
-    players.equalTo('tournament', tourney);
+  function getPlayers(ladder) {
+    var players = new Parse.Query(playerParse.model);
+    players.equalTo('ladder', ladder);
     players.include('user');
     players.descending('points');
     return players.find();
   }
 
   function fetchPlayer(user, ladder) {
-    var playersQuery = new Parse.Query(player.model);
+    var playersQuery = new Parse.Query(playerParse.model);
     playersQuery.equalTo('user', user);
     playersQuery.equalTo('ladder', ladder);
     return playersQuery.find().then(function (players) {
@@ -40,13 +38,13 @@ function playerServices($http, Parse, $q, $ionicPopup, player, ladderServices) {
   function registerPlayer(battleNet) {
 
     return ladderServices.getActiveLadder().then(function (ladder) {
-      var playerQuery = new Parse.Query(player.model);
+      var playerQuery = new Parse.Query(playerParse.model);
       playerQuery.equalTo('battleNet', battleNet);
       playerQuery.equalTo('ladder', ladder);
       return playerQuery.find().then(function(players) {
         if(players.length == 0) {
           var user = Parse.User.current();
-          var newPlayer = new player.model();
+          var newPlayer = new playerParse.model();
           newPlayer.set('user', user);
           newPlayer.set('ladder', ladder);
           newPlayer.set('battleNet', battleNet);
